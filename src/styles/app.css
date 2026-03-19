@@ -1,0 +1,38 @@
+@import 'tailwindcss';
+
+body {
+    background-color: #020617;
+    color: #f8fafc;
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+.font-logo {
+    font-family: 'Syncopate', sans-serif;
+}
+
+.note-card-shadow {
+    shadow: 0 10px 30px -15px rgba(2, 6, 23, 0.5);
+}
+
+::-webkit-scrollbar {
+    width: 4px;
+}
+::-webkit-scrollbar-track {
+    background: #020617;
+}
+::-webkit-scrollbar-thumb {
+    background: #1e293b;
+    border-radius: 10px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}

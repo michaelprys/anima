@@ -2,6 +2,11 @@ export const routes = [
     {
         path: '/',
         name: 'notes',
-        component: () => import('@/views/ViewNote.vue'),
+        component: () => import('@/pages/PageNotes.vue'),
+    },
+    {
+        path: '/stats',
+        name: 'stats',
+        component: () => import('@/pages/PageStats.vue'),
     },
 ];
