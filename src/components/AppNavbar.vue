@@ -5,17 +5,17 @@ const isOpen = ref(false);
 </script>
 
 <template>
-    <nav class="sticky top-0 z-50 bg-slate-950/40 backdrop-blur-xl border-b border-white/5">
+    <nav class="sticky top-0 z-50 bg-slate-900/60 backdrop-blur-xl border-b border-white/10">
         <div class="container px-8 py-4 mx-auto md:flex md:justify-between md:items-center">
             <div class="flex items-center justify-between">
                 <RouterLink :to="{ name: 'notes' }" class="flex items-center gap-4 group shrink-0">
                     <img
-                        class="w-auto h-5.5 opacity-70 transition-all duration-700 ease-in-out group-hover:opacity-100 group-hover:scale-110"
+                        class="w-auto h-5.5 opacity-80 transition-all duration-700 ease-in-out group-hover:opacity-100 group-hover:scale-110"
                         src="../assets/images/logo.avif"
                         alt="Neemo" />
 
                     <span
-                        class="font-logo text-[13px] font-bold tracking-[0.3em] uppercase bg-gradient-to-r from-slate-100 to-slate-500 bg-clip-text text-transparent transition-all duration-1000 ease-in-out group-hover:from-cyan-400 group-hover:to-blue-500 group-hover:tracking-[0.4em]">
+                        class="font-logo text-[13px] font-bold tracking-[0.3em] uppercase bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent transition-all duration-1000 ease-in-out group-hover:from-cyan-400 group-hover:to-blue-500 group-hover:tracking-[0.4em]">
                         Neemo
                     </span>
                 </RouterLink>
@@ -61,26 +61,26 @@ const isOpen = ref(false);
                         ? 'translate-x-0 opacity-100'
                         : 'opacity-0 -translate-x-full md:opacity-100 md:translate-x-0',
                 ]"
-                class="absolute inset-x-0 z-20 w-full px-8 py-6 bg-slate-950/95 border-b border-white/5 transition-[opacity,transform] duration-500 ease-in-out md:static md:flex md:items-center md:w-auto md:p-0 md:bg-transparent md:border-none md:transition-none">
+                class="absolute inset-x-0 z-20 w-full px-8 py-6 bg-slate-900 border-b border-white/10 transition-[opacity,transform] duration-500 ease-in-out md:static md:flex md:items-center md:w-auto md:p-0 md:bg-transparent md:border-none md:transition-none">
                 <div class="flex flex-col md:flex-row md:items-center">
                     <RouterLink
                         :to="{ name: 'notes' }"
-                        class="my-3 md:my-0 text-[10px] font-semibold tracking-[0.2em] text-slate-500 transition-all duration-500 hover:text-cyan-400 md:mx-6 uppercase"
+                        class="my-3 md:my-0 text-[10px] font-semibold tracking-[0.2em] text-slate-400 transition-all duration-500 hover:text-cyan-400 md:mx-6 uppercase"
                         active-class="text-cyan-400 shadow-[0_15px_20px_-10px_rgba(34,211,238,0.3)]">
                         Notes
                     </RouterLink>
 
                     <RouterLink
                         :to="{ name: 'stats' }"
-                        class="my-3 md:my-0 text-[10px] font-semibold tracking-[0.2em] text-slate-500 transition-all duration-500 hover:text-cyan-400 md:mx-6 uppercase"
+                        class="my-3 md:my-0 text-[10px] font-semibold tracking-[0.2em] text-slate-400 transition-all duration-500 hover:text-cyan-400 md:mx-6 uppercase"
                         active-class="text-cyan-400 shadow-[0_15px_20px_-10px_rgba(34,211,238,0.3)]">
                         Stats
                     </RouterLink>
 
-                    <div class="h-3 w-[1px] bg-white/10 mx-2 hidden md:block"></div>
+                    <div class="h-3 w-[1px] bg-white/20 mx-2 hidden md:block"></div>
 
                     <button
-                        class="mt-6 md:mt-0 ml-0 md:ml-4 px-4 py-1.5 text-[9px] font-bold uppercase tracking-[0.25em] border border-cyan-500/20 text-cyan-500/80 hover:bg-cyan-500 hover:text-slate-950 hover:border-cyan-500 transition-all duration-700 rounded-[2px] active:scale-95 shadow-lg shadow-cyan-500/5">
+                        class="mt-6 md:mt-0 ml-0 md:ml-4 px-4 py-1.5 text-[9px] font-bold uppercase tracking-[0.25em] border border-cyan-500/30 text-cyan-400 hover:bg-cyan-500 hover:text-slate-950 hover:border-cyan-500 transition-all duration-700 rounded-[2px] active:scale-95 shadow-lg shadow-cyan-500/10">
                         Nitro
                     </button>
                 </div>
