@@ -1,6 +1,4 @@
 <script setup>
-import { computed } from 'vue';
-
 const props = defineProps({
     note: {
         type: Object,
@@ -8,11 +6,11 @@ const props = defineProps({
     },
 });
 
-const noteLength = computed(() => {
-    const chars = props.note.thought.length;
+const emit = defineEmits(['delete']);
 
-    return `${chars} char${chars !== 1 ? 's' : ''}`;
-});
+const handleDelete = () => {
+    emit('delete', props.note.id);
+};
 </script>
 
 <template>
@@ -22,7 +20,9 @@ const noteLength = computed(() => {
             <div class="flex items-center justify-between mb-6">
                 <div
                     class="h-[1px] w-8 bg-cyan-500/40 group-hover:w-12 transition-all duration-700"></div>
-                <button class="text-slate-600 hover:text-red-400/70 transition-colors p-1 -mr-1">
+                <button
+                    class="text-slate-600 hover:text-red-400/70 transition-colors p-1 -mr-1"
+                    @click="handleDelete">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         class="h-4 w-4"
@@ -52,7 +52,6 @@ const noteLength = computed(() => {
         <div class="mt-12 pt-6 border-t border-white/10 flex items-center justify-between">
             <span class="text-[10px] font-medium tracking-[0.2em] text-slate-500 uppercase">
                 {{ note.date }}
-                {{ noteLength }}
             </span>
 
             <button

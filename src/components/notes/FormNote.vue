@@ -1,5 +1,5 @@
 <script setup>
-import { useTemplateRef, reactive } from 'vue';
+import { useTemplateRef, reactive, ref } from 'vue';
 
 const emit = defineEmits(['add']);
 
@@ -8,7 +8,7 @@ const newNote = reactive({
     thought: '',
 });
 
-const newNoteRef = useTemplateRef('newNoteRef');
+const thoughtRef = useTemplateRef('thoughtRef');
 
 const handleCommit = () => {
     const dateSettings = { month: 'short', day: 'numeric' },
@@ -27,7 +27,7 @@ const handleCommit = () => {
         thought: '',
     });
 
-    newNoteRef.value.focus();
+    thoughtRef.value.focus();
 };
 </script>
 <template>
@@ -46,8 +46,9 @@ const handleCommit = () => {
 
                 <textarea
                     v-model="newNote.thought"
+                    @focus="isFocused"
                     maxLength="2000"
-                    ref="newNoteRef"
+                    ref="thoughtRef"
                     placeholder="Vent your thoughts here..."
                     rows="5"
                     class="w-full bg-transparent border-none text-lg text-slate-300 placeholder-slate-500 focus:outline-none focus:ring-0 resize-none leading-relaxed mb-6"></textarea>
