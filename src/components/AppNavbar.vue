@@ -10,8 +10,10 @@ const isOpen = ref(false);
             <div class="flex items-center justify-between">
                 <RouterLink :to="{ name: 'notes' }" class="flex items-center gap-4 group shrink-0">
                     <img
-                        class="w-auto h-5.5 opacity-80 transition-all duration-700 ease-in-out group-hover:opacity-100 group-hover:scale-110"
+                        class="w-auto h-5.5 transition-all duration-1000 ease-in-out group-hover:opacity-100 group-hover:scale-110"
                         src="../assets/images/logo.avif"
+                        width="768"
+                        height="768"
                         alt="Neemo" />
 
                     <span
@@ -81,7 +83,7 @@ const isOpen = ref(false);
 
                     <button
                         class="mt-6 md:mt-0 ml-0 md:ml-4 px-4 py-1.5 text-[9px] font-bold uppercase tracking-[0.25em] border border-cyan-500/30 text-cyan-400 hover:bg-cyan-500 hover:text-slate-950 hover:border-cyan-500 transition-all duration-700 rounded-[2px] active:scale-95 shadow-lg shadow-cyan-500/10">
-                        Nitro
+                        Identify
                     </button>
                 </div>
             </div>

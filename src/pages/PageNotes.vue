@@ -1,33 +1,29 @@
 <script setup>
 import CardNote from '@/components/notes/CardNote.vue';
 import FormNote from '@/components/notes/FormNote.vue';
-import { ref } from 'vue';
+import { useStoreNotes } from '@/stores/notes.store.js';
 
-const notes = ref([]);
-
-const commitNote = (note) => {
-    notes.value.unshift(note);
-};
-
-const deleteNote = (noteId) => {
-    notes.value = notes.value.filter((note) => note.id !== noteId);
-};
+const storeNotes = useStoreNotes();
 </script>
 
 <template>
     <section class="min-h-screen max-w-7xl mx-auto px-6 py-10 md:px-12">
-        <FormNote :notes="notes" @commit="commitNote" />
+        <FormNote :notes="storeNotes.notes" @commit="storeNotes.commitNote" />
 
         <TransitionGroup
             name="jelly"
             tag="ul"
             class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-            <CardNote v-for="note in notes" :key="note.id" :note="note" @delete="deleteNote" />
+            <CardNote
+                v-for="note in storeNotes.notes"
+                :key="note.id"
+                :note="note"
+                @delete="storeNotes.deleteNote" />
         </TransitionGroup>
 
         <Transition name="fade">
             <div
-                v-if="notes.length === 0"
+                v-if="storeNotes.notes.length === 0"
                 class="flex flex-col items-center justify-center mt-32 opacity-40">
                 <div class="w-12 h-[1px] bg-slate-700 mb-8"></div>
                 <p
@@ -47,25 +43,24 @@ const deleteNote = (noteId) => {
 .fade-leave-active {
     transition: opacity 1s ease;
 }
+
 .fade-enter-from,
 .fade-leave-to {
     opacity: 0;
 }
 
 .jelly-enter-active,
-.jelly-move {
-    transition: all 0.45s cubic-bezier(0.3, 1.3, 0.3, 1);
-}
 .jelly-leave-active {
-    transition: all 0.3s ease-in;
-    position: absolute;
+    transition: all 0.4s ease;
 }
-.jelly-enter-from {
-    opacity: 0;
-    transform: scale(0.97) translateY(-0.1rem);
-}
+
+.jelly-enter-from,
 .jelly-leave-to {
     opacity: 0;
-    transform: scale(0.97);
+    transform: scale(0.9);
+}
+
+.jelly-move {
+    transition: transform 0.4s ease;
 }
 </style>

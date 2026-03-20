@@ -1,7 +1,8 @@
 <script setup>
-import { useTemplateRef, reactive, ref } from 'vue';
+import { useTemplateRef, reactive } from 'vue';
+import { useStoreNotes } from '@/stores/notes.store.js';
 
-const emit = defineEmits(['add']);
+const storeNotes = useStoreNotes();
 
 const newNote = reactive({
     title: '',
@@ -10,17 +11,10 @@ const newNote = reactive({
 
 const thoughtRef = useTemplateRef('thoughtRef');
 
-const handleCommit = () => {
-    const dateSettings = { month: 'short', day: 'numeric' },
-        date = new Intl.DateTimeFormat(navigator.language, dateSettings).format(new Date());
+const handleCommitNote = () => {
+    if (!newNote.title && !newNote.thought) return;
 
-    const note = {
-        id: crypto.randomUUID(),
-        ...newNote,
-        date,
-    };
-
-    emit('commit', note);
+    storeNotes.commitNote(newNote);
 
     Object.assign(newNote, {
         title: '',
@@ -46,7 +40,6 @@ const handleCommit = () => {
 
                 <textarea
                     v-model="newNote.thought"
-                    @focus="isFocused"
                     maxLength="2000"
                     ref="thoughtRef"
                     placeholder="Vent your thoughts here..."
@@ -66,7 +59,7 @@ const handleCommit = () => {
                     </div>
 
                     <button
-                        @click="handleCommit"
+                        @click="handleCommitNote"
                         :disabled="!newNote.title && !newNote.thought"
                         class="w-full sm:w-auto px-6 py-2 text-[10px] font-black uppercase tracking-[0.3em] border border-cyan-500/40 text-cyan-400 hover:bg-cyan-500 hover:text-slate-950 hover:border-cyan-500 transition-all duration-500 rounded-[2px] active:scale-95 shadow-lg shadow-cyan-500/5 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-cyan-400 disabled:hover:border-cyan-500/40 disabled:active:scale-100">
                         Commit Note

@@ -1,20 +1,18 @@
 <script setup>
-const props = defineProps({
+import { useStoreNotes } from '@/stores/notes.store.js';
+
+const storeNotes = useStoreNotes();
+
+defineProps({
     note: {
         type: Object,
         required: true,
     },
 });
-
-const emit = defineEmits(['delete']);
-
-const handleDelete = () => {
-    emit('delete', props.note.id);
-};
 </script>
 
 <template>
-    <li
+    <lia
         class="group relative flex flex-col justify-between overflow-hidden rounded-[4px] border border-white/10 bg-slate-800/30 p-8 transition-all duration-700 hover:bg-slate-800/50 hover:border-cyan-500/30">
         <div>
             <div class="flex items-center justify-between mb-6">
@@ -22,7 +20,7 @@ const handleDelete = () => {
                     class="h-[1px] w-8 bg-cyan-500/40 group-hover:w-12 transition-all duration-700"></div>
                 <button
                     class="text-slate-600 hover:text-red-400/70 transition-colors p-1 -mr-1"
-                    @click="handleDelete">
+                    @click="storeNotes.deleteNote(note.id)">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         class="h-4 w-4"
@@ -59,5 +57,5 @@ const handleDelete = () => {
                 Open
             </button>
         </div>
-    </li>
+    </lia>
 </template>
