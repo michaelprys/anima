@@ -1,5 +1,8 @@
 <script setup>
 import { ref } from 'vue';
+import { useOnlineStatus } from '@/composables/useOnlineStatus';
+
+const { online } = useOnlineStatus();
 
 const isOpen = ref(false);
 </script>
@@ -13,16 +16,31 @@ const isOpen = ref(false);
                     class="flex items-center gap-5 group shrink-0 relative py-2">
                     <div class="relative flex items-center justify-center w-4 h-4">
                         <div
-                            class="absolute inset-0 bg-cyan-500/20 rounded-full blur-md group-hover:bg-orange-500/40 transition-all duration-700 ease-in-out"></div>
+                            class="absolute inset-0 rounded-full blur-md transition-all duration-700 ease-in-out"
+                            :class="
+                                online
+                                    ? 'bg-cyan-500/20 group-hover:bg-orange-500/40'
+                                    : 'bg-rose-500/20 group-hover:bg-rose-600/40'
+                            "></div>
 
                         <div
-                            class="relative w-2 h-2 bg-cyan-400 rounded-full shadow-[0_0_8px_#22d3ee] group-hover:bg-orange-400 group-hover:shadow-[0_0_12px_#fb923c] transition-all duration-500 ease-in-out">
+                            class="relative w-2 h-2 rounded-full transition-all duration-500 ease-in-out"
+                            :class="
+                                online
+                                    ? 'bg-cyan-400 shadow-[0_0_8px_#22d3ee] group-hover:bg-orange-400 group-hover:shadow-[0_0_12px_#fb923c]'
+                                    : 'bg-rose-500 shadow-[0_0_8px_#f43f5e] group-hover:bg-rose-600 group-hover:shadow-[0_0_12px_#e11d48]'
+                            ">
                             <div
                                 class="absolute top-0.5 left-0.5 w-0.5 h-0.5 bg-white rounded-full opacity-90"></div>
                         </div>
 
                         <div
-                            class="absolute inset-0 border border-cyan-500/20 rounded-full animate-[ping_4s_infinite] group-hover:border-orange-500/40"></div>
+                            class="absolute inset-0 border rounded-full transition-all duration-500"
+                            :class="
+                                online
+                                    ? 'border-cyan-500/20 group-hover:border-orange-500/40 animate-[ping_4s_infinite]'
+                                    : 'border-rose-500/40 group-hover:border-rose-600 animate-[ping_1.5s_infinite] group-hover:animate-[ping_0.8s_infinite]'
+                            "></div>
                     </div>
 
                     <div class="flex flex-col">
@@ -41,13 +59,20 @@ const isOpen = ref(false);
                         </div>
 
                         <div class="relative h-3 mt-1">
-                            <span
-                                class="absolute inset-0 text-[8px] font-medium tracking-[0.2em] text-slate-500 uppercase opacity-80 transition-opacity duration-500 ease-in-out group-hover:opacity-0">
-                                System_link: Stable
-                            </span>
+                            <div
+                                class="absolute inset-0 text-[8px] font-medium tracking-[0.2em] uppercase opacity-80 transition-opacity duration-500 ease-in-out group-hover:opacity-0">
+                                <span class="text-slate-500">System_link:</span>
+                                <span :class="online ? 'text-cyan-500' : 'text-rose-500'">
+                                    {{ online ? 'Stable' : 'Lost' }}
+                                </span>
+                            </div>
                             <span
                                 class="absolute inset-0 text-[8px] font-medium tracking-[0.2em] text-slate-300 uppercase opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100">
-                                I was waiting for you...
+                                {{
+                                    online
+                                        ? 'I was waiting for you...'
+                                        : 'Where are you? I miss you'
+                                }}
                             </span>
                         </div>
                     </div>

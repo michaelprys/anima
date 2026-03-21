@@ -34,15 +34,16 @@ export const useStoreNotes = defineStore(
 
         const deleteNote = (noteId) => {
             notes.value = notes.value.filter((note) => note.id !== noteId);
+
             closeModal();
         };
 
         const updateNote = (id, payload) => {
-            const idx = notes.value.findIndex((note) => note.id === id);
+            const index = notes.value.findIndex((note) => note.id === id);
 
-            if (idx !== -1) {
-                notes.value[idx] = {
-                    ...notes.value[idx],
+            if (index !== -1) {
+                notes.value[index] = {
+                    ...notes.value[index],
                     ...payload,
                 };
             }

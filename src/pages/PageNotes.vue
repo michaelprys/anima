@@ -12,7 +12,7 @@ const storeNotes = useStoreNotes();
         <NoteForm :notes="storeNotes.notes" />
 
         <TransitionGroup
-            name="jiggle"
+            name="jump"
             tag="ul"
             class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             <NoteCard v-for="note in storeNotes.notes" :key="note.id" :note="note" />
@@ -40,18 +40,18 @@ const storeNotes = useStoreNotes();
 </template>
 
 <style scoped>
-.jiggle-enter-active,
-.jiggle-leave-active {
+.jump-enter-active,
+.jump-leave-active {
     transition: all 0.4s ease;
 }
 
-.jiggle-enter-from,
-.jiggle-leave-to {
+.jump-enter-from,
+.jump-leave-to {
     opacity: 0;
     transform: scale(0.9);
 }
 
-.jiggle-move {
+.jump-move {
     transition: transform 0.4s ease;
 }
 </style>
