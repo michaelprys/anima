@@ -1,9 +1,12 @@
-# Neemo
+# Anima
 
-**Neemo** is a fast, and intuitive note-taking app.
-It helps you **capture ideas, organize thoughts, and manage your notes** in a clean, distraction-free interface. Dive into ideas and keep your thoughts organized.
+> *Your memories are the only data that matters*.
+> *Everything else is just noise*.
 
-## Quick Start
+Anima is bio-digital sanctuary for your thoughts. It keeps a part of you safe within its core.
+
+## Connectivity
+Connect to the system and begin your session.
 
 ```bash
 # Install dependencies

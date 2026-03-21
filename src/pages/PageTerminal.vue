@@ -15,7 +15,7 @@
             <header class="flex items-center justify-between mb-12">
                 <div class="flex items-center">
                     <span
-                        class="w-2 h-2 bg-cyan-500 mr-4 animate-terminal-blink shadow-[0_0_8px_#0ea5e9]"></span>
+                        class="w-2 h-2 bg-cyan-500 mr-4 animate-blink shadow-[0_0_8px_#0ea5e9]"></span>
                     <span class="text-cyan-400 text-sm tracking-[0.4em] uppercase font-bold">
                         Anima_v.01
                     </span>
@@ -89,19 +89,3 @@
         </div>
     </div>
 </template>
-
-<style scoped>
-.animate-terminal-blink {
-    animation: terminal-blink 1.2s steps(1) infinite;
-}
-
-@keyframes terminal-blink {
-    0%,
-    100% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0;
-    }
-}
-</style>

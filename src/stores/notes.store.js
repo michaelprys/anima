@@ -1,65 +1,70 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
-export const useStoreNotes = defineStore('storeNotes', () => {
-    const notes = ref([]);
-    const activeModal = ref(false);
-    const selectedNote = ref(null);
+export const useStoreNotes = defineStore(
+    'storeNotes',
+    () => {
+        const notes = ref([]);
+        const activeModal = ref(false);
+        const selectedNoteId = ref(null);
 
-    const openModal = (note, type) => {
-        selectedNote.value = { ...note };
-        activeModal.value = type;
-    };
-
-    const closeModal = () => {
-        selectedNote.value = null;
-        activeModal.value = false;
-    };
-
-    const addNote = (payload) => {
-        const dateSettings = { month: 'short', day: 'numeric' },
-            date = new Intl.DateTimeFormat(navigator.language, dateSettings).format(new Date());
-
-        const note = {
-            id: crypto.randomUUID(),
-            title: payload.title,
-            thought: payload.thought,
-            date,
+        const openModal = (noteId, type) => {
+            selectedNoteId.value = noteId;
+            activeModal.value = type;
         };
 
-        notes.value.unshift(note);
-    };
+        const closeModal = () => {
+            selectedNoteId.value = null;
+            activeModal.value = false;
+        };
 
-    const deleteNote = (noteId) => {
-        notes.value = notes.value.filter((note) => note.id !== noteId);
-        closeModal();
-    };
+        const addNote = (payload) => {
+            const dateSettings = { month: 'short', day: 'numeric' },
+                date = new Intl.DateTimeFormat(navigator.language, dateSettings).format(new Date());
 
-    const updateNote = () => {
-        if (!selectedNote.value) return;
+            const note = {
+                id: crypto.randomUUID(),
+                title: payload.title,
+                thought: payload.thought,
+                date,
+            };
 
-        notes.value = notes.value.map((note) => {
-            if (note.id === selectedNote.value.id) {
-                return {
-                    id: selectedNote.value.id,
-                    title: selectedNote.value.title,
-                    thought: selectedNote.value.thought,
+            notes.value.unshift(note);
+        };
+
+        const deleteNote = (noteId) => {
+            notes.value = notes.value.filter((note) => note.id !== noteId);
+            closeModal();
+        };
+
+        const updateNote = (id, payload) => {
+            const idx = notes.value.findIndex((note) => note.id === id);
+
+            if (idx !== -1) {
+                notes.value[idx] = {
+                    ...notes.value[idx],
+                    ...payload,
                 };
             }
-            return note;
-        });
+        };
 
-        closeModal();
-    };
+        const getNoteById = (id) => {
+            return notes.value.find((note) => note.id === id);
+        };
 
-    return {
-        notes,
-        activeModal,
-        selectedNote,
-        openModal,
-        closeModal,
-        addNote,
-        deleteNote,
-        updateNote,
-    };
-});
+        return {
+            notes,
+            activeModal,
+            selectedNoteId,
+            openModal,
+            closeModal,
+            addNote,
+            deleteNote,
+            updateNote,
+            getNoteById,
+        };
+    },
+    {
+        persist: true,
+    },
+);

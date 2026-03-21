@@ -13,11 +13,11 @@ defineProps({
 
 <template>
     <li
-        class="group relative flex flex-col justify-between overflow-hidden rounded-[4px] border border-white/10 bg-slate-800/30 p-8 transition-all duration-700 hover:bg-slate-800/50 hover:border-cyan-500/30">
+        class="group relative flex flex-col justify-between overflow-hidden rounded-sm border border-white/10 bg-slate-800/30 p-8 transition-all duration-700 hover:bg-slate-800/50 hover:border-cyan-500/30">
         <div>
             <div class="flex items-center justify-between mb-6">
                 <div
-                    class="h-[1px] w-8 bg-cyan-500/40 group-hover:w-12 transition-all duration-700"></div>
+                    class="h-px w-8 bg-cyan-500/40 group-hover:w-12 transition-all duration-700"></div>
                 <button
                     class="text-slate-600 hover:text-red-400/70 transition-colors p-1 -mr-1"
                     @click="storeNotes.openModal(note.id, 'delete')">
@@ -53,7 +53,7 @@ defineProps({
             </span>
 
             <RouterLink
-                :to="{ name: 'note' }"
+                :to="{ name: 'note', params: { id: note.id } }"
                 class="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 hover:text-white transition-colors">
                 Open
             </RouterLink>

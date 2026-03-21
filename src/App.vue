@@ -1,9 +1,26 @@
 <script setup>
-import AppNavbar from '@/components/AppNavbar.vue';
+import AppNavbar from '@/components/layout/AppNavbar.vue';
+import { useRouter } from 'vue-router';
+import { ref } from 'vue';
+
+const router = useRouter();
+const transitionName = ref('fade');
+
+router.beforeEach((to, from) => {
+    if (to.meta.noTransition || from.meta.noTransition) {
+        transitionName.value = '';
+    } else {
+        transitionName.value = 'fade';
+    }
+});
 </script>
 
 <template>
     <AppNavbar />
 
-    <RouterView />
+    <router-view v-slot="{ Component }">
+        <transition :name="transitionName" mode="out-in">
+            <component :is="Component" />
+        </transition>
+    </router-view>
 </template>

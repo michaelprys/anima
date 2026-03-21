@@ -5,8 +5,14 @@ export const routes = [
         component: () => import('@/pages/PageNotes.vue'),
     },
     {
-        path: '/stats',
-        name: 'stats',
-        component: () => import('@/pages/PageStats.vue'),
+        path: '/note/:id',
+        name: 'note',
+        component: () => import('@/pages/PageNote.vue'),
+    },
+    {
+        path: '/terminal',
+        name: 'terminal',
+        component: () => import('@/pages/PageTerminal.vue'),
+        meta: { noTransition: true },
     },
 ];

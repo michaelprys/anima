@@ -36,3 +36,43 @@ body {
         scroll-behavior: auto !important;
     }
 }
+
+/* Animations */
+
+.animate-blink {
+    animation: blink 1.2s steps(1) infinite;
+}
+
+@keyframes blink {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+}
+
+/* Vue transitions */
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+}
+
+.fade-enter-from {
+    opacity: 0;
+    transform: scale(0.98) translateY(-8px);
+}
+
+.fade-leave-to {
+    opacity: 0;
+    transform: scale(0.98) translateY(8px);
+}
+
+.fade-enter-active .absolute,
+.fade-leave-active .absolute {
+    transition: opacity 0.2s ease;
+    transform: none;
+}

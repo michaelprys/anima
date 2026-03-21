@@ -4,82 +4,48 @@ const storeNotes = useStoreNotes();
 </script>
 
 <template>
-    <Transition name="modal">
+    <div
+        v-if="storeNotes.activeModal === 'delete'"
+        class="fixed inset-0 bg-slate-950/90 flex items-center justify-center z-1000 p-4 backdrop-blur-sm">
         <div
-            v-if="storeNotes.activeModal === 'delete'"
-            class="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <div class="absolute inset-0 bg-slate-950/60" @click="storeNotes.closeModal"></div>
-
+            class="relative bg-[#030712] border border-rose-500/20 p-10 max-w-sm w-full shadow-2xl shadow-rose-500/5">
+            <div class="absolute top-0 left-0 w-2 h-2 border-t border-l border-rose-500/40"></div>
+            <div class="absolute top-0 right-0 w-2 h-2 border-t border-r border-rose-500/40"></div>
             <div
-                class="relative modal-content bg-[#0f172a] border border-white/5 rounded-md p-8 shadow-2xl min-w-64">
-                <div class="flex flex-col items-center">
-                    <div
-                        class="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 border border-white/5 text-slate-500 font-serif italic text-lg mb-5">
-                        !
-                    </div>
+                class="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-rose-500/40"></div>
+            <div
+                class="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-rose-500/40"></div>
 
-                    <div
-                        class="text-slate-300 text-[0.85rem] font-light tracking-wider text-center mb-8">
-                        Release this thought?
-                    </div>
+            <header class="flex items-center mb-8">
+                <span
+                    class="w-2 h-2 bg-rose-600 mr-3 shadow-[0_0_10px_#e11d48] animate-blink"></span>
+                <span class="text-rose-500/80 text-[10px] tracking-[0.4em] uppercase font-bold">
+                    System_Warning
+                </span>
+            </header>
 
-                    <div class="flex items-center gap-8">
-                        <button
-                            @click="storeNotes.closeModal"
-                            class="text-[0.65rem] tracking-[0.2em] text-slate-500 hover:text-slate-300 transition-colors uppercase outline-none">
-                            Keep
-                        </button>
+            <div class="text-center mb-10">
+                <p class="text-slate-500 text-[11px] tracking-[0.2em] uppercase mb-2 italic">
+                    DANGER_ZONE:
+                </p>
+                <p
+                    class="text-slate-100 text-sm tracking-[0.15em] uppercase font-light leading-relaxed">
+                    Erase this memory?
+                </p>
+            </div>
 
-                        <button
-                            @click="storeNotes.deleteNote(storeNotes.selectedNote.id)"
-                            class="text-[0.65rem] tracking-[0.2em] text-red-400/60 hover:text-red-400 transition-colors uppercase font-medium outline-none">
-                            Release
-                        </button>
-                    </div>
-                </div>
+            <div class="flex justify-center gap-12">
+                <button
+                    @click="storeNotes.closeModal"
+                    class="text-[10px] tracking-[0.3em] text-slate-500 hover:text-white transition-all uppercase">
+                    [ Cancel ]
+                </button>
+                <button
+                    @click="storeNotes.deleteNote(storeNotes.selectedNoteId)"
+                    class="text-[10px] tracking-[0.3em] text-rose-500 hover:text-rose-400 transition-all uppercase font-black">
+                    [ Terminate ]
+                </button>
             </div>
         </div>
-    </Transition>
+    </div>
 </template>
-
-<style scoped>
-.modal-enter-active,
-.modal-leave-active {
-    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.modal-enter-active .backdrop-overlay,
-.modal-leave-active .backdrop-overlay {
-    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.modal-enter-active .modal-content,
-.modal-leave-active .modal-content {
-    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.modal-enter-from,
-.modal-leave-to {
-    opacity: 0;
-}
-
-.modal-enter-from .backdrop-overlay,
-.modal-leave-to .backdrop-overlay {
-    backdrop-filter: blur(0);
-}
-
-.modal-enter-from .modal-content {
-    transform: scale(0.9) translateY(15px);
-    filter: blur(10px);
-}
-
-.modal-leave-to .modal-content {
-    transform: scale(0.96) translateY(5px);
-    filter: blur(4px);
-}
-
-button:focus-visible {
-    text-decoration: underline;
-    text-underline-offset: 4px;
-}
-</style>

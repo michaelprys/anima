@@ -8,18 +8,49 @@ const isOpen = ref(false);
     <nav class="sticky top-0 z-50 bg-slate-900/60 backdrop-blur-xl border-b border-white/10">
         <div class="container px-8 py-4 mx-auto md:flex md:justify-between md:items-center">
             <div class="flex items-center justify-between">
-                <RouterLink :to="{ name: 'notes' }" class="flex items-center gap-4 group shrink-0">
-                    <img
-                        class="w-auto h-5.5 transition-all duration-1000 ease-in-out group-hover:opacity-100 group-hover:scale-110"
-                        src="../assets/images/logo.avif"
-                        width="768"
-                        height="768"
-                        alt="Neemo" />
+                <RouterLink
+                    :to="{ name: 'notes' }"
+                    class="flex items-center gap-5 group shrink-0 relative py-2">
+                    <div class="relative flex items-center justify-center w-4 h-4">
+                        <div
+                            class="absolute inset-0 bg-cyan-500/20 rounded-full blur-md group-hover:bg-orange-500/40 transition-all duration-700 ease-in-out"></div>
 
-                    <span
-                        class="font-logo text-[13px] font-bold tracking-[0.3em] uppercase bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent transition-all duration-1000 ease-in-out group-hover:from-cyan-400 group-hover:to-blue-500 group-hover:tracking-[0.4em]">
-                        Neemo
-                    </span>
+                        <div
+                            class="relative w-2 h-2 bg-cyan-400 rounded-full shadow-[0_0_8px_#22d3ee] group-hover:bg-orange-400 group-hover:shadow-[0_0_12px_#fb923c] transition-all duration-500 ease-in-out">
+                            <div
+                                class="absolute top-0.5 left-0.5 w-0.5 h-0.5 bg-white rounded-full opacity-90"></div>
+                        </div>
+
+                        <div
+                            class="absolute inset-0 border border-cyan-500/20 rounded-full animate-[ping_4s_infinite] group-hover:border-orange-500/40"></div>
+                    </div>
+
+                    <div class="flex flex-col">
+                        <div class="overflow-hidden h-5">
+                            <div
+                                class="flex flex-col transition-transform duration-500 ease-in-out group-hover:-translate-y-5">
+                                <span
+                                    class="font-logo text-[15px] font-black tracking-[0.3em] uppercase text-white/90">
+                                    ANIMA
+                                </span>
+                                <span
+                                    class="font-logo text-[15px] font-black tracking-widest uppercase text-cyan-400">
+                                    HELLO_USER
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="relative h-3 mt-1">
+                            <span
+                                class="absolute inset-0 text-[8px] font-medium tracking-[0.2em] text-slate-500 uppercase opacity-80 transition-opacity duration-500 ease-in-out group-hover:opacity-0">
+                                System_link: Stable
+                            </span>
+                            <span
+                                class="absolute inset-0 text-[8px] font-medium tracking-[0.2em] text-slate-300 uppercase opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100">
+                                I was waiting for you...
+                            </span>
+                        </div>
+                    </div>
                 </RouterLink>
 
                 <div class="flex md:hidden">
@@ -79,10 +110,10 @@ const isOpen = ref(false);
                         Terminal
                     </RouterLink>
 
-                    <div class="h-3 w-[1px] bg-white/20 mx-2 hidden md:block"></div>
+                    <div class="h-3 w-px bg-white/20 mx-2 hidden md:block"></div>
 
                     <button
-                        class="mt-6 md:mt-0 ml-0 md:ml-4 px-4 py-1.5 text-[9px] font-bold uppercase tracking-[0.25em] border border-cyan-500/30 text-cyan-400 hover:bg-cyan-500 hover:text-slate-950 hover:border-cyan-500 transition-all duration-700 rounded-[2px] active:scale-95 shadow-lg shadow-cyan-500/10">
+                        class="mt-6 md:mt-0 ml-0 md:ml-4 px-4 py-1.5 text-[9px] font-bold uppercase tracking-[0.25em] border border-cyan-500/30 text-cyan-400 hover:bg-cyan-500 hover:text-slate-950 hover:border-cyan-500 transition-all duration-700 rounded-xs active:scale-95 shadow-lg shadow-cyan-500/10">
                         Identify
                     </button>
                 </div>
