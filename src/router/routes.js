@@ -13,6 +13,6 @@ export const routes = [
         path: '/terminal',
         name: 'terminal',
         component: () => import('@/pages/PageTerminal.vue'),
-        meta: { noTransition: true },
+        meta: { hasTransition: false, hasNavbar: false },
     },
 ];

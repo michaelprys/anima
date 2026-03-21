@@ -1,14 +1,18 @@
 <script setup>
 import { ref } from 'vue';
-import { useOnlineStatus } from '@/composables/useOnlineStatus';
+import { useOnlineStatus } from '@/composables/useOnlineStatus.js';
+import { useRoute } from 'vue-router';
 
 const { online } = useOnlineStatus();
+const route = useRoute();
 
 const isOpen = ref(false);
 </script>
 
 <template>
-    <nav class="sticky top-0 z-50 bg-slate-900/60 backdrop-blur-xl border-b border-white/10">
+    <nav
+        v-if="route.matched.length > 0 && route.meta.hasNavbar !== false"
+        class="sticky top-0 z-50 bg-slate-900/60 backdrop-blur-xl border-b border-white/10">
         <div class="container px-8 py-4 mx-auto md:flex md:justify-between md:items-center">
             <div class="flex items-center justify-between">
                 <RouterLink

@@ -7,7 +7,7 @@ const router = useRouter();
 const transitionName = ref('fade');
 
 router.beforeEach((to, from) => {
-    if (to.meta.noTransition || from.meta.noTransition) {
+    if (!to.meta.hasTransition || !from.meta.hasTransition) {
         transitionName.value = '';
     } else {
         transitionName.value = 'fade';

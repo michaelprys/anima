@@ -1,7 +1,16 @@
 <script setup>
-import { useOnlineStatus } from '@/composables/useOnlineStatus';
+import { useOnlineStatus } from '@/composables/useOnlineStatus.js';
+import { useGetLocation } from '@/composables/useGetLocation.js';
+import { onMounted } from 'vue';
 
 const { online } = useOnlineStatus();
+const { coords, location, pending, getLocation } = useGetLocation();
+
+const randPlaceholder = () => Math.random().toString(16).slice(2, 10).toUpperCase();
+
+onMounted(async () => {
+    await getLocation();
+});
 </script>
 
 <template>
@@ -62,13 +71,82 @@ const { online } = useOnlineStatus();
                                 {{ online ? 'Stable' : 'Lost' }}
                             </span>
                         </div>
-                        <div class="flex justify-between">
-                            <span class="text-slate-600 font-medium">Location:</span>
-                            <span class="text-slate-200 font-mono italic text-right">
-                                Sector
-                                <br />
-                                <span class="text-[9px] opacity-40">51.50° N, 0.12° W</span>
-                            </span>
+
+                        <div class="flex justify-between items-start">
+                            <span class="text-slate-600 font-medium pt-0.5">Location:</span>
+
+                            <div class="text-right min-h-15 flex flex-col">
+                                <div
+                                    v-if="pending"
+                                    class="flex flex-col items-end space-y-1 opacity-80">
+                                    <span
+                                        class="text-cyan-400 text-[10px] font-black tracking-[2px] animate-[pulse_0.1s_infinite] uppercase">
+                                        >> Scanning_Location_{{ Math.floor(Math.random() * 99) }}
+                                    </span>
+
+                                    <div class="flex flex-col items-end leading-none">
+                                        <span
+                                            class="text-[7px] text-cyan-900 font-mono break-all text-right w-32 truncate">
+                                            0x{{ randPlaceholder() }} 0x{{ randPlaceholder() }}
+                                        </span>
+
+                                        <span
+                                            class="text-[9px] text-emerald-500/50 font-mono italic">
+                                            Targeting:
+                                            <span class="inline-block min-w-11.25 text-right">
+                                                {{ (Math.random() * 90).toFixed(4) }}°
+                                            </span>
+                                            /
+                                            <span class="inline-block min-w-11.25 text-right">
+                                                {{ (Math.random() * 180).toFixed(4) }}°
+                                            </span>
+                                        </span>
+                                    </div>
+
+                                    <div class="w-24 h-0.5 bg-slate-900 relative overflow-hidden">
+                                        <div
+                                            class="absolute inset-0 bg-cyan-500/50 animate-[shimmer_0.5s_infinite] shadow-[0_0_8px_#06b6d4]"></div>
+                                    </div>
+
+                                    <span
+                                        class="text-[7px] text-slate-700 font-bold tracking-[3px]">
+                                        RAW_DATA_STREAM_v.{{ Math.random().toFixed(2) }}
+                                    </span>
+                                </div>
+
+                                <div
+                                    v-else-if="location && location !== 'Not Detected'"
+                                    class="flex flex-col items-end space-y-1">
+                                    <span
+                                        class="text-[7px] text-emerald-500/30 font-mono tracking-[4px] uppercase">
+                                        [ Signal_Locked ]
+                                    </span>
+                                    <span
+                                        class="text-slate-200 font-mono italic drop-shadow-[0_0_5px_rgba(255,255,255,0.2)]">
+                                        {{ location }}
+                                    </span>
+                                    <span
+                                        v-if="coords"
+                                        class="text-[0.5625rem] text-slate-500/60 font-mono uppercase">
+                                        {{ coords.latitude?.toFixed(4) }}° N /
+                                        {{ coords.longitude?.toFixed(4) }}° E
+                                    </span>
+                                </div>
+
+                                <div v-else class="flex flex-col items-end space-y-1">
+                                    <span
+                                        class="text-[7px] text-rose-500/30 font-mono tracking-[4px] uppercase text-right">
+                                        [ Signal_Timeout ]
+                                    </span>
+                                    <span
+                                        class="text-rose-500/80 font-mono italic uppercase text-[10px] tracking-widest">
+                                        Not detected
+                                    </span>
+                                    <span class="text-[7px] text-rose-900 font-mono uppercase">
+                                        Error_Code: 0x404_NULL_POS
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -97,3 +175,26 @@ const { online } = useOnlineStatus();
         </div>
     </div>
 </template>
+
+<style scoped>
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+@keyframes pulse {
+    0%,
+    100% {
+        opacity: 1;
+        transform: skew(0deg);
+    }
+    50% {
+        opacity: 0.8;
+        transform: skew(1deg);
+    }
+}
+</style>
