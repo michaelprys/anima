@@ -51,7 +51,7 @@ const handleAddNote = () => {
                     <div class="flex flex-wrap gap-x-4 gap-y-2">
                         <span
                             class="text-[9px] font-bold uppercase tracking-[0.3em] text-slate-400 whitespace-nowrap">
-                            Encrypted session
+                            Encrypted
                         </span>
                         <span
                             class="text-[9px] font-bold uppercase tracking-[0.3em] text-cyan-400/60 animate-pulse whitespace-nowrap">
@@ -63,7 +63,7 @@ const handleAddNote = () => {
                         @click="handleAddNote"
                         :disabled="!newNote.title && !newNote.thought"
                         class="w-full sm:w-auto px-6 py-2 text-[10px] font-black uppercase tracking-[0.3em] border border-cyan-500/40 text-cyan-400 hover:bg-cyan-500 hover:text-slate-950 hover:border-cyan-500 transition-all duration-500 rounded-[2px] active:scale-95 shadow-lg shadow-cyan-500/5 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-cyan-400 disabled:hover:border-cyan-500/40 disabled:active:scale-100">
-                        Commit Note
+                        Commit
                     </button>
                 </div>
             </div>

@@ -73,10 +73,10 @@ const isOpen = ref(false);
                     </RouterLink>
 
                     <RouterLink
-                        :to="{ name: 'stats' }"
+                        :to="{ name: 'terminal' }"
                         class="my-3 md:my-0 text-[10px] font-semibold tracking-[0.2em] text-slate-400 transition-all duration-500 hover:text-cyan-400 md:mx-6 uppercase"
                         active-class="text-cyan-400 shadow-[0_15px_20px_-10px_rgba(34,211,238,0.3)]">
-                        Stats
+                        Terminal
                     </RouterLink>
 
                     <div class="h-3 w-[1px] bg-white/20 mx-2 hidden md:block"></div>

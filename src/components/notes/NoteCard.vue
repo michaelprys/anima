@@ -20,7 +20,7 @@ defineProps({
                     class="h-[1px] w-8 bg-cyan-500/40 group-hover:w-12 transition-all duration-700"></div>
                 <button
                     class="text-slate-600 hover:text-red-400/70 transition-colors p-1 -mr-1"
-                    @click="storeNotes.openModal(note, 'delete')">
+                    @click="storeNotes.openModal(note.id, 'delete')">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         class="h-4 w-4"
@@ -52,11 +52,11 @@ defineProps({
                 {{ note.date }}
             </span>
 
-            <button
-                @click="storeNotes.openModal(note, 'edit')"
+            <RouterLink
+                :to="{ name: 'note' }"
                 class="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 hover:text-white transition-colors">
                 Open
-            </button>
+            </RouterLink>
         </div>
     </li>
 </template>
