@@ -11,10 +11,10 @@ const newNote = reactive({
 
 const thoughtRef = useTemplateRef('thoughtRef');
 
-const handleCommitNote = () => {
+const handleAddNote = () => {
     if (!newNote.title && !newNote.thought) return;
 
-    storeNotes.commitNote(newNote);
+    storeNotes.addNote(newNote);
 
     Object.assign(newNote, {
         title: '',
@@ -34,13 +34,14 @@ const handleCommitNote = () => {
                 class="relative bg-slate-900/40 backdrop-blur-3xl rounded-sm p-6 md:p-8 transition-all duration-500 border border-white/10 focus-within:border-cyan-500/30">
                 <input
                     v-model="newNote.title"
+                    maxLength="40"
                     type="text"
                     placeholder="Title"
                     class="w-full bg-transparent border-none text-2xl font-light tracking-tight text-white placeholder-slate-500 focus:outline-none focus:ring-0 mb-4" />
 
                 <textarea
                     v-model="newNote.thought"
-                    maxLength="2000"
+                    maxLength="1000"
                     ref="thoughtRef"
                     placeholder="Vent your thoughts here..."
                     rows="5"
@@ -59,7 +60,7 @@ const handleCommitNote = () => {
                     </div>
 
                     <button
-                        @click="handleCommitNote"
+                        @click="handleAddNote"
                         :disabled="!newNote.title && !newNote.thought"
                         class="w-full sm:w-auto px-6 py-2 text-[10px] font-black uppercase tracking-[0.3em] border border-cyan-500/40 text-cyan-400 hover:bg-cyan-500 hover:text-slate-950 hover:border-cyan-500 transition-all duration-500 rounded-[2px] active:scale-95 shadow-lg shadow-cyan-500/5 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-cyan-400 disabled:hover:border-cyan-500/40 disabled:active:scale-100">
                         Commit Note
