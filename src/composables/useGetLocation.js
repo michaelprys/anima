@@ -22,8 +22,8 @@ export const useGetLocation = () => {
             // Address
 
             const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${coords.value.latitude}&lon=${coords.value.longitude}`;
-            const response = await fetch(url);
 
+            const response = await fetch(url);
             if (!response.ok) throw new Error(response.statusText);
 
             const data = await response.json();
@@ -39,10 +39,27 @@ export const useGetLocation = () => {
         }
     };
 
+    const watchPermissions = async () => {
+        if (!navigator.permissions) return;
+
+        try {
+            const status = await navigator.permissions.query({ name: 'geolocation' });
+
+            status.onchange = async () => {
+                if (status.state === 'granted') {
+                    await getLocation();
+                }
+            };
+        } catch (error) {
+            console.error('Permission Error: ', error);
+        }
+    };
+
     return {
         coords,
         location,
         pending,
         getLocation,
+        watchPermissions,
     };
 };

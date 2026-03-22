@@ -7,6 +7,7 @@ export const useStoreNotes = defineStore(
         const notes = ref([]);
         const activeModal = ref(false);
         const selectedNoteId = ref(null);
+        const sentiment = ref([]);
 
         const openModal = (noteId, type) => {
             selectedNoteId.value = noteId;
@@ -53,16 +54,42 @@ export const useStoreNotes = defineStore(
             return notes.value.find((note) => note.id === id);
         };
 
+        const recognizeSentiment = async (data) => {
+            try {
+                const response = await fetch(
+                    'https://router.huggingface.co/hf-inference/models/cardiffnlp/twitter-xlm-roberta-base-sentiment',
+                    {
+                        headers: {
+                            Authorization: `Bearer ${import.meta.env.VITE_HF_TOKEN}`,
+                            'Content-Type': 'application/json',
+                        },
+                        method: 'POST',
+                        body: JSON.stringify({ inputs: data }),
+                    },
+                );
+
+                if (!response.ok) throw new Error(response.statusText);
+
+                sentiment.value = await response.json();
+
+                console.log(sentiment.value);
+            } catch (error) {
+                console.error(error.message);
+            }
+        };
+
         return {
             notes,
             activeModal,
             selectedNoteId,
+            sentiment,
             openModal,
             closeModal,
             addNote,
             deleteNote,
             updateNote,
             getNoteById,
+            recognizeSentiment,
         };
     },
     {

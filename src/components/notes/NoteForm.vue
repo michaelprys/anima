@@ -1,6 +1,6 @@
 <script setup>
 import { useTemplateRef, reactive, ref } from 'vue';
-import { useStoreNotes } from '@/stores/notes.store.js';
+import { useStoreNotes } from '@/stores/notes.store';
 
 const storeNotes = useStoreNotes();
 
@@ -10,7 +10,6 @@ const newNote = reactive({
 });
 
 const attempted = ref(true);
-
 const thoughtRef = useTemplateRef('thoughtRef');
 
 const handleAddNote = () => {
@@ -21,6 +20,7 @@ const handleAddNote = () => {
     }
 
     storeNotes.addNote({ ...newNote });
+    storeNotes.recognizeSentiment(`${newNote.title}. ${newNote.thought}`);
 
     Object.assign(newNote, {
         title: '',
@@ -39,6 +39,7 @@ const handleAddNote = () => {
 
             <form
                 @submit.prevent="handleAddNote"
+                @keyup.ctrl.enter="handleAddNote"
                 class="relative bg-slate-900/40 backdrop-blur-3xl rounded-sm p-6 md:p-8 transition-all duration-500 border border-white/10 focus-within:border-cyan-500/30">
                 <input
                     v-model="newNote.title"
@@ -52,6 +53,7 @@ const handleAddNote = () => {
                             ? 'text-cyan-400 placeholder-cyan-900/50'
                             : 'text-rose-500 placeholder-rose-800 animate-[pulse_1.5s_infinite]',
                     ]" />
+
                 <div class="h-px w-12 bg-white/5 mb-6"></div>
 
                 <textarea

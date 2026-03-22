@@ -43,6 +43,7 @@ onMounted(() => {
 
         <form
             @submit.prevent="handleUpdate"
+            @keyup.ctrl.enter="handleUpdate"
             class="relative w-full max-w-2xl bg-[#030712] border border-blue-500/30 p-12 shadow-[0_0_60px_rgba(0,0,0,0.7)]">
             <div class="absolute top-0 left-0 w-3 h-3 border-t border-l border-blue-500/50"></div>
             <div class="absolute top-0 right-0 w-3 h-3 border-t border-r border-blue-500/50"></div>
@@ -77,7 +78,7 @@ onMounted(() => {
                             ]"></div>
                     </div>
                     <span class="text-cyan-500/75 text-[10px] tracking-[0.5em] uppercase font-bold">
-                        Anima_Edit // Core
+                        Anima_Inspect // Core
                     </span>
                 </div>
                 <span class="text-[8px] text-slate-600 tracking-[0.3em] uppercase italic">
@@ -123,7 +124,7 @@ onMounted(() => {
                     @click="router.back"
                     type="button"
                     class="text-[10px] tracking-[0.4em] text-slate-500 hover:text-rose-500 transition-colors">
-                    Abort
+                    ABORT
                 </button>
 
                 <button
@@ -133,7 +134,7 @@ onMounted(() => {
                         class="opacity-0 group-hover:opacity-100 transition-all text-cyan-500 mr-2 -translate-x-1 group-hover:translate-x-0">
                         [
                     </span>
-                    <span class="group-hover:drop-shadow-[0_0_8px_#22d3ee]">Commit_Changes</span>
+                    <span class="group-hover:drop-shadow-[0_0_8px_#22d3ee]">Update</span>
                     <span
                         class="opacity-0 group-hover:opacity-100 transition-all text-cyan-500 ml-2 translate-x-1 group-hover:translate-x-0">
                         ]
@@ -148,6 +149,7 @@ onMounted(() => {
 .animate-ping-slow {
     animation: ping-slow 4s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
+
 @keyframes ping-slow {
     75%,
     100% {
