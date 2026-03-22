@@ -39,12 +39,12 @@ export const routes = [
                 component: () => import('@/pages/PageRecover.vue'),
                 meta: { title: 'Access_Restoration', hasTransition: false, hasNavbar: false },
             },
-            // {
-            //     path: 'reconfigure',
-            //     name: 'reconfigure',
-            //     component: () => import('@/pages/PageReconfigure.vue'),
-            //     meta: { title: 'Credential_Update', hasTransition: false, hasNavbar: false },
-            // },
+            {
+                path: 'reconfigure',
+                name: 'reconfigure',
+                component: () => import('@/pages/PageReconfigure.vue'),
+                meta: { title: 'Credential_Update', hasTransition: false, hasNavbar: false },
+            },
         ],
     },
 ];
