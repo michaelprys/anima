@@ -43,6 +43,7 @@ const identity = ref({
 
             <div class="grid grid-cols-2 gap-4">
                 <RouterLink
+                    :to="{ name: 'recover' }"
                     class="flex items-center justify-center py-3 bg-rose-500/10 text-[9px] font-black tracking-[0.2em] text-rose-500/60 hover:text-rose-500 hover:bg-rose-500/15 transition-all duration-500">
                     RECOVER_KEY
                 </RouterLink>

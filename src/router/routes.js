@@ -33,12 +33,12 @@ export const routes = [
                 component: () => import('@/pages/PageInitialize.vue'),
                 meta: { title: 'Initialization', hasTransition: false, hasNavbar: false },
             },
-            // {
-            //     path: 'recover',
-            //     name: 'recover',
-            //     component: () => import('@/pages/PageRecover.vue'),
-            //     meta: { title: 'Access_Restoration', hasTransition: false, hasNavbar: false },
-            // },
+            {
+                path: 'recover',
+                name: 'recover',
+                component: () => import('@/pages/PageRecover.vue'),
+                meta: { title: 'Access_Restoration', hasTransition: false, hasNavbar: false },
+            },
             // {
             //     path: 'reconfigure',
             //     name: 'reconfigure',
