@@ -126,13 +126,6 @@ const isOpen = ref(false);
                 class="absolute inset-x-0 z-20 w-full px-8 py-6 bg-slate-900 border-b border-white/10 transition-[opacity,transform] duration-500 ease-in-out md:static md:flex md:items-center md:w-auto md:p-0 md:bg-transparent md:border-none md:transition-none">
                 <div class="flex flex-col md:flex-row md:items-center">
                     <RouterLink
-                        :to="{ name: 'fragments' }"
-                        class="my-3 md:my-0 text-[10px] font-semibold tracking-[0.3em] text-slate-400 transition-all duration-500 hover:text-cyan-400 md:mx-6 uppercase"
-                        active-class="text-cyan-400 shadow-[0_15px_20px_-10px_rgba(34,211,238,0.3)]">
-                        Fragments
-                    </RouterLink>
-
-                    <RouterLink
                         :to="{ name: 'terminal' }"
                         class="my-3 md:my-0 text-[10px] font-bold tracking-[0.3em] text-emerald-500/80 drop-shadow-[0_0_5px_#10b981] transition-all duration-500 hover:text-emerald-400 hover:drop-shadow-[0_0_15px_#10b981] md:mx-6 uppercase flex items-center gap-1.5 group"
                         active-class="text-emerald-400 !drop-shadow-[0_0_20px_#10b981]">
@@ -149,10 +142,11 @@ const isOpen = ref(false);
 
                     <div class="h-3 w-px bg-white/10 mx-2 hidden md:block"></div>
 
-                    <button
+                    <RouterLink
+                        :to="{ name: 'identify' }"
                         class="mt-6 md:mt-0 ml-0 md:ml-4 px-4 py-1.5 text-[9px] font-bold uppercase tracking-[0.25em] border border-cyan-500/30 text-cyan-400 hover:bg-cyan-500 hover:text-slate-950 hover:border-cyan-500 transition-all duration-700 rounded-xs active:scale-95 shadow-lg shadow-cyan-500/10">
                         Identify
-                    </button>
+                    </RouterLink>
                 </div>
             </div>
         </div>

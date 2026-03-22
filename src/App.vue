@@ -11,8 +11,8 @@ import AppNavbar from '@/components/layout/AppNavbar.vue';
             v-if="route.meta.hasTransition === false"
             :key="route.fullPath" />
 
-        <transition v-else name="fade" mode="out-in">
+        <Transition v-else name="fade" mode="out-in">
             <component :is="Component" :key="route.fullPath" />
-        </transition>
+        </Transition>
     </router-view>
 </template>
