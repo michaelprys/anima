@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia';
+import { defineStore, acceptHMRUpdate } from 'pinia';
 import { ref } from 'vue';
 
 export const useStoreFragments = defineStore(
@@ -96,3 +96,7 @@ export const useStoreFragments = defineStore(
         persist: true,
     },
 );
+
+if (import.meta.hot) {
+    import.meta.hot.accept(acceptHMRUpdate(useStoreFragments, import.meta.hot));
+}
