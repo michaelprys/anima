@@ -27,12 +27,12 @@ export const routes = [
                 component: () => import('@/pages/PageIdentify.vue'),
                 meta: { title: 'Identity_Check', hasTransition: false, hasNavbar: false },
             },
-            // {
-            //     path: 'initialize',
-            //     name: 'initialize',
-            //     component: () => import('@/pages/PageInitialize.vue'),
-            //     meta: { title: 'Initialization', hasTransition: false, hasNavbar: false },
-            // },
+            {
+                path: 'initialize',
+                name: 'initialize',
+                component: () => import('@/pages/PageInitialize.vue'),
+                meta: { title: 'Initialization', hasTransition: false, hasNavbar: false },
+            },
             // {
             //     path: 'recover',
             //     name: 'recover',
