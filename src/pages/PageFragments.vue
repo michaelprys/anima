@@ -9,20 +9,20 @@ const storeFragments = useStoreFragments();
 </script>
 
 <template>
-    <section class="min-h-screen max-w-7xl mx-auto px-6 py-10 md:px-12 text-slate-300">
+    <section class="mx-auto min-h-screen max-w-7xl px-6 py-10 text-slate-300 md:px-12">
         <NoteForm :fragments="storeFragments.fragments" />
 
         <Transition name="fade" mode="out-in">
             <div v-if="storeFragments.fragments.length === 0" key="empty" class="mt-32">
                 <div class="flex flex-col items-center justify-center opacity-40">
-                    <div class="w-12 h-px bg-slate-700 mb-8"></div>
+                    <div class="bg-surface-card mb-8 h-px w-12"></div>
                     <p
-                        class="text-slate-500 text-[10px] font-bold uppercase tracking-[0.4em] text-center leading-loose">
+                        class="text-center text-[10px] leading-loose font-bold tracking-[0.4em] text-slate-500 uppercase">
                         Buffer is empty
                         <br />
                         <span class="font-light opacity-60">System awaiting new data input...</span>
                     </p>
-                    <div class="w-1 h-1 rounded-full bg-slate-800 mt-8"></div>
+                    <div class="bg-surface-card mt-8 h-1 w-1 rounded-full"></div>
                 </div>
             </div>
 
@@ -32,7 +32,7 @@ const storeFragments = useStoreFragments();
                 <TransitionGroup
                     name="jump"
                     tag="ul"
-                    class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 mt-8">
+                    class="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                     <NoteCard
                         v-for="fragment in storeFragments.fragments"
                         :key="fragment.id"
@@ -43,9 +43,9 @@ const storeFragments = useStoreFragments();
                     <button
                         class="group flex flex-col items-center gap-5 py-6 transition-all duration-500">
                         <span
-                            class="h-px w-10 bg-slate-800 group-hover:bg-cyan-500/40 group-hover:w-32 transition-all duration-700"></span>
+                            class="bg-surface-card group-hover:bg-cyan-glow/40 h-px w-10 transition-all duration-700 group-hover:w-32"></span>
                         <span
-                            class="text-[10px] font-bold uppercase tracking-[0.6em] text-slate-600 group-hover:text-cyan-400 transition-colors">
+                            class="group-hover:text-cyan-light text-[10px] font-bold tracking-[0.6em] text-slate-600 uppercase transition-colors">
                             Next_Data_Block
                         </span>
                     </button>

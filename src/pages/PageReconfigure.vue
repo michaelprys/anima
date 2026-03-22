@@ -36,20 +36,20 @@ const handleReconfigure = async () => {
                     type="password"
                     @input="attempted = true"
                     :placeholder="
-                        !attempted && !identity.passKey ? 'ERROR: REQUIRED _' : 'NEW_SECURITY_KEY'
+                        !attempted && !identity.passKey ? 'REQUIRED_KEY _' : 'NEW_SECURITY_KEY'
                     "
                     :class="[
-                        'w-full bg-transparent border-b py-5 text-[14px] tracking-[0.5em] outline-none transition-all duration-700 focus:placeholder:text-blue-300/30',
+                        'focus:placeholder:text-blue-light/30 w-full border-b bg-transparent py-5 text-[14px] tracking-[0.5em] transition-all duration-700 outline-none',
                         !attempted && !identity.passKey
-                            ? 'text-rose-500 border-rose-500/40 placeholder-rose-500/40'
-                            : 'text-blue-100 border-blue-500/20 placeholder-blue-400/30 focus:border-blue-400',
+                            ? 'border-rose-danger/40 text-rose-danger placeholder-rose-danger/40'
+                            : 'border-blue-system/20 text-blue-pale placeholder-blue-light/30 focus:border-blue-light',
                     ]" />
                 <div
                     class="absolute bottom-0 left-0 h-[2px] w-0 transition-all duration-700 group-focus-within/input:w-full"
                     :class="[
                         !attempted && !identity.passKey
-                            ? 'bg-rose-500 shadow-[0_0_10px_rgba(244,63,94,0.5)]'
-                            : 'bg-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.6)]',
+                            ? 'bg-rose-danger shadow-glow-rose'
+                            : 'bg-blue-light shadow-glow-blue',
                     ]"></div>
             </div>
 
@@ -64,17 +64,17 @@ const handleReconfigure = async () => {
                             : 'CONFIRM_NEW_KEY'
                     "
                     :class="[
-                        'w-full bg-transparent border-b py-5 text-[14px] tracking-[0.5em] outline-none transition-all duration-700 focus:placeholder:text-blue-300/30',
+                        'focus:placeholder:text-blue-light/30 w-full border-b bg-transparent py-5 text-[14px] tracking-[0.5em] transition-all duration-700 outline-none',
                         !attempted && (!identity.confirmPassKey || !isMatch)
-                            ? 'text-rose-500 border-rose-500/40 placeholder-rose-500/40'
-                            : 'text-blue-100 border-blue-500/20 placeholder-blue-400/30 focus:border-blue-400',
+                            ? 'border-rose-danger/40 text-rose-danger placeholder-rose-danger/40'
+                            : 'border-blue-system/20 text-blue-pale placeholder-blue-light/30 focus:border-blue-light',
                     ]" />
                 <div
                     class="absolute bottom-0 left-0 h-[2px] w-0 transition-all duration-700 group-focus-within/input:w-full"
                     :class="[
                         !attempted && (!identity.confirmPassKey || !isMatch)
-                            ? 'bg-rose-500 shadow-[0_0_10px_rgba(244,63,94,0.5)]'
-                            : 'bg-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.6)]',
+                            ? 'bg-rose-danger shadow-glow-rose'
+                            : 'bg-blue-light shadow-glow-blue',
                     ]"></div>
             </div>
         </div>
@@ -82,14 +82,14 @@ const handleReconfigure = async () => {
         <div class="space-y-10">
             <ButtonAction
                 action="RECONFIGURE"
-                skeleton="UPDATING..."
+                skeleton="UPDATING"
                 :pending="pending"
-                bgColor="border-orange-400/15 bg-orange-400/[0.03] hover:bg-orange-400/10 hover:border-orange-300/40"
-                textColor="text-orange-300/60 group-hover/btn:text-orange-100" />
+                bg-color="border-orange-warn/15 bg-orange-warn/[0.03] hover:bg-orange-warn/10 hover:border-orange-warn/40"
+                text-color="text-orange-warn/60 group-hover/btn:text-white" />
 
             <RouterLink
                 :to="{ name: 'identify' }"
-                class="flex items-center justify-center py-4 border border-blue-500/10 bg-blue-950/20 text-[10px] font-bold tracking-[0.3em] text-blue-400/40 hover:text-blue-300 hover:border-blue-500/30 hover:bg-blue-500/5 transition-all duration-500">
+                class="border-blue-system/10 bg-base-card/20 text-blue-system/40 hover:border-blue-system/30 hover:bg-blue-system/5 hover:text-blue-light flex items-center justify-center border py-4 text-[10px] font-bold tracking-[0.3em] transition-all duration-500">
                 BACK TO IDENTIFY
             </RouterLink>
         </div>
@@ -97,14 +97,8 @@ const handleReconfigure = async () => {
 </template>
 
 <style scoped>
-@keyframes shimmer {
-    100% {
-        transform: translateX(100%);
-    }
-}
-
 input:focus {
     text-shadow: 0 0 10px
-        v-bind('!attempted ? "rgba(244, 63, 94, 0.3)" : "rgba(59, 130, 246, 0.3)"');
+        v-bind('!attempted ? "var(--color-rose-danger)" : "var(--color-blue-light)"');
 }
 </style>

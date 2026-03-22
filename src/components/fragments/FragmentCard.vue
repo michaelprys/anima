@@ -13,13 +13,13 @@ defineProps({
 
 <template>
     <li
-        class="group relative flex flex-col justify-between overflow-hidden rounded-sm border border-white/10 bg-slate-800/30 p-8 transition-all duration-700 hover:bg-slate-800/50 hover:border-cyan-500/30">
+        class="group bg-surface-card/30 hover:border-cyan-glow/30 hover:bg-surface-card/50 relative flex flex-col justify-between overflow-hidden rounded-sm border border-white/10 p-8 transition-all duration-700">
         <div>
-            <div class="flex items-center justify-between mb-6">
+            <div class="mb-6 flex items-center justify-between">
                 <div
-                    class="h-px w-8 bg-cyan-500/40 group-hover:w-12 transition-all duration-700"></div>
+                    class="bg-cyan-glow/40 h-px w-8 transition-all duration-700 group-hover:w-12"></div>
                 <button
-                    class="text-slate-600 hover:text-red-400/70 transition-colors p-1 -mr-1"
+                    class="hover:text-rose-danger/70 -mr-1 cursor-default! p-1 text-slate-600 transition-colors"
                     @click="storeFragments.openModal(fragment.id, 'delete')">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -37,24 +37,24 @@ defineProps({
             </div>
 
             <h3
-                class="text-sm font-bold uppercase tracking-widest text-slate-100 mb-4 group-hover:text-cyan-400 transition-colors line-clamp-1 break-all">
+                class="group-hover:text-cyan-light mb-4 line-clamp-1 text-sm font-bold tracking-widest break-all text-slate-100 uppercase transition-colors">
                 {{ fragment.title }}
             </h3>
 
             <p
-                class="text-sm leading-relaxed text-slate-400 group-hover:text-slate-200 transition-all duration-700 break-all line-clamp-2">
+                class="line-clamp-2 text-sm leading-relaxed break-all text-slate-400 transition-all duration-700 group-hover:text-slate-200">
                 {{ fragment.thought }}
             </p>
         </div>
 
-        <div class="mt-8 pt-6 border-t border-white/10 flex items-center justify-between">
-            <span class="text-[10px] font-medium tracking-[0.2em] text-slate-500 uppercase">
+        <div class="mt-8 flex items-center justify-between border-t border-white/10 pt-6">
+            <span class="text-[0.625rem] font-medium tracking-[0.2em] text-slate-500 uppercase">
                 {{ fragment.date }}
             </span>
 
             <RouterLink
                 :to="{ name: 'fragment', params: { id: fragment.id } }"
-                class="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 hover:text-white transition-colors">
+                class="text-[0.5625rem] font-black tracking-[0.2em] text-slate-400 uppercase transition-colors hover:text-white">
                 Open
             </RouterLink>
         </div>

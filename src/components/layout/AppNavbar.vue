@@ -1,77 +1,97 @@
 <script setup>
+import { delay } from '@/utils/delay.utils';
 import { ref } from 'vue';
 import { useOnlineStatus } from '@/composables/useOnlineStatus.js';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
+import { useStoreAuth } from '@/stores/auth.store';
 
+const storeAuth = useStoreAuth();
 const { online } = useOnlineStatus();
-const route = useRoute();
+const route = useRoute(),
+    router = useRouter();
 
 const isOpen = ref(false);
+const pending = ref(false);
+
+const handleDisconnect = async () => {
+    pending.value = true;
+
+    try {
+        await storeAuth.disconnect();
+
+        await delay(1000);
+        await router.push({ name: 'identify' });
+    } catch (error) {
+        console.error(error.message);
+    } finally {
+        pending.value = false;
+    }
+};
 </script>
 
 <template>
     <nav
         v-if="route.matched.length > 0 && route.meta.hasNavbar !== false"
-        class="sticky top-0 z-50 bg-slate-900/60 backdrop-blur-xl border-b border-white/10">
-        <div class="container px-8 py-4 mx-auto md:flex md:justify-between md:items-center">
+        class="bg-base-panel/80 sticky top-0 z-50 border-b border-white/10 backdrop-blur-xl">
+        <div class="container mx-auto px-6 py-3 md:flex md:items-center md:justify-between">
             <div class="flex items-center justify-between">
                 <RouterLink
                     :to="{ name: 'fragments' }"
-                    class="flex items-center gap-5 group shrink-0 relative py-2">
-                    <div class="relative flex items-center justify-center w-4 h-4">
+                    class="group relative flex shrink-0 cursor-default! items-center gap-4 py-2">
+                    <div class="relative flex h-4 w-4 items-center justify-center">
                         <div
-                            class="absolute inset-0 rounded-full blur-md transition-all duration-700 ease-in-out"
+                            class="absolute inset-0 rounded-full blur-md transition-colors duration-700 ease-in-out"
                             :class="
                                 online
-                                    ? 'bg-cyan-500/20 group-hover:bg-orange-500/40'
-                                    : 'bg-rose-500/20 group-hover:bg-rose-600/40'
+                                    ? 'bg-cyan-glow/20 group-hover:bg-orange-warn/40'
+                                    : 'bg-rose-danger/20 group-hover:bg-rose-danger/40'
                             "></div>
 
                         <div
-                            class="relative w-2 h-2 rounded-full transition-all duration-500 ease-in-out"
+                            class="relative h-2 w-2 rounded-full transition-[background-color,box-shadow] duration-500 ease-in-out"
                             :class="
                                 online
-                                    ? 'bg-cyan-400 shadow-[0_0_8px_#22d3ee] group-hover:bg-orange-400 group-hover:shadow-[0_0_12px_#fb923c]'
-                                    : 'bg-rose-500 shadow-[0_0_8px_#f43f5e] group-hover:bg-rose-600 group-hover:shadow-[0_0_12px_#e11d48]'
+                                    ? 'bg-cyan-light shadow-glow-cyan group-hover:bg-orange-warn group-hover:shadow-glow-orange'
+                                    : 'bg-rose-danger shadow-glow-rose group-hover:bg-rose-danger group-hover:shadow-glow-rose'
                             ">
                             <div
-                                class="absolute top-0.5 left-0.5 w-0.5 h-0.5 bg-white rounded-full opacity-90"></div>
+                                class="absolute top-0.5 left-0.5 h-0.5 w-0.5 rounded-full bg-white opacity-90"></div>
                         </div>
 
                         <div
-                            class="absolute inset-0 border rounded-full transition-all duration-500"
+                            class="absolute inset-0 rounded-full border transition-colors duration-500"
                             :class="
                                 online
-                                    ? 'border-cyan-500/20 group-hover:border-orange-500/40 animate-[ping_4s_infinite]'
-                                    : 'border-rose-500/40 group-hover:border-rose-600 animate-[ping_1.5s_infinite] group-hover:animate-[ping_0.8s_infinite]'
+                                    ? 'border-cyan-glow/20 group-hover:border-orange-warn/40 animate-[ping_4s_infinite]'
+                                    : 'border-rose-danger/40 animate-[ping_1.5s_infinite] group-hover:animate-[ping_0.8s_infinite]'
                             "></div>
                     </div>
 
-                    <div class="flex flex-col">
-                        <div class="overflow-hidden h-5">
+                    <div class="flex w-max flex-col">
+                        <div class="h-5 overflow-hidden">
                             <div
                                 class="flex flex-col transition-transform duration-500 ease-in-out group-hover:-translate-y-5">
                                 <span
-                                    class="font-logo text-[15px] font-black tracking-[0.3em] uppercase text-white/90">
+                                    class="font-logo text-[14px] font-black tracking-[0.3em] whitespace-nowrap text-white/90 uppercase">
                                     ANIMA
                                 </span>
                                 <span
-                                    class="font-logo text-[15px] font-black tracking-widest uppercase text-cyan-400">
-                                    HELLO_USER
+                                    class="font-logo text-cyan-light text-[14px] font-black tracking-widest whitespace-nowrap uppercase">
+                                    HI_{{ storeAuth.userName || 'USER' }}
                                 </span>
                             </div>
                         </div>
 
-                        <div class="relative h-3 mt-1">
+                        <div class="relative mt-1 h-3">
                             <div
-                                class="absolute inset-0 text-[8px] font-medium tracking-[0.2em] uppercase opacity-80 transition-opacity duration-500 ease-in-out group-hover:opacity-0">
+                                class="absolute inset-0 text-[8px] font-medium tracking-[0.2em] whitespace-nowrap uppercase opacity-80 transition-opacity duration-500 ease-in-out group-hover:opacity-0">
                                 <span class="text-slate-500">System_link:</span>
-                                <span :class="online ? 'text-cyan-500' : 'text-rose-500'">
+                                <span :class="online ? 'text-cyan-glow' : 'text-rose-danger'">
                                     {{ online ? 'Stable' : 'Lost' }}
                                 </span>
                             </div>
                             <span
-                                class="absolute inset-0 text-[8px] font-medium tracking-[0.2em] text-slate-300 uppercase opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100">
+                                class="absolute inset-0 text-[8px] font-medium tracking-[0.2em] whitespace-nowrap text-slate-300 uppercase opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100">
                                 {{
                                     online
                                         ? 'I was waiting for you...'
@@ -86,11 +106,11 @@ const isOpen = ref(false);
                     <button
                         @click="isOpen = !isOpen"
                         type="button"
-                        class="text-slate-400 hover:text-cyan-400 transition-colors duration-300 p-1">
+                        class="hover:text-cyan-light p-2 text-slate-400 transition-colors duration-300">
                         <svg
                             v-if="!isOpen"
                             xmlns="http://www.w3.org/2000/svg"
-                            class="w-5 h-5"
+                            class="h-6 w-6"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor">
@@ -103,7 +123,7 @@ const isOpen = ref(false);
                         <svg
                             v-else
                             xmlns="http://www.w3.org/2000/svg"
-                            class="w-5 h-5"
+                            class="h-6 w-6"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor">
@@ -120,33 +140,40 @@ const isOpen = ref(false);
             <div
                 :class="[
                     isOpen
-                        ? 'translate-x-0 opacity-100'
-                        : 'opacity-0 -translate-x-full md:opacity-100 md:translate-x-0',
+                        ? 'visible translate-y-0 opacity-100'
+                        : 'invisible -translate-y-4 opacity-0 md:visible md:translate-y-0 md:opacity-100',
                 ]"
-                class="absolute inset-x-0 z-20 w-full px-8 py-6 bg-slate-900 border-b border-white/10 transition-[opacity,transform] duration-500 ease-in-out md:static md:flex md:items-center md:w-auto md:p-0 md:bg-transparent md:border-none md:transition-none">
+                class="bg-base-panel/95 absolute top-full right-0 left-0 z-20 w-full border-b border-white/10 px-6 py-8 transition-[opacity,transform] duration-300 ease-in-out md:static md:flex md:w-auto md:items-center md:border-none md:bg-transparent md:p-0">
                 <div class="flex flex-col md:flex-row md:items-center">
                     <RouterLink
+                        @click="isOpen = false"
                         :to="{ name: 'terminal' }"
-                        class="my-3 md:my-0 text-[10px] font-bold tracking-[0.3em] text-emerald-500/80 drop-shadow-[0_0_5px_#10b981] transition-all duration-500 hover:text-emerald-400 hover:drop-shadow-[0_0_15px_#10b981] md:mx-6 uppercase flex items-center gap-1.5 group"
-                        active-class="text-emerald-400 !drop-shadow-[0_0_20px_#10b981]">
+                        class="group text-emerald-sync/80 drop-shadow-emerald-sm hover:text-emerald-light hover:drop-shadow-emerald-md my-4 flex items-center justify-center gap-1.5 text-[10px] font-bold tracking-[0.3em] uppercase transition-[color,filter] duration-500 md:mx-6 md:my-0"
+                        active-class="text-emerald-light !drop-shadow-emerald-lg">
                         <span
-                            class="text-[8px] opacity-20 group-hover:opacity-60 transition-opacity font-mono">
+                            class="font-mono text-[8px] opacity-20 transition-opacity group-hover:opacity-60">
                             [
                         </span>
                         Terminal
                         <span
-                            class="text-[8px] opacity-20 group-hover:opacity-60 transition-opacity font-mono">
+                            class="font-mono text-[8px] opacity-20 transition-opacity group-hover:opacity-60">
                             ]
                         </span>
                     </RouterLink>
 
-                    <div class="h-3 w-px bg-white/10 mx-2 hidden md:block"></div>
+                    <div class="mx-2 hidden h-3 w-px bg-white/10 md:block"></div>
 
-                    <RouterLink
-                        :to="{ name: 'identify' }"
-                        class="mt-6 md:mt-0 ml-0 md:ml-4 px-4 py-1.5 text-[9px] font-bold uppercase tracking-[0.25em] border border-cyan-500/30 text-cyan-400 hover:bg-cyan-500 hover:text-slate-950 hover:border-cyan-500 transition-all duration-700 rounded-xs active:scale-95 shadow-lg shadow-cyan-500/10">
-                        Identify
-                    </RouterLink>
+                    <button
+                        @click="handleDisconnect"
+                        :disabled="pending"
+                        :class="[
+                            'mt-4 w-full rounded-xs border px-4 py-2.5 text-[9px] font-bold tracking-[0.25em] uppercase transition-[color,border-color,filter] duration-700 md:mt-0 md:ml-4 md:w-auto md:py-1.5',
+                            pending
+                                ? 'animate-siren pointer-events-none'
+                                : 'hover:drop-shadow-white-glow border-light/20 text-rose-light/50 hover:border-rose-light/60 hover:text-white',
+                        ]">
+                        Disconnect
+                    </button>
                 </div>
             </div>
         </div>

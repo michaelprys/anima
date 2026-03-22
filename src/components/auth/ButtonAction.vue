@@ -6,7 +6,7 @@ defineProps({
     },
     skeleton: {
         type: String,
-        default: 'LOADING...',
+        default: 'LOADING',
     },
     pending: {
         type: Boolean,
@@ -28,17 +28,26 @@ defineProps({
         type="submit"
         :disabled="pending"
         :class="[
-            'w-full py-6 border transition-all duration-700 active:scale-[0.99] group/btn overflow-hidden relative cursor-pointer outline-none font-bold tracking-[1em]',
+            'group/btn relative w-full overflow-hidden border py-6 font-bold tracking-[1em] transition-all duration-700 outline-none active:scale-[0.99]',
             bgColor,
         ]">
         <span
             :class="[
-                'relative z-10 text-[12px]  transition-colors drop-shadow-[0_0_10px_rgba(59,130,246,0.5)]',
+                'relative z-10 text-xs drop-shadow-[0_0_0.625rem_rgba(59,130,246,0.5)] transition-colors',
                 textColor,
             ]">
-            {{ pending ? skeleton : action }}
+            <div v-if="pending" class="flex items-baseline justify-center">
+                <span>{{ skeleton }}</span>
+                <div class="ml-1 flex *:animate-[pulse_0.2s_infinite]">
+                    <span>.</span>
+                    <span>.</span>
+                    <span>.</span>
+                </div>
+            </div>
+
+            <div v-else>{{ action }}</div>
         </span>
         <span
-            class="absolute inset-0 w-full h-full bg-linear-to-r from-transparent via-blue-400/10 to-transparent -translate-x-full group-hover/btn:animate-[shimmer_3s_infinite]"></span>
+            class="via-blue-system/10 absolute inset-0 h-full w-full -translate-x-full bg-linear-to-r from-transparent to-transparent group-hover/btn:animate-[shimmer_3s_infinite]"></span>
     </button>
 </template>

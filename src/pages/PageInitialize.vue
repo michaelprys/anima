@@ -1,9 +1,11 @@
 <script setup>
 import ButtonAction from '@/components/auth/ButtonAction.vue';
+import { useRouter } from 'vue-router';
 import { ref, computed } from 'vue';
 import { useStoreAuth } from '@/stores/auth.store';
 
 const storeAuth = useStoreAuth();
+const router = useRouter();
 
 const identity = ref({
     userIdentifier: '',
@@ -16,7 +18,9 @@ const attempted = ref(true);
 const pending = ref(false);
 
 const isPasswordMatch = computed(() => {
-    return identity.value.passKey === identity.value.confirmPassKey;
+    return (
+        identity.value.passKey === identity.value.confirmPassKey && identity.value.passKey !== ''
+    );
 });
 
 const handleInitialize = async () => {
@@ -27,7 +31,6 @@ const handleInitialize = async () => {
         attempted.value = false;
         return;
     }
-
     pending.value = true;
 
     try {
@@ -36,6 +39,8 @@ const handleInitialize = async () => {
             email,
             passKey,
         });
+
+        await router.push({ name: 'identify' });
     } catch (error) {
         console.error(error);
     } finally {
@@ -53,19 +58,21 @@ const handleInitialize = async () => {
                     type="text"
                     spellcheck="false"
                     @input="attempted = true"
-                    placeholder="USER_IDENTIFIER"
+                    :placeholder="
+                        !attempted && !identity.userIdentifier ? 'REQUIRED_ID _' : 'USER_IDENTIFIER'
+                    "
                     :class="[
-                        'w-full bg-transparent border-b py-3 text-[13px] uppercase tracking-[0.4em] outline-none transition-all duration-700 placeholder:text-blue-400/30 focus:placeholder:text-blue-300/30',
+                        'w-full border-b bg-transparent py-3 text-[13px] tracking-[0.4em] uppercase transition-all duration-700 outline-none',
                         !attempted && !identity.userIdentifier
-                            ? 'text-rose-500 border-rose-500/40 focus:border-rose-500'
-                            : 'text-blue-100 border-blue-500/20 focus:border-blue-400',
+                            ? 'border-rose-danger/40 text-rose-danger placeholder:text-rose-danger/40'
+                            : 'border-blue-system/20 text-blue-pale placeholder:text-blue-light/30 focus:border-blue-light focus:placeholder:text-blue-light/30',
                     ]" />
                 <div
                     class="absolute bottom-0 left-0 h-[2px] w-0 transition-all duration-700 group-focus-within/input:w-full"
                     :class="[
                         !attempted && !identity.userIdentifier
-                            ? 'bg-rose-500 shadow-[0_0_10px_rgba(244,63,94,0.5)]'
-                            : 'bg-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.6)]',
+                            ? 'bg-rose-danger shadow-glow-rose'
+                            : 'bg-blue-light shadow-glow-blue',
                     ]"></div>
             </div>
 
@@ -75,19 +82,21 @@ const handleInitialize = async () => {
                     type="email"
                     spellcheck="false"
                     @input="attempted = true"
-                    placeholder="EMAIL_ADDRESS"
+                    :placeholder="
+                        !attempted && !identity.email ? 'REQUIRED_EMAIL _' : 'EMAIL_ADDRESS'
+                    "
                     :class="[
-                        'w-full bg-transparent border-b py-3 text-[13px] uppercase tracking-[0.4em] outline-none transition-all duration-700 placeholder:text-blue-400/30 focus:placeholder:text-blue-300/30',
+                        'w-full border-b bg-transparent py-3 text-[13px] tracking-[0.4em] uppercase transition-all duration-700 outline-none',
                         !attempted && !identity.email
-                            ? 'text-rose-500 border-rose-500/40 focus:border-rose-500'
-                            : 'text-blue-100 border-blue-500/20 focus:border-blue-400',
+                            ? 'border-rose-danger/40 text-rose-danger placeholder:text-rose-danger/40'
+                            : 'border-blue-system/20 text-blue-pale placeholder:text-blue-light/30 focus:border-blue-light focus:placeholder:text-blue-light/30',
                     ]" />
                 <div
                     class="absolute bottom-0 left-0 h-[2px] w-0 transition-all duration-700 group-focus-within/input:w-full"
                     :class="[
                         !attempted && !identity.email
-                            ? 'bg-rose-500 shadow-[0_0_10px_rgba(244,63,94,0.5)]'
-                            : 'bg-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.6)]',
+                            ? 'bg-rose-danger shadow-glow-rose'
+                            : 'bg-blue-light shadow-glow-blue',
                     ]"></div>
             </div>
 
@@ -96,19 +105,21 @@ const handleInitialize = async () => {
                     v-model="identity.passKey"
                     type="password"
                     @input="attempted = true"
-                    placeholder="SECURITY_KEY"
+                    :placeholder="
+                        !attempted && !identity.passKey ? 'REQUIRED_KEY _' : 'SECURITY_KEY'
+                    "
                     :class="[
-                        'w-full bg-transparent border-b py-3 text-[13px] tracking-[0.4em] outline-none transition-all duration-700 placeholder:text-blue-400/30 focus:placeholder:text-blue-300/30',
+                        'w-full border-b bg-transparent py-3 text-[13px] tracking-[0.4em] transition-all duration-700 outline-none',
                         !attempted && !identity.passKey
-                            ? 'text-rose-500 border-rose-500/40 focus:border-rose-500'
-                            : 'text-blue-100 border-blue-500/20 focus:border-blue-400',
+                            ? 'border-rose-danger/40 text-rose-danger placeholder:text-rose-danger/40'
+                            : 'border-blue-system/20 text-blue-pale placeholder:text-blue-light/30 focus:border-blue-light focus:placeholder:text-blue-light/30',
                     ]" />
                 <div
                     class="absolute bottom-0 left-0 h-[2px] w-0 transition-all duration-700 group-focus-within/input:w-full"
                     :class="[
                         !attempted && !identity.passKey
-                            ? 'bg-rose-500 shadow-[0_0_10px_rgba(244,63,94,0.5)]'
-                            : 'bg-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.6)]',
+                            ? 'bg-rose-danger shadow-glow-rose'
+                            : 'bg-blue-light shadow-glow-blue',
                     ]"></div>
             </div>
 
@@ -117,19 +128,23 @@ const handleInitialize = async () => {
                     v-model="identity.confirmPassKey"
                     type="password"
                     @input="attempted = true"
-                    placeholder="CONFIRM_KEY"
-                    :class="[
-                        'w-full bg-transparent border-b py-3 text-[13px] tracking-[0.4em] outline-none transition-all duration-700 placeholder:text-blue-400/30 focus:placeholder:text-blue-300/30',
+                    :placeholder="
                         !attempted && (!identity.confirmPassKey || !isPasswordMatch)
-                            ? 'text-rose-500 border-rose-500/40 focus:border-rose-500'
-                            : 'text-blue-100 border-blue-500/20 focus:border-blue-400',
+                            ? 'ERROR: MISMATCH _'
+                            : 'CONFIRM_KEY'
+                    "
+                    :class="[
+                        'w-full border-b bg-transparent py-3 text-[13px] tracking-[0.4em] transition-all duration-700 outline-none',
+                        !attempted && (!identity.confirmPassKey || !isPasswordMatch)
+                            ? 'border-rose-danger/40 text-rose-danger placeholder:text-rose-danger/40'
+                            : 'border-blue-system/20 text-blue-pale placeholder:text-blue-light/30 focus:border-blue-light focus:placeholder:text-blue-light/30',
                     ]" />
                 <div
                     class="absolute bottom-0 left-0 h-[2px] w-0 transition-all duration-700 group-focus-within/input:w-full"
                     :class="[
                         !attempted && (!identity.confirmPassKey || !isPasswordMatch)
-                            ? 'bg-rose-500 shadow-[0_0_10px_rgba(244,63,94,0.5)]'
-                            : 'bg-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.6)]',
+                            ? 'bg-rose-danger shadow-glow-rose'
+                            : 'bg-blue-light shadow-glow-blue',
                     ]"></div>
             </div>
         </div>
@@ -137,21 +152,21 @@ const handleInitialize = async () => {
         <div class="space-y-8 pt-2">
             <ButtonAction
                 action="INITIALIZE"
-                skeleton="PROCESSING..."
+                skeleton="PROCESS"
                 :pending="pending"
-                bgColor="border-teal-500/20 bg-teal-500/5 hover:bg-teal-500/10 hover:border-teal-400/50"
-                textColor="text-teal-300/60 group-hover/btn:text-teal-100" />
+                bg-color="border-teal-init/20 bg-teal-init/5 hover:bg-teal-init/10 hover:border-teal-init/50"
+                text-color="text-teal-init/60 group-hover/btn:text-teal-init" />
 
             <div class="grid grid-cols-2 gap-6">
                 <RouterLink
                     :to="{ name: 'recover' }"
-                    class="flex items-center justify-center py-3 border border-blue-500/10 bg-blue-950/20 text-[9px] font-bold tracking-[0.2em] text-blue-400/40 hover:text-blue-300 hover:border-blue-500/30 hover:bg-blue-500/5 transition-all duration-500">
+                    class="border-blue-system/10 bg-base-card/20 text-blue-system/40 hover:border-blue-system/30 hover:bg-blue-system/5 hover:text-blue-light flex items-center justify-center border py-3 text-[9px] font-bold tracking-[0.2em] transition-all duration-500">
                     RECOVER_KEY
                 </RouterLink>
 
                 <RouterLink
                     :to="{ name: 'identify' }"
-                    class="flex items-center justify-center py-3 border border-blue-500/10 bg-blue-950/20 text-[9px] font-bold tracking-[0.2em] text-blue-400/40 hover:text-blue-300 hover:border-blue-500/30 hover:bg-blue-500/5 transition-all duration-500">
+                    class="border-blue-system/10 bg-base-card/20 text-blue-system/40 hover:border-blue-system/30 hover:bg-blue-system/5 hover:text-blue-light flex items-center justify-center border py-3 text-[9px] font-bold tracking-[0.2em] transition-all duration-500">
                     BACK TO IDENTIFY
                 </RouterLink>
             </div>
@@ -160,12 +175,6 @@ const handleInitialize = async () => {
 </template>
 
 <style scoped>
-@keyframes shimmer {
-    100% {
-        transform: translateX(100%);
-    }
-}
-
 input:focus {
     text-shadow: 0 0 10px
         v-bind('!attempted ? "rgba(244, 63, 94, 0.3)" : "rgba(59, 130, 246, 0.3)"');

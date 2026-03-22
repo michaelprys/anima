@@ -8,20 +8,22 @@ const isFilterActive = ref(false);
 
 <template>
     <div class="w-full">
-        <div class="flex items-center justify-between px-1 border-b border-white/5 pb-4 mb-2">
+        <div class="mb-2 flex items-center justify-between border-b border-white/5 px-1 pb-4">
             <button
                 @click="isFilterActive = !isFilterActive"
-                class="flex items-center gap-3 group transition-all">
+                class="group flex items-center gap-3 transition-all">
                 <span
-                    class="text-[10px] font-black text-slate-500 group-hover:text-cyan-500 uppercase tracking-[0.3em] transition-colors">
+                    class="group-hover:text-cyan-glow text-[10px] font-black tracking-[0.3em] text-slate-500 uppercase transition-colors">
                     {{ isFilterActive ? 'Close_Search' : 'Open_Search' }}
                 </span>
                 <span
-                    class="w-1 h-1 rounded-full transition-colors"
-                    :class="isFilterActive ? 'bg-cyan-500 animate-pulse' : 'bg-slate-800'"></span>
+                    class="h-1 w-1 rounded-full transition-colors"
+                    :class="
+                        isFilterActive ? 'bg-cyan-glow animate-pulse' : 'bg-surface-card'
+                    "></span>
             </button>
 
-            <div class="text-[9px] text-slate-700 font-mono uppercase tracking-[0.2em]">
+            <div class="font-mono text-[9px] tracking-[0.2em] text-slate-700 uppercase">
                 Total: [ {{ storeFragments.fragments.length }} ]
             </div>
         </div>
@@ -33,8 +35,8 @@ const isFilterActive = ref(false);
                         type="text"
                         autofocus
                         placeholder="INPUT_SEARCH_PARAMETERS..."
-                        class="w-full bg-transparent py-3 text-xs uppercase tracking-[0.2em] text-cyan-400 outline-none placeholder:text-slate-800" />
-                    <div class="absolute right-0 bottom-6 w-1 h-1 bg-cyan-500"></div>
+                        class="text-cyan-glow w-full bg-transparent py-3 text-xs tracking-[0.2em] uppercase outline-none placeholder:text-slate-800" />
+                    <div class="bg-cyan-glow absolute right-0 bottom-6 h-1 w-1"></div>
                 </div>
             </div>
         </Transition>

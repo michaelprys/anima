@@ -1,4 +1,5 @@
 <script setup>
+import { useEsc } from '@/composables/useEsc';
 import { computed, onMounted } from 'vue';
 import { useOnlineStatus } from '@/composables/useOnlineStatus';
 import { useGetLocation } from '@/composables/useGetLocation';
@@ -25,6 +26,8 @@ const totalFragmentsCharacters = computed(() => {
     return (totalCharacters * 0.0009765625).toFixed(2);
 });
 
+useEsc();
+
 onMounted(async () => {
     await getLocation();
     await watchPermissions();
@@ -33,81 +36,82 @@ onMounted(async () => {
 
 <template>
     <div
-        class="fixed inset-0 bg-slate-950/92 backdrop-blur-xl flex items-center justify-center z-1000 cursor-crosshair font-mono">
+        class="bg-canvas/92 fixed inset-0 z-1000 flex cursor-crosshair items-center justify-center font-mono backdrop-blur-xl">
         <div
-            class="mx-6 max-w-136 w-full bg-[#030712] border border-blue-500/30 p-10 shadow-[0_0_80px_rgba(0,0,0,0.8)] relative">
-            <div class="absolute top-0 left-0 w-2 h-2 border-t border-l border-blue-500/40"></div>
-            <div class="absolute top-0 right-0 w-2 h-2 border-t border-r border-blue-500/40"></div>
+            class="border-blue-system/30 bg-base shadow-terminal-deep relative mx-6 w-full max-w-136 border p-10">
             <div
-                class="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-blue-500/40"></div>
+                class="border-blue-system/40 absolute top-0 left-0 h-2 w-2 border-t border-l"></div>
             <div
-                class="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-blue-500/40"></div>
+                class="border-blue-system/40 absolute top-0 right-0 h-2 w-2 border-t border-r"></div>
+            <div
+                class="border-blue-system/40 absolute bottom-0 left-0 h-2 w-2 border-b border-l"></div>
+            <div
+                class="border-blue-system/40 absolute right-0 bottom-0 h-2 w-2 border-r border-b"></div>
 
-            <header class="flex items-center justify-between mb-12">
+            <header class="mb-12 flex items-center justify-between">
                 <div class="flex items-center">
-                    <span
-                        class="w-2 h-2 bg-cyan-500 mr-4 animate-blink shadow-[0_0_8px_#0ea5e9]"></span>
-                    <span class="text-cyan-400 text-sm tracking-[0.4em] uppercase font-bold">
+                    <span class="animate-blink bg-cyan-glow shadow-glow-cyan mr-4 h-2 w-2"></span>
+                    <span class="text-cyan-light text-sm font-bold tracking-[0.4em] uppercase">
                         Anima_v.01
                     </span>
                 </div>
                 <router-link
                     to="/"
-                    class="text-slate-500 hover:text-rose-500 transition-all text-[10px] uppercase tracking-[0.2em] group flex items-center">
-                    <span class="group-hover:text-rose-500/40">[</span>
+                    class="group hover:text-rose-danger flex cursor-default! items-center text-[10px] tracking-[0.2em] text-slate-500 uppercase transition-all">
+                    <span class="group-hover:text-rose-danger/40">[</span>
                     <span
-                        class="mx-2 group-hover:drop-shadow-[0_0_8px_rgba(244,63,94,0.6)] font-medium text-rose-500">
+                        class="text-rose-danger group-hover:drop-shadow-rose-glow mx-2 font-medium">
                         Exit
                     </span>
-                    <span class="group-hover:text-rose-500/40">]</span>
+                    <span class="group-hover:text-rose-danger/40">]</span>
                 </router-link>
             </header>
 
-            <div class="space-y-10 text-slate-300 uppercase tracking-widest">
+            <div class="space-y-10 tracking-widest text-slate-300 uppercase">
                 <section class="space-y-4">
-                    <p class="text-[10px] text-slate-500 tracking-[4px] font-bold">Memory</p>
+                    <p class="text-[10px] font-bold tracking-[4px] text-slate-500">Memory</p>
                     <div class="space-y-2 text-xs">
                         <div class="flex justify-between">
-                            <span class="text-slate-600 font-medium">Fragments:</span>
+                            <span class="font-medium text-slate-600">Fragments:</span>
                             <span class="text-slate-200">
                                 {{ storeFragments.fragments.length }} Units
                             </span>
                         </div>
                         <div class="flex justify-between">
-                            <span class="text-slate-600 font-medium">Data_Size:</span>
+                            <span class="font-medium text-slate-600">Data_Size:</span>
                             <span class="text-slate-200">{{ totalFragmentsCharacters }} KB</span>
                         </div>
                     </div>
                 </section>
 
                 <section class="space-y-4">
-                    <p class="text-[10px] text-slate-500 tracking-[4px] font-bold">Sync</p>
+                    <p class="text-[10px] font-bold tracking-[4px] text-slate-500">Sync</p>
                     <div class="space-y-2 text-xs">
                         <div class="flex justify-between">
-                            <span class="text-slate-600 font-medium">Link_Status:</span>
+                            <span class="font-medium text-slate-600">Link_Status:</span>
                             <span
                                 class="font-bold italic"
-                                :class="online ? 'text-emerald-500' : 'text-rose-500'">
+                                :class="online ? 'text-emerald-sync' : 'text-rose-danger'">
                                 {{ online ? 'Stable' : 'Lost' }}
                             </span>
                         </div>
 
-                        <div class="flex justify-between items-start">
-                            <span class="text-slate-600 font-medium pt-0.5">Location:</span>
-                            <div class="text-right min-h-15 flex flex-col">
+                        <div class="flex items-start justify-between">
+                            <span class="pt-0.5 font-medium text-slate-600">Location:</span>
+                            <div class="flex min-h-15 flex-col text-right">
                                 <div
                                     v-if="pending"
                                     class="flex flex-col items-end space-y-1 opacity-80">
                                     <span
-                                        class="text-cyan-400 text-[10px] font-black tracking-[2px] animate-[pulse_0.1s_infinite] uppercase">
+                                        class="text-cyan-light animate-[pulse_0.1s_infinite] text-[10px] font-black tracking-[2px] uppercase">
                                         >> Scanning_Location_{{ Math.floor(Math.random() * 99) }}
                                     </span>
                                     <div class="flex flex-col items-end leading-none">
                                         <span
-                                            class="text-[7px] text-cyan-900 break-all text-right w-32 truncate">
+                                            class="w-32 truncate text-right text-[7px] break-all text-cyan-900">
                                             0x{{ randomizeNumbers() }} 0x{{ randomizeNumbers() }}
                                         </span>
-                                        <span class="text-[9px] text-emerald-500/50 italic">
+                                        <span class="text-emerald-sync/50 text-[9px] italic">
                                             Targeting:
                                             <span class="inline-block min-w-11.25 text-right">
                                                 {{ (Math.random() * 90).toFixed(4) }}°
@@ -118,12 +122,12 @@ onMounted(async () => {
                                             </span>
                                         </span>
                                     </div>
-                                    <div class="w-24 h-0.5 bg-slate-900 relative overflow-hidden">
+                                    <div class="bg-base-panel relative h-0.5 w-24 overflow-hidden">
                                         <div
-                                            class="absolute inset-0 bg-cyan-500/50 animate-[shimmer_0.5s_infinite] shadow-[0_0_8px_#06b6d4]"></div>
+                                            class="animate-shimmer bg-cyan-glow/50 shadow-glow-cyan absolute inset-0"></div>
                                     </div>
                                     <span
-                                        class="text-[7px] text-slate-700 font-bold tracking-[3px]">
+                                        class="text-[7px] font-bold tracking-[3px] text-slate-700">
                                         RAW_DATA_STREAM_v.{{ Math.random().toFixed(2) }}
                                     </span>
                                 </div>
@@ -132,7 +136,7 @@ onMounted(async () => {
                                     v-else-if="location && location !== 'Not Detected'"
                                     class="flex flex-col items-end space-y-1">
                                     <span
-                                        class="text-[7px] text-emerald-500/30 tracking-[4px] uppercase">
+                                        class="text-emerald-sync/30 text-[7px] tracking-[4px] uppercase">
                                         [ Signal_Locked ]
                                     </span>
                                     <span
@@ -149,11 +153,11 @@ onMounted(async () => {
 
                                 <div v-else class="flex flex-col items-end space-y-1">
                                     <span
-                                        class="text-[7px] text-rose-500/30 tracking-[4px] uppercase text-right">
+                                        class="text-rose-danger/30 text-right text-[7px] tracking-[4px] uppercase">
                                         [ Signal_Timeout ]
                                     </span>
                                     <span
-                                        class="text-rose-500/80 italic uppercase text-[10px] tracking-widest">
+                                        class="text-rose-danger/80 text-[10px] tracking-widest uppercase italic">
                                         Not Detected
                                     </span>
                                     <span class="text-[7px] text-rose-900 uppercase">
@@ -166,23 +170,22 @@ onMounted(async () => {
                 </section>
 
                 <section class="pt-2">
-                    <div class="text-[10px] space-y-3">
-                        <span class="text-slate-500 tracking-[3px] font-bold">Cognitive_Load</span>
+                    <div class="space-y-3 text-[10px]">
+                        <span class="font-bold tracking-[3px] text-slate-500">Cognitive_Load</span>
                         <div
-                            :class="loadColorClass"
-                            class="text-[10px] leading-none tracking-normal transition-colors duration-700">
+                            class="text-cyan-light text-[10px] leading-none tracking-normal transition-colors duration-700">
                             [||||||||||....................] 20%
                         </div>
                     </div>
                 </section>
 
-                <footer class="mt-14 pt-8 border-t border-white/10 flex flex-col space-y-3">
-                    <div class="flex justify-between items-center text-[9px] text-slate-700">
+                <footer class="mt-14 flex flex-col space-y-3 border-t border-white/10 pt-8">
+                    <div class="flex items-center justify-between text-[9px] text-slate-700">
                         <span class="font-bold tracking-[2px]">Privacy_Protocol:</span>
                         <span class="text-slate-400">AES_256_GCM</span>
                     </div>
                     <div
-                        class="text-[8px] text-slate-800 text-center tracking-[6px] opacity-40 font-black">
+                        class="text-center text-[8px] font-black tracking-[6px] text-slate-800 opacity-40">
                         Neural_Sync_Active
                     </div>
                 </footer>
@@ -191,25 +194,4 @@ onMounted(async () => {
     </div>
 </template>
 
-<style scoped>
-@keyframes shimmer {
-    0% {
-        transform: translateX(-100%);
-    }
-    100% {
-        transform: translateX(100%);
-    }
-}
-
-@keyframes pulse {
-    0%,
-    100% {
-        opacity: 1;
-        transform: skew(0deg);
-    }
-    50% {
-        opacity: 0.8;
-        transform: skew(1deg);
-    }
-}
-</style>
+<style scoped></style>

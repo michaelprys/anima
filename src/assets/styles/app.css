@@ -1,4 +1,11 @@
 @import 'tailwindcss';
+@import './themes';
+
+button,
+a,
+[role='button'] {
+    cursor: pointer;
+}
 
 body {
     background-color: #020617;
@@ -34,22 +41,6 @@ body {
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
-    }
-}
-
-/* Animations */
-
-.animate-blink {
-    animation: blink 1.2s steps(1) infinite;
-}
-
-@keyframes blink {
-    0%,
-    100% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0;
     }
 }
 

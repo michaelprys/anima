@@ -1,52 +1,55 @@
 <script setup>
 import { useOnlineStatus } from '@/composables/useOnlineStatus';
 import { useRoute } from 'vue-router';
+import { useEsc } from '@/composables/useEsc';
 
 const { online } = useOnlineStatus();
 const route = useRoute();
+
+useEsc();
 </script>
 
 <template>
     <div
-        class="fixed inset-0 bg-[#020617] flex items-center justify-center px-6 overflow-hidden z-1000 font-mono selection:bg-blue-500/30 text-left uppercase">
+        class="bg-canvas selection:bg-blue-system/30 fixed inset-0 z-1000 flex items-center justify-center overflow-hidden px-6 text-left font-mono uppercase">
         <div
-            class="absolute inset-0 bg-[radial-gradient(circle_at_center,var(--tw-gradient-stops))] from-blue-600/10 via-blue-950/5 to-transparent pointer-events-none"></div>
+            class="from-blue-system/10 via-canvas/5 pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,var(--tw-gradient-stops))] to-transparent"></div>
 
         <Transition name="terminal-in" appear>
             <div
-                class="w-full max-w-130 border border-blue-500/30 bg-[#070e20]/95 p-16 md:p-22 relative group shadow-[0_0_120px_rgba(2,6,23,1)] backdrop-blur-2xl">
+                class="group border-blue-system/30 bg-base-card/95 relative w-full max-w-130 border p-16 shadow-[0_0_120px_rgba(2,6,23,1)] backdrop-blur-2xl md:p-22">
                 <div
-                    class="absolute -top-px -left-px w-16 h-0.5 bg-blue-400 shadow-[0_0_20px_rgba(59,130,246,0.8)]"></div>
+                    class="bg-blue-system shadow-glow-blue absolute -top-px -left-px h-0.5 w-16"></div>
                 <div
-                    class="absolute -top-px -left-px w-0.5 h-16 bg-blue-400 shadow-[0_0_20px_rgba(59,130,246,0.8)]"></div>
+                    class="bg-blue-system shadow-glow-blue absolute -top-px -left-px h-16 w-0.5"></div>
 
-                <div class="absolute -bottom-px -right-px w-16 h-px bg-blue-400/20"></div>
-                <div class="absolute -bottom-px -right-px w-px h-16 bg-blue-400/20"></div>
+                <div class="bg-blue-system/20 absolute -right-px -bottom-px h-px w-16"></div>
+                <div class="bg-blue-system/20 absolute -right-px -bottom-px h-16 w-px"></div>
 
                 <RouterLink
                     :to="{ name: 'fragments' }"
-                    class="absolute top-8 right-10 text-[10px] uppercase tracking-[0.5em] font-bold text-blue-400/40 hover:text-blue-300 transition-all duration-500 focus:outline-none cursor-pointer">
+                    class="text-blue-system/40 hover:text-rose-danger absolute top-8 right-10 cursor-default! text-[10px] font-bold tracking-[0.5em] uppercase transition-all duration-500 focus:outline-none">
                     [ Terminate ]
                 </RouterLink>
 
-                <header class="mb-20 relative">
+                <header class="relative mb-20">
                     <div class="flex items-center gap-6">
-                        <div class="relative flex items-center justify-center w-3 h-3">
+                        <div class="relative flex h-3 w-3 items-center justify-center">
                             <div
-                                class="w-full h-full bg-blue-400 animate-ping absolute inset-0 rounded-full opacity-20"></div>
+                                class="bg-cyan-light absolute inset-0 h-full w-full animate-ping rounded-full opacity-20"></div>
                             <div
-                                class="w-2.5 h-2.5 bg-blue-500 rounded-full shadow-[0_0_15px_#3b82f6] relative z-10"></div>
+                                class="bg-blue-system shadow-glow-blue relative z-10 h-2.5 w-2.5 rounded-full"></div>
                         </div>
                         <span
-                            class="text-[13px] font-bold uppercase tracking-[0.8em] text-blue-100 drop-shadow-[0_0_8px_rgba(59,130,246,0.5)]">
+                            class="text-[13px] font-bold tracking-[0.8em] text-white uppercase drop-shadow-[0_0_8px_rgba(59,130,246,0.5)]">
                             {{ route.meta.title || 'System_Access' }}
                         </span>
                     </div>
                     <div
-                        class="h-px w-full bg-linear-to-r from-blue-500/50 via-blue-400/10 to-transparent mt-8"></div>
+                        class="from-blue-system/50 via-blue-system/10 mt-8 h-px w-full bg-linear-to-r to-transparent"></div>
                 </header>
 
-                <div class="min-h-50 flex flex-col justify-center">
+                <div class="flex min-h-50 flex-col justify-center">
                     <RouterView v-slot="{ Component }">
                         <Transition name="fade" mode="out-in">
                             <component :is="Component" />
@@ -56,11 +59,11 @@ const route = useRoute();
 
                 <div
                     class="mt-20 flex items-center justify-between px-2 text-[9px] tracking-[0.4em]">
-                    <div class="flex gap-4 items-center">
-                        <span class="text-blue-400/30">Auth_Gateway</span>
+                    <div class="flex items-center gap-4">
+                        <span class="text-blue-system/30">Auth_Gateway</span>
                     </div>
                     <span
-                        :class="online ? 'text-blue-400' : 'text-red-400'"
+                        :class="online ? 'text-blue-system' : 'text-rose-danger'"
                         class="transition-colors duration-500">
                         Link: {{ online ? 'Active' : 'Offline' }}
                     </span>
@@ -78,22 +81,5 @@ const route = useRoute();
     opacity: 0;
     transform: translateY(30px) scale(0.99);
     filter: blur(15px);
-}
-
-.fade-enter-active,
-.fade-leave-active {
-    transition:
-        opacity 0.4s ease,
-        transform 0.4s ease;
-}
-
-.fade-enter-from {
-    opacity: 0;
-    transform: translateX(4px);
-}
-
-.fade-leave-to {
-    opacity: 0;
-    transform: translateX(-4px);
 }
 </style>

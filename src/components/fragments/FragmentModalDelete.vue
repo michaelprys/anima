@@ -6,30 +6,31 @@ const storeFragments = useStoreFragments();
 <template>
     <div
         v-if="storeFragments.activeModal === 'delete'"
-        class="fixed inset-0 bg-slate-950/90 flex items-center justify-center z-1000 p-4 backdrop-blur-sm">
+        class="bg-canvas/90 fixed inset-0 z-1000 flex items-center justify-center p-4 backdrop-blur-sm">
         <div
-            class="relative bg-[#030712] border border-rose-500/20 p-10 max-w-sm w-full shadow-2xl shadow-rose-500/5">
-            <div class="absolute top-0 left-0 w-2 h-2 border-t border-l border-rose-500/40"></div>
-            <div class="absolute top-0 right-0 w-2 h-2 border-t border-r border-rose-500/40"></div>
+            class="border-rose-danger/20 bg-base shadow-rose-danger/5 relative w-full max-w-sm border p-10 shadow-2xl">
             <div
-                class="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-rose-500/40"></div>
+                class="border-rose-danger/40 absolute top-0 left-0 h-2 w-2 border-t border-l"></div>
             <div
-                class="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-rose-500/40"></div>
+                class="border-rose-danger/40 absolute top-0 right-0 h-2 w-2 border-t border-r"></div>
+            <div
+                class="border-rose-danger/40 absolute bottom-0 left-0 h-2 w-2 border-b border-l"></div>
+            <div
+                class="border-rose-danger/40 absolute right-0 bottom-0 h-2 w-2 border-r border-b"></div>
 
-            <header class="flex items-center mb-8">
-                <span
-                    class="w-2 h-2 bg-rose-600 mr-3 shadow-[0_0_10px_#e11d48] animate-blink"></span>
-                <span class="text-rose-500/80 text-[10px] tracking-[0.4em] uppercase font-bold">
+            <header class="mb-8 flex items-center">
+                <span class="animate-blink bg-rose-danger shadow-glow-rose mr-3 h-2 w-2"></span>
+                <span class="text-rose-danger/80 text-[10px] font-bold tracking-[0.4em] uppercase">
                     System_Warning
                 </span>
             </header>
 
-            <div class="text-center mb-10">
-                <p class="text-slate-500 text-[11px] tracking-[0.2em] uppercase mb-2 italic">
+            <div class="mb-10 text-center">
+                <p class="mb-2 text-[11px] tracking-[0.2em] text-slate-500 uppercase italic">
                     DANGER_ZONE:
                 </p>
                 <p
-                    class="text-slate-100 text-sm tracking-[0.15em] uppercase font-light leading-relaxed">
+                    class="text-sm leading-relaxed font-light tracking-[0.15em] text-slate-100 uppercase">
                     Erase this fragment?
                 </p>
             </div>
@@ -37,12 +38,12 @@ const storeFragments = useStoreFragments();
             <div class="flex justify-center gap-12">
                 <button
                     @click="storeFragments.closeModal"
-                    class="text-[10px] tracking-[0.3em] text-slate-500 hover:text-white transition-all uppercase">
+                    class="cursor-default! text-[10px] tracking-[0.3em] text-slate-500 uppercase transition-all hover:text-white">
                     [ Cancel ]
                 </button>
                 <button
                     @click="storeFragments.deleteFragment(storeFragments.selectedNoteId)"
-                    class="text-[10px] tracking-[0.3em] text-rose-500 hover:text-rose-400 transition-all uppercase font-black">
+                    class="text-rose-danger hover:text-rose-danger/80 cursor-default! text-[10px] font-black tracking-[0.3em] uppercase transition-all">
                     [ Terminate ]
                 </button>
             </div>

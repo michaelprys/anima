@@ -29,34 +29,34 @@ const handleRecover = async () => {
                 spellcheck="false"
                 @input="attempted = true"
                 :placeholder="
-                    !attempted && !identity.email ? 'ERROR: REQUIRED _' : 'REGISTERED_EMAIL'
+                    !attempted && !identity.email ? 'REQUIRED_EMAIL _' : 'REGISTERED_EMAIL'
                 "
                 :class="[
-                    'w-full bg-transparent border-b py-5 text-[14px] uppercase tracking-[0.5em] outline-none transition-all duration-700 focus:placeholder:text-blue-300/30',
+                    'focus:placeholder:text-blue-light/30 w-full border-b bg-transparent py-5 text-[14px] tracking-[0.5em] uppercase transition-all duration-700 outline-none',
                     !attempted && !identity.email
-                        ? 'text-rose-500 border-rose-500/40 placeholder-rose-500/40'
-                        : 'text-blue-100 border-blue-500/20 placeholder-blue-400/30 focus:border-blue-400',
+                        ? 'border-rose-danger/40 text-rose-danger placeholder-rose-danger/40'
+                        : 'border-blue-system/20 text-blue-pale placeholder-blue-light/30 focus:border-blue-light',
                 ]" />
             <div
                 class="absolute bottom-0 left-0 h-[2px] w-0 transition-all duration-700 group-focus-within/input:w-full"
                 :class="[
                     !attempted && !identity.email
-                        ? 'bg-rose-500 shadow-[0_0_10px_rgba(244,63,94,0.5)]'
-                        : 'bg-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.6)]',
+                        ? 'bg-rose-danger shadow-glow-rose'
+                        : 'bg-blue-light shadow-glow-blue',
                 ]"></div>
         </div>
 
         <div class="space-y-10">
             <ButtonAction
                 action="RECOVER"
-                skeleton="SENDING..."
+                skeleton="SENDING"
                 :pending="pending"
-                bgColor="border-rose-400/15 bg-rose-400/[0.03] hover:bg-rose-400/10 hover:border-rose-300/40"
-                textColor="text-rose-300/60 group-hover/btn:text-rose-100" />
+                bg-color="border-rose-danger/15 bg-rose-danger/[0.03] hover:bg-rose-danger/10 hover:border-rose-light/40"
+                text-color="text-rose-light/60 group-hover/btn:text-white" />
 
             <RouterLink
                 :to="{ name: 'identify' }"
-                class="flex items-center justify-center py-4 border border-blue-500/10 bg-blue-950/20 text-[10px] font-bold tracking-[0.3em] text-blue-400/40 hover:text-blue-300 hover:border-blue-500/30 hover:bg-blue-500/5 transition-all duration-500">
+                class="border-blue-system/10 bg-base-card/20 text-blue-system/40 hover:border-blue-system/30 hover:bg-blue-system/5 hover:text-blue-light flex items-center justify-center border py-4 text-[10px] font-bold tracking-[0.3em] transition-all duration-500">
                 BACK TO IDENTIFY
             </RouterLink>
         </div>
@@ -64,14 +64,8 @@ const handleRecover = async () => {
 </template>
 
 <style scoped>
-@keyframes shimmer {
-    100% {
-        transform: translateX(100%);
-    }
-}
-
 input:focus {
     text-shadow: 0 0 10px
-        v-bind('!attempted ? "rgba(244, 63, 94, 0.3)" : "rgba(59, 130, 246, 0.3)"');
+        v-bind('!attempted ? "var(--color-rose-danger)" : "var(--color-blue-light)"');
 }
 </style>

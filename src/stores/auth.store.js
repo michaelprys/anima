@@ -4,13 +4,15 @@ import { computed, ref } from 'vue';
 
 export const useStoreAuth = defineStore('storeAuth', () => {
     const user = ref(null),
-        isAuthenticated = computed(() => !!user.value),
+        userName = ref(null),
+        isAuthenticated = computed(() => Boolean(user.value)),
         redirectTo = import.meta.env.VITE_APP_URL;
 
     (async () => {
         try {
             const { data: authState } = await supabase.auth.getUser();
             user.value = authState.user ?? null;
+            userName.value = authState.user.user_metadata.userIdentifier ?? null;
         } catch (error) {
             console.error(error);
             user.value = null;
@@ -18,15 +20,21 @@ export const useStoreAuth = defineStore('storeAuth', () => {
     })();
 
     supabase.auth.onAuthStateChange((_, session) => {
+        if (window.location.search.includes('verified=true')) {
+            user.value = null;
+
+            return;
+        }
+
         user.value = session?.user ?? null;
     });
 
     const identify = async (payload) => {
-        const { email, password } = payload;
+        const { email, passKey } = payload;
 
         const { data, error } = await supabase.auth.signInWithPassword({
             email,
-            password,
+            password: passKey,
         });
 
         if (error) throw error;
@@ -42,7 +50,7 @@ export const useStoreAuth = defineStore('storeAuth', () => {
             password: passKey,
             options: {
                 data: { userIdentifier },
-                emailRedirectTo: `${redirectTo}/auth/identify`,
+                emailRedirectTo: `${redirectTo}/auth/identify?verified=true`,
             },
         });
 
@@ -51,10 +59,18 @@ export const useStoreAuth = defineStore('storeAuth', () => {
         return data;
     };
 
+    const disconnect = async () => {
+        const { error } = await supabase.auth.signOut();
+
+        if (error) throw error;
+    };
+
     return {
+        userName,
         isAuthenticated,
         identify,
         initialize,
+        disconnect,
     };
 });
 
