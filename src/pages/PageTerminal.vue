@@ -2,19 +2,25 @@
 import { computed, onMounted } from 'vue';
 import { useOnlineStatus } from '@/composables/useOnlineStatus';
 import { useGetLocation } from '@/composables/useGetLocation';
-import { useStoreNotes } from '@/stores/notes.store';
+import { useStoreFragments } from '@/stores/fragments.store';
 
-const storeNotes = useStoreNotes(),
+const storeFragments = useStoreFragments(),
     { online } = useOnlineStatus(),
     { coords, location, pending, getLocation, watchPermissions } = useGetLocation();
 
 const randomizeNumbers = () => Math.random().toString(16).slice(2, 10).toUpperCase();
 
-const totalNotesCharacters = computed(() => {
-    if (!storeNotes.notes || storeNotes.notes.length === 0) return '0.00';
+const totalFragmentsCharacters = computed(() => {
+    if (!storeFragments.fragments || storeFragments.fragments.length === 0) return '0.00';
 
-    const totalCharacters = storeNotes.notes.reduce((acc, note) => {
-        return acc + (note.id.length + note.title.length + note.thought.length + note.date.length);
+    const totalCharacters = storeFragments.fragments.reduce((acc, fragment) => {
+        return (
+            acc +
+            (fragment.id.length +
+                fragment.title.length +
+                fragment.thought.length +
+                fragment.date.length)
+        );
     }, 0);
     return (totalCharacters * 0.0009765625).toFixed(2);
 });
@@ -63,11 +69,13 @@ onMounted(async () => {
                     <div class="space-y-2 text-xs">
                         <div class="flex justify-between">
                             <span class="text-slate-600 font-medium">Fragments:</span>
-                            <span class="text-slate-200">{{ storeNotes.notes.length }} Units</span>
+                            <span class="text-slate-200">
+                                {{ storeFragments.fragments.length }} Units
+                            </span>
                         </div>
                         <div class="flex justify-between">
                             <span class="text-slate-600 font-medium">Data_Size:</span>
-                            <span class="text-slate-200">{{ totalNotesCharacters }} KB</span>
+                            <span class="text-slate-200">{{ totalFragmentsCharacters }} KB</span>
                         </div>
                     </div>
                 </section>

@@ -1,11 +1,11 @@
 <script setup>
-import { useStoreNotes } from '@/stores/notes.store.js';
-const storeNotes = useStoreNotes();
+import { useStoreFragments } from '@/stores/fragments.store.js';
+const storeFragments = useStoreFragments();
 </script>
 
 <template>
     <div
-        v-if="storeNotes.activeModal === 'delete'"
+        v-if="storeFragments.activeModal === 'delete'"
         class="fixed inset-0 bg-slate-950/90 flex items-center justify-center z-1000 p-4 backdrop-blur-sm">
         <div
             class="relative bg-[#030712] border border-rose-500/20 p-10 max-w-sm w-full shadow-2xl shadow-rose-500/5">
@@ -30,18 +30,18 @@ const storeNotes = useStoreNotes();
                 </p>
                 <p
                     class="text-slate-100 text-sm tracking-[0.15em] uppercase font-light leading-relaxed">
-                    Erase this memory?
+                    Erase this fragment?
                 </p>
             </div>
 
             <div class="flex justify-center gap-12">
                 <button
-                    @click="storeNotes.closeModal"
+                    @click="storeFragments.closeModal"
                     class="text-[10px] tracking-[0.3em] text-slate-500 hover:text-white transition-all uppercase">
                     [ Cancel ]
                 </button>
                 <button
-                    @click="storeNotes.deleteNote(storeNotes.selectedNoteId)"
+                    @click="storeFragments.deleteFragment(storeFragments.selectedNoteId)"
                     class="text-[10px] tracking-[0.3em] text-rose-500 hover:text-rose-400 transition-all uppercase font-black">
                     [ Terminate ]
                 </button>

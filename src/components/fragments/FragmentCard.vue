@@ -1,10 +1,10 @@
 <script setup>
-import { useStoreNotes } from '@/stores/notes.store.js';
+import { useStoreFragments } from '@/stores/fragments.store.js';
 
-const storeNotes = useStoreNotes();
+const storeFragments = useStoreFragments();
 
 defineProps({
-    note: {
+    fragment: {
         type: Object,
         required: true,
     },
@@ -20,7 +20,7 @@ defineProps({
                     class="h-px w-8 bg-cyan-500/40 group-hover:w-12 transition-all duration-700"></div>
                 <button
                     class="text-slate-600 hover:text-red-400/70 transition-colors p-1 -mr-1"
-                    @click="storeNotes.openModal(note.id, 'delete')">
+                    @click="storeFragments.openModal(fragment.id, 'delete')">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         class="h-4 w-4"
@@ -38,22 +38,22 @@ defineProps({
 
             <h3
                 class="text-sm font-bold uppercase tracking-widest text-slate-100 mb-4 group-hover:text-cyan-400 transition-colors line-clamp-1 break-all">
-                {{ note.title }}
+                {{ fragment.title }}
             </h3>
 
             <p
                 class="text-sm leading-relaxed text-slate-400 group-hover:text-slate-200 transition-all duration-700 break-all line-clamp-2">
-                {{ note.thought }}
+                {{ fragment.thought }}
             </p>
         </div>
 
         <div class="mt-8 pt-6 border-t border-white/10 flex items-center justify-between">
             <span class="text-[10px] font-medium tracking-[0.2em] text-slate-500 uppercase">
-                {{ note.date }}
+                {{ fragment.date }}
             </span>
 
             <RouterLink
-                :to="{ name: 'note', params: { id: note.id } }"
+                :to="{ name: 'fragment', params: { id: fragment.id } }"
                 class="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 hover:text-white transition-colors">
                 Open
             </RouterLink>

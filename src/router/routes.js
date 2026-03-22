@@ -1,13 +1,13 @@
 export const routes = [
     {
         path: '/',
-        name: 'notes',
-        component: () => import('@/pages/PageNotes.vue'),
+        name: 'fragments',
+        component: () => import('@/pages/PageFragment.vue'),
     },
     {
-        path: '/note/:id',
-        name: 'note',
-        component: () => import('@/pages/PageNote.vue'),
+        path: '/fragment/:id',
+        name: 'fragment',
+        component: () => import('@/pages/PageFragment.vue'),
     },
     {
         path: '/terminal',

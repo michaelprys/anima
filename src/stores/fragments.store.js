@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
-export const useStoreNotes = defineStore(
-    'storeNotes',
+export const useStoreFragments = defineStore(
+    'storeFragments',
     () => {
-        const notes = ref([]);
+        const fragments = ref([]);
         const activeModal = ref(false);
         const selectedNoteId = ref(null);
         const sentiment = ref([]);
@@ -19,39 +19,39 @@ export const useStoreNotes = defineStore(
             activeModal.value = false;
         };
 
-        const addNote = (payload) => {
+        const addFragment = (payload) => {
             const dateSettings = { month: 'short', day: 'numeric' },
                 date = new Intl.DateTimeFormat(navigator.language, dateSettings).format(new Date());
 
-            const note = {
+            const fragment = {
                 id: crypto.randomUUID(),
                 title: payload.title,
                 thought: payload.thought,
                 date,
             };
 
-            notes.value.unshift(note);
+            fragments.value.unshift(fragment);
         };
 
-        const deleteNote = (noteId) => {
-            notes.value = notes.value.filter((note) => note.id !== noteId);
+        const deleteFragment = (noteId) => {
+            fragments.value = fragments.value.filter((fragment) => fragment.id !== noteId);
 
             closeModal();
         };
 
-        const updateNote = (id, payload) => {
-            const index = notes.value.findIndex((note) => note.id === id);
+        const updateFragment = (id, payload) => {
+            const index = fragments.value.findIndex((fragment) => fragment.id === id);
 
             if (index !== -1) {
-                notes.value[index] = {
-                    ...notes.value[index],
+                fragments.value[index] = {
+                    ...fragments.value[index],
                     ...payload,
                 };
             }
         };
 
-        const getNoteById = (id) => {
-            return notes.value.find((note) => note.id === id);
+        const getFragmentById = (id) => {
+            return fragments.value.find((fragment) => fragment.id === id);
         };
 
         const recognizeSentiment = async (data) => {
@@ -79,16 +79,16 @@ export const useStoreNotes = defineStore(
         };
 
         return {
-            notes,
+            fragments,
             activeModal,
             selectedNoteId,
             sentiment,
             openModal,
             closeModal,
-            addNote,
-            deleteNote,
-            updateNote,
-            getNoteById,
+            addFragment,
+            deleteFragment,
+            updateFragment,
+            getFragmentById,
             recognizeSentiment,
         };
     },

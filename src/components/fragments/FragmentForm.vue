@@ -1,8 +1,8 @@
 <script setup>
 import { useTemplateRef, reactive, ref } from 'vue';
-import { useStoreNotes } from '@/stores/notes.store';
+import { useStoreFragments } from '@/stores/fragments.store';
 
-const storeNotes = useStoreNotes();
+const storeFragments = useStoreFragments();
 
 const newNote = reactive({
     title: '',
@@ -19,8 +19,8 @@ const handleAddNote = () => {
         return;
     }
 
-    storeNotes.addNote({ ...newNote });
-    storeNotes.recognizeSentiment(`${newNote.title}. ${newNote.thought}`);
+    storeFragments.addFragment({ ...newNote });
+    storeFragments.recognizeSentiment(`${newNote.title}. ${newNote.thought}`);
 
     Object.assign(newNote, {
         title: '',

@@ -16,7 +16,7 @@ const isOpen = ref(false);
         <div class="container px-8 py-4 mx-auto md:flex md:justify-between md:items-center">
             <div class="flex items-center justify-between">
                 <RouterLink
-                    :to="{ name: 'notes' }"
+                    :to="{ name: 'fragments' }"
                     class="flex items-center gap-5 group shrink-0 relative py-2">
                     <div class="relative flex items-center justify-center w-4 h-4">
                         <div
@@ -126,10 +126,10 @@ const isOpen = ref(false);
                 class="absolute inset-x-0 z-20 w-full px-8 py-6 bg-slate-900 border-b border-white/10 transition-[opacity,transform] duration-500 ease-in-out md:static md:flex md:items-center md:w-auto md:p-0 md:bg-transparent md:border-none md:transition-none">
                 <div class="flex flex-col md:flex-row md:items-center">
                     <RouterLink
-                        :to="{ name: 'notes' }"
+                        :to="{ name: 'fragments' }"
                         class="my-3 md:my-0 text-[10px] font-semibold tracking-[0.3em] text-slate-400 transition-all duration-500 hover:text-cyan-400 md:mx-6 uppercase"
                         active-class="text-cyan-400 shadow-[0_15px_20px_-10px_rgba(34,211,238,0.3)]">
-                        Notes
+                        Fragments
                     </RouterLink>
 
                     <RouterLink
