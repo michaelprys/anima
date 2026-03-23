@@ -1,69 +1,11 @@
 @import 'tailwindcss';
+@import './font-face';
 @import './themes';
-
-button,
-a,
-[role='button'] {
-    cursor: pointer;
-}
+@import './base';
 
 body {
-    background-color: #020617;
+    background-color: var(--color-canvas);
     color: #f8fafc;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-inter);
     -webkit-font-smoothing: antialiased;
-}
-
-.font-logo {
-    font-family: 'Syncopate', sans-serif;
-}
-
-.fragment-card-shadow {
-    shadow: 0 0.625rem 1.875rem -0.9375rem rgba(2, 6, 23, 0.5);
-}
-
-::-webkit-scrollbar {
-    width: 0.25rem;
-}
-::-webkit-scrollbar-track {
-    background: #020617;
-}
-::-webkit-scrollbar-thumb {
-    background: #1e293b;
-    border-radius: 0.625rem;
-}
-
-@media (prefers-reduced-motion: reduce) {
-    *,
-    ::before,
-    ::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
-    }
-}
-
-/* Vue transitions */
-
-.fade-enter-active,
-.fade-leave-active {
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    overflow: hidden;
-}
-
-.fade-enter-from {
-    opacity: 0;
-    transform: scale(0.98) translateY(-0.5rem);
-}
-
-.fade-leave-to {
-    opacity: 0;
-    transform: scale(0.98) translateY(0.5rem);
-}
-
-.fade-enter-active .absolute,
-.fade-leave-active .absolute {
-    transition: opacity 0.2s ease;
-    transform: none;
 }

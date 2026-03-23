@@ -20,7 +20,6 @@ const handleDisconnect = async () => {
         await storeAuth.disconnect();
 
         await delay(1000);
-        await router.push({ name: 'identify' });
     } catch (error) {
         console.error(error.message);
     } finally {
@@ -72,12 +71,12 @@ const handleDisconnect = async () => {
                             <div
                                 class="flex flex-col transition-transform duration-500 ease-in-out group-hover:-translate-y-5">
                                 <span
-                                    class="font-logo text-[0.875rem] font-black tracking-[0.3em] whitespace-nowrap text-white/90 uppercase">
+                                    class="font-['Syncopate'] text-sm font-black tracking-[0.3em] whitespace-nowrap text-white/90 uppercase">
                                     ANIMA
                                 </span>
                                 <span
-                                    class="font-logo text-cyan-light text-[0.875rem] font-black tracking-widest whitespace-nowrap uppercase">
-                                    HI_{{ storeAuth.userName || 'USER' }}
+                                    class="text-cyan-light font-['Syncopate'] text-sm font-black tracking-widest whitespace-nowrap uppercase">
+                                    HI_{{ storeAuth.user?.user_metadata?.userIdentifier || 'USER' }}
                                 </span>
                             </div>
                         </div>

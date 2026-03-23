@@ -36,7 +36,7 @@ const handleRecover = async () => {
                 @input="attempted = true"
                 :placeholder="!attempted && !email ? 'REQUIRED_EMAIL _' : 'REGISTERED_EMAIL'"
                 :class="[
-                    'focus:placeholder:text-blue-light/30 w-full border-b bg-transparent py-5 text-[0.875rem] tracking-[0.5em] uppercase transition-all duration-700 outline-none',
+                    'auth-input focus:placeholder:text-blue-light/30 w-full border-b bg-transparent py-5 text-[0.875rem] tracking-[0.5em] uppercase transition-all duration-700 outline-none',
                     !attempted && !email
                         ? 'border-rose-danger/40 text-rose-danger placeholder-rose-danger/40'
                         : 'border-blue-system/20 text-blue-pale placeholder-blue-light/30 focus:border-blue-light',
@@ -66,10 +66,3 @@ const handleRecover = async () => {
         </div>
     </form>
 </template>
-
-<style scoped>
-input:focus {
-    text-shadow: 0 0 0.625rem
-        v-bind('!attempted ? "var(--color-rose-danger)" : "var(--color-blue-light)"');
-}
-</style>

@@ -1,5 +1,6 @@
 @theme {
     /* Colors: Base */
+
     --color-canvas: #020617;
     --color-base: #030712;
     --color-base-card: #070e20;
@@ -7,6 +8,7 @@
     --color-surface-card: #131d37;
 
     /* Colors: Accents */
+
     --color-cyan-glow: #00cbeb;
     --color-cyan-light: #22d3ee;
     --color-blue-system: #3b82f6;
@@ -20,12 +22,14 @@
     --color-teal-init: #14b8a6;
 
     /* Glows / Shadows */
+
     --shadow-glow-cyan: 0 0 0.25rem color-mix(in srgb, var(--color-cyan-glow), transparent 40%);
     --shadow-glow-blue: 0 0 0.375rem color-mix(in srgb, var(--color-blue-system), transparent 20%);
     --shadow-glow-rose: 0 0 0.25rem color-mix(in srgb, var(--color-rose-danger), transparent 40%);
     --shadow-terminal-deep: 0 0 3rem rgba(0, 0, 0, 0.95);
 
     /* Drop Shadows */
+
     --drop-shadow-cyan: 0 0 0.125rem var(--color-cyan-light);
     --drop-shadow-rose: 0 0 0.25rem var(--color-rose-danger);
     --drop-shadow-blue: 0 0 0.25rem var(--color-blue-system);
@@ -35,11 +39,13 @@
     --drop-shadow-white: 0 0 0.1875rem rgba(255, 255, 255, 0.2);
 
     /* Spacings */
+
     --radius-xs: 0.0625rem;
     --border-opacity-system: 0.1;
     --border-opacity-active: 0.3;
 
     /* Animations */
+
     @keyframes blink {
         0%,
         100% {

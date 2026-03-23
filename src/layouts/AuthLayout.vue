@@ -26,12 +26,6 @@ useEsc();
                 <div class="bg-blue-system/20 absolute -right-px -bottom-px h-px w-16"></div>
                 <div class="bg-blue-system/20 absolute -right-px -bottom-px h-16 w-px"></div>
 
-                <RouterLink
-                    :to="{ name: 'fragments' }"
-                    class="text-blue-system/40 hover:text-rose-danger absolute top-8 right-10 cursor-default! text-[0.625rem] font-bold tracking-[0.5em] uppercase transition-all duration-500 focus:outline-none">
-                    [ Terminate ]
-                </RouterLink>
-
                 <header class="relative mb-20">
                     <div class="flex items-center gap-6">
                         <div class="relative flex h-3 w-3 items-center justify-center">

@@ -1,12 +1,8 @@
 <script setup>
 import ButtonAction from '@/components/auth/ButtonAction.vue';
 import { useStoreAuth } from '@/stores/auth.store';
-import { delay } from '@/utils/delay.utils';
-import { onMounted, ref } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
-
-const router = useRouter(),
-    route = useRoute();
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 const storeAuth = useStoreAuth();
 
@@ -27,23 +23,12 @@ const handleIdentify = async () => {
 
     try {
         await storeAuth.identify(identity.value);
-
-        if (storeAuth.isAuthenticated) {
-            await delay(1000);
-            await router.push({ name: 'fragments' });
-        }
     } catch (error) {
         console.error(error.message);
     } finally {
         pending.value = false;
     }
 };
-
-onMounted(async () => {
-    if (route.query.verified === 'true') {
-        await storeAuth.disconnect();
-    }
-});
 </script>
 
 <template>
@@ -56,13 +41,13 @@ onMounted(async () => {
                 @input="attempted = true"
                 :placeholder="!attempted && !identity.email ? 'REQUIRED_EMAIL _' : 'EMAIL_ADDRESS'"
                 :class="[
-                    'focus:placeholder:text-blue-light/30 w-full border-b bg-transparent py-5 text-[0.875rem] tracking-[0.5em] uppercase transition-all duration-700 outline-none',
+                    'auth-input focus:placeholder:text-blue-light/30 w-full border-b bg-transparent py-5 text-[0.875rem] tracking-[0.5em] uppercase transition-all duration-700 outline-none',
                     !attempted && !identity.email
                         ? 'border-rose-danger/40 text-rose-danger placeholder-rose-danger/40'
                         : 'border-blue-system/20 text-blue-pale placeholder-blue-light/30 focus:border-blue-light',
                 ]" />
             <div
-                class="absolute bottom-0 left-0 h-[0.125rem] w-0 transition-all duration-700 group-focus-within/input:w-full"
+                class="absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-700 group-focus-within/input:w-full"
                 :class="[
                     !attempted && !identity.email
                         ? 'bg-rose-danger'
@@ -77,7 +62,7 @@ onMounted(async () => {
                 @input="attempted = true"
                 :placeholder="!attempted && !identity.passKey ? 'REQUIRED_KEY _' : 'SECURITY_KEY'"
                 :class="[
-                    'focus:placeholder:text-blue-light/30 w-full border-b bg-transparent py-5 text-[0.875rem] tracking-[0.5em] transition-all duration-700 outline-none',
+                    'auth-input focus:placeholder:text-blue-light/30 w-full border-b bg-transparent py-5 text-[0.875rem] tracking-[0.5em] transition-all duration-700 outline-none',
                     !attempted && !identity.passKey
                         ? 'border-rose-danger/40 text-rose-danger placeholder-rose-danger/40'
                         : 'border-blue-system/20 text-blue-pale placeholder-blue-light/30 focus:border-blue-light',
@@ -115,10 +100,3 @@ onMounted(async () => {
         </div>
     </form>
 </template>
-
-<style scoped>
-input:focus {
-    text-shadow: 0 0 0.625rem
-        v-bind('!attempted ? "rgba(244, 63, 94, 0.3)" : "rgba(59, 130, 246, 0.3)"');
-}
-</style>

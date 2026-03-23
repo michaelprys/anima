@@ -63,7 +63,7 @@ const handleInitialize = async () => {
                         !attempted && !identity.userIdentifier ? 'REQUIRED_ID _' : 'USER_IDENTIFIER'
                     "
                     :class="[
-                        'w-full border-b bg-transparent py-3 text-[0.8125rem] tracking-[0.4em] uppercase transition-all duration-700 outline-none',
+                        'auth-input w-full border-b bg-transparent py-3 text-[0.8125rem] tracking-[0.4em] uppercase transition-all duration-700 outline-none',
                         !attempted && !identity.userIdentifier
                             ? 'border-rose-danger/40 text-rose-danger placeholder:text-rose-danger/40'
                             : 'border-blue-system/20 text-blue-pale placeholder:text-blue-light/30 focus:border-blue-light focus:placeholder:text-blue-light/30',
@@ -87,7 +87,7 @@ const handleInitialize = async () => {
                         !attempted && !identity.email ? 'REQUIRED_EMAIL _' : 'EMAIL_ADDRESS'
                     "
                     :class="[
-                        'w-full border-b bg-transparent py-3 text-[0.8125rem] tracking-[0.4em] uppercase transition-all duration-700 outline-none',
+                        'auth-input w-full border-b bg-transparent py-3 text-[0.8125rem] tracking-[0.4em] uppercase transition-all duration-700 outline-none',
                         !attempted && !identity.email
                             ? 'border-rose-danger/40 text-rose-danger placeholder:text-rose-danger/40'
                             : 'border-blue-system/20 text-blue-pale placeholder:text-blue-light/30 focus:border-blue-light focus:placeholder:text-blue-light/30',
@@ -110,7 +110,7 @@ const handleInitialize = async () => {
                         !attempted && !identity.passKey ? 'REQUIRED_KEY _' : 'SECURITY_KEY'
                     "
                     :class="[
-                        'w-full border-b bg-transparent py-3 text-[0.8125rem] tracking-[0.4em] transition-all duration-700 outline-none',
+                        'auth-input w-full border-b bg-transparent py-3 text-[0.8125rem] tracking-[0.4em] transition-all duration-700 outline-none',
                         !attempted && !identity.passKey
                             ? 'border-rose-danger/40 text-rose-danger placeholder:text-rose-danger/40'
                             : 'border-blue-system/20 text-blue-pale placeholder:text-blue-light/30 focus:border-blue-light focus:placeholder:text-blue-light/30',
@@ -135,7 +135,7 @@ const handleInitialize = async () => {
                             : 'CONFIRM_KEY'
                     "
                     :class="[
-                        'w-full border-b bg-transparent py-3 text-[0.8125rem] tracking-[0.4em] transition-all duration-700 outline-none',
+                        'auth-input w-full border-b bg-transparent py-3 text-[0.8125rem] tracking-[0.4em] transition-all duration-700 outline-none',
                         !attempted && (!identity.confirmPassKey || !isPasswordMatch)
                             ? 'border-rose-danger/40 text-rose-danger placeholder:text-rose-danger/40'
                             : 'border-blue-system/20 text-blue-pale placeholder:text-blue-light/30 focus:border-blue-light focus:placeholder:text-blue-light/30',
@@ -174,10 +174,3 @@ const handleInitialize = async () => {
         </div>
     </form>
 </template>
-
-<style scoped>
-input:focus {
-    text-shadow: 0 0 0.625rem
-        v-bind('!attempted ? "rgba(244, 63, 94, 0.3)" : "rgba(59, 130, 246, 0.3)"');
-}
-</style>

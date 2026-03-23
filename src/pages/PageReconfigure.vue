@@ -49,7 +49,7 @@ const handleReconfigure = async () => {
                         !attempted && !identity.passKey ? 'REQUIRED_KEY _' : 'NEW_SECURITY_KEY'
                     "
                     :class="[
-                        'focus:placeholder:text-blue-light/30 w-full border-b bg-transparent py-5 text-[0.875rem] tracking-[0.5em] transition-all duration-700 outline-none',
+                        'auth-input focus:placeholder:text-blue-light/30 w-full border-b bg-transparent py-5 text-[0.875rem] tracking-[0.5em] transition-all duration-700 outline-none',
                         !attempted && !identity.passKey
                             ? 'border-rose-danger/40 text-rose-danger placeholder-rose-danger/40'
                             : 'border-blue-system/20 text-blue-pale placeholder-blue-light/30 focus:border-blue-light',
@@ -74,7 +74,7 @@ const handleReconfigure = async () => {
                             : 'CONFIRM_NEW_KEY'
                     "
                     :class="[
-                        'focus:placeholder:text-blue-light/30 w-full border-b bg-transparent py-5 text-[0.875rem] tracking-[0.5em] transition-all duration-700 outline-none',
+                        'auth-input focus:placeholder:text-blue-light/30 w-full border-b bg-transparent py-5 text-[0.875rem] tracking-[0.5em] transition-all duration-700 outline-none',
                         !attempted && (!identity.confirmPassKey || !isMatch)
                             ? 'border-rose-danger/40 text-rose-danger placeholder-rose-danger/40'
                             : 'border-blue-system/20 text-blue-pale placeholder-blue-light/30 focus:border-blue-light',
@@ -105,10 +105,3 @@ const handleReconfigure = async () => {
         </div>
     </form>
 </template>
-
-<style scoped>
-input:focus {
-    text-shadow: 0 0 0.625rem
-        v-bind('!attempted ? "var(--color-rose-danger)" : "var(--color-blue-light)"');
-}
-</style>

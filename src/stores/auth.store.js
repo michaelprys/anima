@@ -1,93 +1,134 @@
+import { delay } from '@/utils/delay.utils';
 import { defineStore, acceptHMRUpdate } from 'pinia';
 import { supabase } from '@/api/supabase';
 import { computed, ref } from 'vue';
 
 export const useStoreAuth = defineStore('storeAuth', () => {
-    const user = ref(null),
-        userName = ref(null),
-        isAuthenticated = computed(() => Boolean(user.value)),
-        redirectTo = import.meta.env.VITE_APP_URL;
+    const redirectTo = import.meta.env.VITE_APP_URL;
+    const currentUser = ref(null);
+    const isAuthChecked = ref(false);
+    const isLoggedIn = computed(() => Boolean(currentUser.value));
+    const UX_DELAY = 1000;
+    const isPendingUX = ref(false);
 
-    (async () => {
+    const syncUser = (userData) => {
+        currentUser.value = userData;
+        isAuthChecked.value = true;
+    };
+
+    const checkAuth = async () => {
+        if (isAuthChecked.value) return;
+
         try {
-            const { data: authState } = await supabase.auth.getUser();
-            user.value = authState.user ?? null;
-            userName.value = authState.user?.user_metadata?.userIdentifier ?? null;
+            const { data } = await supabase.auth.getUser();
+            syncUser(data.user ?? null);
         } catch (error) {
-            console.error(error);
-            user.value = null;
+            syncUser(null);
         }
-    })();
+    };
 
-    supabase.auth.onAuthStateChange((_, session) => {
-        if (window.location.search.includes('verified=true')) {
-            user.value = null;
+    supabase.auth.onAuthStateChange(async (_, session) => {
+        if (isPendingUX.value) return;
 
-            return;
-        }
-
-        user.value = session?.user ?? null;
+        syncUser(session?.user ?? null);
     });
 
     const identify = async (payload) => {
-        const { email, passKey } = payload;
+        isPendingUX.value = true;
 
-        const { data, error } = await supabase.auth.signInWithPassword({
-            email,
-            password: passKey,
-        });
+        try {
+            const { email, passKey } = payload;
 
-        if (error) throw error;
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email,
+                password: passKey,
+            });
 
-        return data;
+            if (error) throw error;
+
+            await delay(UX_DELAY);
+            syncUser(data.user);
+        } finally {
+            isPendingUX.value = false;
+        }
     };
 
     const disconnect = async () => {
-        const { error } = await supabase.auth.signOut();
+        isPendingUX.value = true;
 
-        if (error) throw error;
+        try {
+            const { error } = await supabase.auth.signOut();
+
+            if (error) throw error;
+
+            await delay(UX_DELAY);
+
+            syncUser(null);
+        } finally {
+            isPendingUX.value = false;
+        }
     };
 
     const initialize = async (payload) => {
-        const { userIdentifier, email, passKey } = payload;
+        isPendingUX.value = true;
 
-        const { data, error } = await supabase.auth.signUp({
-            email,
-            password: passKey,
-            options: {
-                data: { userIdentifier },
-                emailRedirectTo: `${redirectTo}/auth/identify?verified=true`,
-            },
-        });
+        try {
+            const { userIdentifier, email, passKey } = payload;
 
-        if (error) throw error;
+            const { error } = await supabase.auth.signUp({
+                email,
+                password: passKey,
+                options: {
+                    data: { userIdentifier },
+                    emailRedirectTo: `${redirectTo}/auth/identify?verified=true`,
+                },
+            });
 
-        return data;
+            if (error) throw error;
+
+            await delay(UX_DELAY);
+        } finally {
+            isPendingUX.value = false;
+        }
     };
 
     const recover = async (email) => {
-        const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-            redirectTo: `${redirectTo}/auth/reconfigure`,
-        });
+        isPendingUX.value = true;
 
-        if (error) throw error;
+        try {
+            const { error } = await supabase.auth.resetPasswordForEmail(email, {
+                redirectTo: `${redirectTo}/auth/reconfigure`,
+            });
 
-        return data;
+            if (error) throw error;
+
+            await delay(UX_DELAY);
+        } finally {
+            isPendingUX.value = false;
+        }
     };
 
     const reconfigure = async (passKey) => {
-        const { data, error } = await supabase.auth.updateUser({
-            password: passKey,
-        });
+        isPendingUX.value = true;
 
-        if (error) throw error;
+        try {
+            const { error } = await supabase.auth.updateUser({
+                password: passKey,
+            });
 
-        return data;
+            if (error) throw error;
+
+            await delay(UX_DELAY);
+        } finally {
+            isPendingUX.value = false;
+        }
     };
 
     return {
-        userName,
-        isAuthenticated,
+        currentUser,
+        isLoggedIn,
+        syncUser,
+        checkAuth,
         identify,
         disconnect,
         initialize,

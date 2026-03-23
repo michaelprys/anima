@@ -1,0 +1,44 @@
+.auth-input:focus {
+    text-shadow: 0 0 0.625rem
+        v-bind('!attempted ? "rgba(244, 63, 94, 0.3)" : "rgba(59, 130, 246, 0.3)"');
+}
+
+::-webkit-scrollbar {
+    width: 0.25rem;
+}
+::-webkit-scrollbar-track {
+    background: var(--color-canvas);
+}
+::-webkit-scrollbar-thumb {
+    background: #1e293b;
+    border-radius: 0.625rem;
+}
+
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px var(--color-base-card) inset !important;
+    -webkit-text-fill-color: #f8fafc;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Vue Transitions */
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.fade-enter-from {
+    opacity: 0;
+    transform: scale(0.98) translateY(-0.5rem);
+}
+.fade-leave-to {
+    opacity: 0;
+    transform: scale(0.98) translateY(0.5rem);
+}
