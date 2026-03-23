@@ -69,4 +69,10 @@ export const routes = [
             },
         ],
     },
+    {
+        path: '/:pathMatch(.*)*',
+        name: 'NotFound',
+        component: () => import('@/pages/PageNotFound.vue'),
+        meta: { hasTransition: false },
+    },
 ];

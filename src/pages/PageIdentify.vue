@@ -68,7 +68,7 @@ const handleIdentify = async () => {
                         : 'border-blue-system/20 text-blue-pale placeholder-blue-light/30 focus:border-blue-light',
                 ]" />
             <div
-                class="absolute bottom-0 left-0 h-[0.125rem] w-0 transition-all duration-700 group-focus-within/input:w-full"
+                class="absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-700 group-focus-within/input:w-full"
                 :class="[
                     !attempted && !identity.passKey
                         ? 'bg-rose-danger'

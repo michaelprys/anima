@@ -80,7 +80,8 @@ onMounted(() => {
                                     : 'scale-110 bg-rose-500 shadow-[0_0_0.75rem_#f43f5e]',
                             ]"></div>
                     </div>
-                    <span class="text-[0.625rem] font-bold tracking-[0.5em] text-cyan-500/75 uppercase">
+                    <span
+                        class="text-[0.625rem] font-bold tracking-[0.5em] text-cyan-500/75 uppercase">
                         Anima_Inspect // Core
                     </span>
                 </div>
