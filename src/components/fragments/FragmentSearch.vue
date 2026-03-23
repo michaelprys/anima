@@ -13,7 +13,7 @@ const isFilterActive = ref(false);
                 @click="isFilterActive = !isFilterActive"
                 class="group flex items-center gap-3 transition-all">
                 <span
-                    class="group-hover:text-cyan-glow text-[10px] font-black tracking-[0.3em] text-slate-500 uppercase transition-colors">
+                    class="group-hover:text-cyan-glow text-[0.625rem] font-black tracking-[0.3em] text-slate-500 uppercase transition-colors">
                     {{ isFilterActive ? 'Close_Search' : 'Open_Search' }}
                 </span>
                 <span
@@ -23,7 +23,7 @@ const isFilterActive = ref(false);
                     "></span>
             </button>
 
-            <div class="font-mono text-[9px] tracking-[0.2em] text-slate-700 uppercase">
+            <div class="font-mono text-[0.5625rem] tracking-[0.2em] text-slate-700 uppercase">
                 Total: [ {{ storeFragments.fragments.length }} ]
             </div>
         </div>
@@ -50,13 +50,13 @@ const isFilterActive = ref(false);
         max-height 0.4s cubic-bezier(0.2, 0, 0, 1),
         opacity 0.2s ease,
         transform 0.4s cubic-bezier(0.2, 0, 0, 1);
-    max-height: 80px;
+    max-height: 5rem;
 }
 
 .expand-enter-from,
 .expand-leave-to {
     max-height: 0;
     opacity: 0;
-    transform: translateY(-4px);
+    transform: translateY(-0.25rem);
 }
 </style>

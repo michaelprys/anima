@@ -3,19 +3,25 @@ import ButtonAction from '@/components/auth/ButtonAction.vue';
 import { ref } from 'vue';
 import { useStoreAuth } from '@/stores/auth.store';
 
-const storeAuth = useStoreAuth();
-
-const identity = ref({
-    email: '',
-});
-
-const attempted = ref(true);
-const pending = ref(false);
+const storeAuth = useStoreAuth(),
+    email = ref(''),
+    attempted = ref(true),
+    pending = ref(false);
 
 const handleRecover = async () => {
-    if (!identity.value.email) {
+    if (!email.value) {
         attempted.value = false;
+
         return;
+    }
+    pending.value = true;
+
+    try {
+        await storeAuth.recover(email.value);
+    } catch (error) {
+        console.error(error);
+    } finally {
+        pending.value = false;
     }
 };
 </script>
@@ -24,23 +30,21 @@ const handleRecover = async () => {
     <form @submit.prevent="handleRecover" class="space-y-16 text-left uppercase">
         <div class="group/input relative">
             <input
-                v-model="identity.email"
+                v-model="email"
                 type="email"
                 spellcheck="false"
                 @input="attempted = true"
-                :placeholder="
-                    !attempted && !identity.email ? 'REQUIRED_EMAIL _' : 'REGISTERED_EMAIL'
-                "
+                :placeholder="!attempted && !email ? 'REQUIRED_EMAIL _' : 'REGISTERED_EMAIL'"
                 :class="[
-                    'focus:placeholder:text-blue-light/30 w-full border-b bg-transparent py-5 text-[14px] tracking-[0.5em] uppercase transition-all duration-700 outline-none',
-                    !attempted && !identity.email
+                    'focus:placeholder:text-blue-light/30 w-full border-b bg-transparent py-5 text-[0.875rem] tracking-[0.5em] uppercase transition-all duration-700 outline-none',
+                    !attempted && !email
                         ? 'border-rose-danger/40 text-rose-danger placeholder-rose-danger/40'
                         : 'border-blue-system/20 text-blue-pale placeholder-blue-light/30 focus:border-blue-light',
                 ]" />
             <div
-                class="absolute bottom-0 left-0 h-[2px] w-0 transition-all duration-700 group-focus-within/input:w-full"
+                class="absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-700 group-focus-within/input:w-full"
                 :class="[
-                    !attempted && !identity.email
+                    !attempted && !email
                         ? 'bg-rose-danger shadow-glow-rose'
                         : 'bg-blue-light shadow-glow-blue',
                 ]"></div>
@@ -56,7 +60,7 @@ const handleRecover = async () => {
 
             <RouterLink
                 :to="{ name: 'identify' }"
-                class="border-blue-system/10 bg-base-card/20 text-blue-system/40 hover:border-blue-system/30 hover:bg-blue-system/5 hover:text-blue-light flex items-center justify-center border py-4 text-[10px] font-bold tracking-[0.3em] transition-all duration-500">
+                class="border-blue-system/10 bg-base-card/20 text-blue-system/40 hover:border-blue-system/30 hover:bg-blue-system/5 hover:text-blue-light flex items-center justify-center border py-4 text-[0.625rem] font-bold tracking-[0.3em] transition-all duration-500">
                 BACK TO IDENTIFY
             </RouterLink>
         </div>
@@ -65,7 +69,7 @@ const handleRecover = async () => {
 
 <style scoped>
 input:focus {
-    text-shadow: 0 0 10px
+    text-shadow: 0 0 0.625rem
         v-bind('!attempted ? "var(--color-rose-danger)" : "var(--color-blue-light)"');
 }
 </style>

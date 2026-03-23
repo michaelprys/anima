@@ -56,13 +56,13 @@ onMounted(async () => {
                 @input="attempted = true"
                 :placeholder="!attempted && !identity.email ? 'REQUIRED_EMAIL _' : 'EMAIL_ADDRESS'"
                 :class="[
-                    'focus:placeholder:text-blue-light/30 w-full border-b bg-transparent py-5 text-[14px] tracking-[0.5em] uppercase transition-all duration-700 outline-none',
+                    'focus:placeholder:text-blue-light/30 w-full border-b bg-transparent py-5 text-[0.875rem] tracking-[0.5em] uppercase transition-all duration-700 outline-none',
                     !attempted && !identity.email
                         ? 'border-rose-danger/40 text-rose-danger placeholder-rose-danger/40'
                         : 'border-blue-system/20 text-blue-pale placeholder-blue-light/30 focus:border-blue-light',
                 ]" />
             <div
-                class="absolute bottom-0 left-0 h-[2px] w-0 transition-all duration-700 group-focus-within/input:w-full"
+                class="absolute bottom-0 left-0 h-[0.125rem] w-0 transition-all duration-700 group-focus-within/input:w-full"
                 :class="[
                     !attempted && !identity.email
                         ? 'bg-rose-danger'
@@ -77,13 +77,13 @@ onMounted(async () => {
                 @input="attempted = true"
                 :placeholder="!attempted && !identity.passKey ? 'REQUIRED_KEY _' : 'SECURITY_KEY'"
                 :class="[
-                    'focus:placeholder:text-blue-light/30 w-full border-b bg-transparent py-5 text-[14px] tracking-[0.5em] transition-all duration-700 outline-none',
+                    'focus:placeholder:text-blue-light/30 w-full border-b bg-transparent py-5 text-[0.875rem] tracking-[0.5em] transition-all duration-700 outline-none',
                     !attempted && !identity.passKey
                         ? 'border-rose-danger/40 text-rose-danger placeholder-rose-danger/40'
                         : 'border-blue-system/20 text-blue-pale placeholder-blue-light/30 focus:border-blue-light',
                 ]" />
             <div
-                class="absolute bottom-0 left-0 h-[2px] w-0 transition-all duration-700 group-focus-within/input:w-full"
+                class="absolute bottom-0 left-0 h-[0.125rem] w-0 transition-all duration-700 group-focus-within/input:w-full"
                 :class="[
                     !attempted && !identity.passKey
                         ? 'bg-rose-danger'
@@ -102,13 +102,13 @@ onMounted(async () => {
             <div class="grid grid-cols-2 gap-6">
                 <RouterLink
                     :to="{ name: 'recover' }"
-                    class="border-blue-system/10 bg-blue-system/5 text-blue-system/40 hover:border-blue-system/30 hover:bg-blue-system/5 hover:text-blue-light flex items-center justify-center border py-4 text-[10px] font-bold tracking-[0.3em] transition-all duration-500">
+                    class="border-blue-system/10 bg-blue-system/5 text-blue-system/40 hover:border-blue-system/30 hover:bg-blue-system/5 hover:text-blue-light flex items-center justify-center border py-4 text-[0.625rem] font-bold tracking-[0.3em] transition-all duration-500">
                     RECOVER_KEY
                 </RouterLink>
 
                 <RouterLink
                     :to="{ name: 'initialize' }"
-                    class="border-blue-system/10 bg-blue-system/5 text-blue-system/40 hover:border-blue-system/30 hover:bg-blue-system/5 hover:text-blue-light flex items-center justify-center border py-4 text-[10px] font-bold tracking-[0.3em] transition-all duration-500">
+                    class="border-blue-system/10 bg-blue-system/5 text-blue-system/40 hover:border-blue-system/30 hover:bg-blue-system/5 hover:text-blue-light flex items-center justify-center border py-4 text-[0.625rem] font-bold tracking-[0.3em] transition-all duration-500">
                     INITIALIZE
                 </RouterLink>
             </div>
@@ -118,7 +118,7 @@ onMounted(async () => {
 
 <style scoped>
 input:focus {
-    text-shadow: 0 0 10px
+    text-shadow: 0 0 0.625rem
         v-bind('!attempted ? "rgba(244, 63, 94, 0.3)" : "rgba(59, 130, 246, 0.3)"');
 }
 </style>

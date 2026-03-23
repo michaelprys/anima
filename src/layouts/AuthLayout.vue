@@ -17,7 +17,7 @@ useEsc();
 
         <Transition name="terminal-in" appear>
             <div
-                class="group border-blue-system/30 bg-base-card/95 relative w-full max-w-130 border p-16 shadow-[0_0_120px_rgba(2,6,23,1)] backdrop-blur-2xl md:p-22">
+                class="group border-blue-system/30 bg-base-card/95 relative w-full max-w-130 border p-16 shadow-[0_0_7.5rem_rgba(2,6,23,1)] backdrop-blur-2xl md:p-22">
                 <div
                     class="bg-blue-system shadow-glow-blue absolute -top-px -left-px h-0.5 w-16"></div>
                 <div
@@ -28,7 +28,7 @@ useEsc();
 
                 <RouterLink
                     :to="{ name: 'fragments' }"
-                    class="text-blue-system/40 hover:text-rose-danger absolute top-8 right-10 cursor-default! text-[10px] font-bold tracking-[0.5em] uppercase transition-all duration-500 focus:outline-none">
+                    class="text-blue-system/40 hover:text-rose-danger absolute top-8 right-10 cursor-default! text-[0.625rem] font-bold tracking-[0.5em] uppercase transition-all duration-500 focus:outline-none">
                     [ Terminate ]
                 </RouterLink>
 
@@ -41,7 +41,7 @@ useEsc();
                                 class="bg-blue-system shadow-glow-blue relative z-10 h-2.5 w-2.5 rounded-full"></div>
                         </div>
                         <span
-                            class="text-[13px] font-bold tracking-[0.8em] text-white uppercase drop-shadow-[0_0_8px_rgba(59,130,246,0.5)]">
+                            class="text-[0.8125rem] font-bold tracking-[0.8em] text-white uppercase drop-shadow-[0_0_0.5rem_rgba(59,130,246,0.5)]">
                             {{ route.meta.title || 'System_Access' }}
                         </span>
                     </div>
@@ -58,7 +58,7 @@ useEsc();
                 </div>
 
                 <div
-                    class="mt-20 flex items-center justify-between px-2 text-[9px] tracking-[0.4em]">
+                    class="mt-20 flex items-center justify-between px-2 text-[0.5625rem] tracking-[0.4em]">
                     <div class="flex items-center gap-4">
                         <span class="text-blue-system/30">Auth_Gateway</span>
                     </div>
@@ -79,7 +79,7 @@ useEsc();
 }
 .terminal-in-enter-from {
     opacity: 0;
-    transform: translateY(30px) scale(0.99);
-    filter: blur(15px);
+    transform: translateY(1.875rem) scale(0.99);
+    filter: blur(0.9375rem);
 }
 </style>

@@ -47,7 +47,7 @@ onMounted(() => {
         <form
             @submit.prevent="handleUpdate"
             @keydown.ctrl.enter="handleUpdate"
-            class="relative w-full max-w-2xl border border-blue-500/30 p-12 shadow-[0_0_60px_rgba(0,0,0,0.7)]">
+            class="relative w-full max-w-2xl border border-blue-500/30 p-12 shadow-[0_0_3.75rem_rgba(0,0,0,0.7)]">
             <div class="absolute top-0 left-0 h-3 w-3 border-t border-l border-blue-500/50"></div>
             <div class="absolute top-0 right-0 h-3 w-3 border-t border-r border-blue-500/50"></div>
             <div
@@ -76,15 +76,15 @@ onMounted(() => {
                             :class="[
                                 'relative h-1.5 w-1.5 rounded-full transition-all duration-500',
                                 attempted || (fragment.title && fragment.thought)
-                                    ? 'bg-cyan-400 shadow-[0_0_8px_#22d3ee]'
-                                    : 'scale-110 bg-rose-500 shadow-[0_0_12px_#f43f5e]',
+                                    ? 'bg-cyan-400 shadow-[0_0_0.5rem_#22d3ee]'
+                                    : 'scale-110 bg-rose-500 shadow-[0_0_0.75rem_#f43f5e]',
                             ]"></div>
                     </div>
-                    <span class="text-[10px] font-bold tracking-[0.5em] text-cyan-500/75 uppercase">
+                    <span class="text-[0.625rem] font-bold tracking-[0.5em] text-cyan-500/75 uppercase">
                         Anima_Inspect // Core
                     </span>
                 </div>
-                <span class="text-[8px] tracking-[0.3em] text-slate-600 uppercase italic">
+                <span class="text-[0.5rem] tracking-[0.3em] text-slate-600 uppercase italic">
                     System_link: Stable
                 </span>
             </header>
@@ -128,13 +128,13 @@ onMounted(() => {
                 <button
                     @click="router.back"
                     type="button"
-                    class="cursor-default! text-[10px] tracking-[0.4em] text-slate-500 transition-colors hover:text-rose-500">
+                    class="cursor-default! text-[0.625rem] tracking-[0.4em] text-slate-500 transition-colors hover:text-rose-500">
                     ABORT
                 </button>
 
                 <button
                     type="submit"
-                    class="group text-cyan-glow flex items-center text-[11px] font-black tracking-[0.4em] uppercase transition-all">
+                    class="group text-cyan-glow flex items-center text-[0.6875rem] font-black tracking-[0.4em] uppercase transition-all">
                     <span
                         class="text-cyan-glow mr-2 -translate-x-1 opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100">
                         [

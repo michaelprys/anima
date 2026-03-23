@@ -17,7 +17,7 @@ const storeFragments = useStoreFragments();
                 <div class="flex flex-col items-center justify-center opacity-40">
                     <div class="bg-surface-card mb-8 h-px w-12"></div>
                     <p
-                        class="text-center text-[10px] leading-loose font-bold tracking-[0.4em] text-slate-500 uppercase">
+                        class="text-center text-[0.625rem] leading-loose font-bold tracking-[0.4em] text-slate-500 uppercase">
                         Buffer is empty
                         <br />
                         <span class="font-light opacity-60">System awaiting new data input...</span>
@@ -45,7 +45,7 @@ const storeFragments = useStoreFragments();
                         <span
                             class="bg-surface-card group-hover:bg-cyan-glow/40 h-px w-10 transition-all duration-700 group-hover:w-32"></span>
                         <span
-                            class="group-hover:text-cyan-light text-[10px] font-bold tracking-[0.6em] text-slate-600 uppercase transition-colors">
+                            class="group-hover:text-cyan-light text-[0.625rem] font-bold tracking-[0.6em] text-slate-600 uppercase transition-colors">
                             Next_Data_Block
                         </span>
                     </button>

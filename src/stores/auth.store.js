@@ -12,7 +12,7 @@ export const useStoreAuth = defineStore('storeAuth', () => {
         try {
             const { data: authState } = await supabase.auth.getUser();
             user.value = authState.user ?? null;
-            userName.value = authState.user.user_metadata.userIdentifier ?? null;
+            userName.value = authState.user?.user_metadata?.userIdentifier ?? null;
         } catch (error) {
             console.error(error);
             user.value = null;
@@ -42,6 +42,12 @@ export const useStoreAuth = defineStore('storeAuth', () => {
         return data;
     };
 
+    const disconnect = async () => {
+        const { error } = await supabase.auth.signOut();
+
+        if (error) throw error;
+    };
+
     const initialize = async (payload) => {
         const { userIdentifier, email, passKey } = payload;
 
@@ -59,18 +65,34 @@ export const useStoreAuth = defineStore('storeAuth', () => {
         return data;
     };
 
-    const disconnect = async () => {
-        const { error } = await supabase.auth.signOut();
+    const recover = async (email) => {
+        const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+            redirectTo: `${redirectTo}/auth/reconfigure`,
+        });
 
         if (error) throw error;
+
+        return data;
+    };
+
+    const reconfigure = async (passKey) => {
+        const { data, error } = await supabase.auth.updateUser({
+            password: passKey,
+        });
+
+        if (error) throw error;
+
+        return data;
     };
 
     return {
         userName,
         isAuthenticated,
         identify,
-        initialize,
         disconnect,
+        initialize,
+        recover,
+        reconfigure,
     };
 });
 

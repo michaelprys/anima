@@ -48,6 +48,8 @@ defineProps({
             <div v-else>{{ action }}</div>
         </span>
         <span
-            class="via-blue-system/10 absolute inset-0 h-full w-full -translate-x-full bg-linear-to-r from-transparent to-transparent group-hover/btn:animate-[shimmer_3s_infinite]"></span>
+            class="pointer-events-none absolute inset-0 z-0 opacity-0 transition-opacity duration-1000 group-hover/btn:opacity-100">
+            <span class="absolute inset-0 h-full w-full bg-linear-to-r to-transparent"></span>
+        </span>
     </button>
 </template>

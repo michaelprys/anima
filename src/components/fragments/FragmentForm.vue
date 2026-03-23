@@ -77,18 +77,18 @@ const handleAddNote = () => {
                     class="flex flex-col items-start justify-between gap-6 border-t border-white/10 pt-6 sm:flex-row sm:items-center">
                     <div class="flex flex-wrap gap-x-4 gap-y-2">
                         <span
-                            class="text-[9px] font-bold tracking-[0.3em] whitespace-nowrap text-slate-400 uppercase">
+                            class="text-[0.5625rem] font-bold tracking-[0.3em] whitespace-nowrap text-slate-400 uppercase">
                             Encrypted
                         </span>
                         <span
-                            class="text-cyan-glow/60 animate-pulse text-[9px] font-bold tracking-[0.3em] whitespace-nowrap uppercase">
+                            class="text-cyan-glow/60 animate-pulse text-[0.5625rem] font-bold tracking-[0.3em] whitespace-nowrap uppercase">
                             Buffer active
                         </span>
                     </div>
 
                     <button
                         type="submit"
-                        class="border-cyan-glow/40 text-cyan-glow shadow-cyan-glow/5 hover:border-cyan-glow hover:bg-cyan-glow w-full cursor-default! rounded-xs border px-8 py-2 text-[10px] font-black tracking-[0.3em] uppercase shadow-lg transition-all duration-500 hover:text-base active:scale-95 sm:w-auto">
+                        class="border-cyan-glow/40 text-cyan-glow shadow-cyan-glow/5 hover:border-cyan-glow hover:bg-cyan-glow w-full cursor-default! rounded-xs border px-8 py-2 text-[0.625rem] font-black tracking-[0.3em] uppercase shadow-lg transition-all duration-500 hover:text-base active:scale-95 sm:w-auto">
                         Commit
                     </button>
                 </div>

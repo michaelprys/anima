@@ -20,13 +20,13 @@ const storeFragments = useStoreFragments();
 
             <header class="mb-8 flex items-center">
                 <span class="animate-blink bg-rose-danger shadow-glow-rose mr-3 h-2 w-2"></span>
-                <span class="text-rose-danger/80 text-[10px] font-bold tracking-[0.4em] uppercase">
+                <span class="text-rose-danger/80 text-[0.625rem] font-bold tracking-[0.4em] uppercase">
                     System_Warning
                 </span>
             </header>
 
             <div class="mb-10 text-center">
-                <p class="mb-2 text-[11px] tracking-[0.2em] text-slate-500 uppercase italic">
+                <p class="mb-2 text-[0.6875rem] tracking-[0.2em] text-slate-500 uppercase italic">
                     DANGER_ZONE:
                 </p>
                 <p
@@ -38,12 +38,12 @@ const storeFragments = useStoreFragments();
             <div class="flex justify-center gap-12">
                 <button
                     @click="storeFragments.closeModal"
-                    class="cursor-default! text-[10px] tracking-[0.3em] text-slate-500 uppercase transition-all hover:text-white">
+                    class="cursor-default! text-[0.625rem] tracking-[0.3em] text-slate-500 uppercase transition-all hover:text-white">
                     [ Cancel ]
                 </button>
                 <button
                     @click="storeFragments.deleteFragment(storeFragments.selectedNoteId)"
-                    class="text-rose-danger hover:text-rose-danger/80 cursor-default! text-[10px] font-black tracking-[0.3em] uppercase transition-all">
+                    class="text-rose-danger hover:text-rose-danger/80 cursor-default! text-[0.625rem] font-black tracking-[0.3em] uppercase transition-all">
                     [ Terminate ]
                 </button>
             </div>

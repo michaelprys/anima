@@ -72,11 +72,11 @@ const handleDisconnect = async () => {
                             <div
                                 class="flex flex-col transition-transform duration-500 ease-in-out group-hover:-translate-y-5">
                                 <span
-                                    class="font-logo text-[14px] font-black tracking-[0.3em] whitespace-nowrap text-white/90 uppercase">
+                                    class="font-logo text-[0.875rem] font-black tracking-[0.3em] whitespace-nowrap text-white/90 uppercase">
                                     ANIMA
                                 </span>
                                 <span
-                                    class="font-logo text-cyan-light text-[14px] font-black tracking-widest whitespace-nowrap uppercase">
+                                    class="font-logo text-cyan-light text-[0.875rem] font-black tracking-widest whitespace-nowrap uppercase">
                                     HI_{{ storeAuth.userName || 'USER' }}
                                 </span>
                             </div>
@@ -84,14 +84,14 @@ const handleDisconnect = async () => {
 
                         <div class="relative mt-1 h-3">
                             <div
-                                class="absolute inset-0 text-[8px] font-medium tracking-[0.2em] whitespace-nowrap uppercase opacity-80 transition-opacity duration-500 ease-in-out group-hover:opacity-0">
+                                class="absolute inset-0 text-[0.5rem] font-medium tracking-[0.2em] whitespace-nowrap uppercase opacity-80 transition-opacity duration-500 ease-in-out group-hover:opacity-0">
                                 <span class="text-slate-500">System_link:</span>
                                 <span :class="online ? 'text-cyan-glow' : 'text-rose-danger'">
                                     {{ online ? 'Stable' : 'Lost' }}
                                 </span>
                             </div>
                             <span
-                                class="absolute inset-0 text-[8px] font-medium tracking-[0.2em] whitespace-nowrap text-slate-300 uppercase opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100">
+                                class="absolute inset-0 text-[0.5rem] font-medium tracking-[0.2em] whitespace-nowrap text-slate-300 uppercase opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100">
                                 {{
                                     online
                                         ? 'I was waiting for you...'
@@ -148,15 +148,15 @@ const handleDisconnect = async () => {
                     <RouterLink
                         @click="isOpen = false"
                         :to="{ name: 'terminal' }"
-                        class="group text-emerald-sync/80 drop-shadow-emerald-sm hover:text-emerald-light hover:drop-shadow-emerald-md my-4 flex items-center justify-center gap-1.5 text-[10px] font-bold tracking-[0.3em] uppercase transition-[color,filter] duration-500 md:mx-6 md:my-0"
+                        class="group text-emerald-sync/80 drop-shadow-emerald-sm hover:text-emerald-light hover:drop-shadow-emerald-md my-4 flex items-center justify-center gap-1.5 text-[0.625rem] font-bold tracking-[0.3em] uppercase transition-[color,filter] duration-500 md:mx-6 md:my-0"
                         active-class="text-emerald-light !drop-shadow-emerald-lg">
                         <span
-                            class="font-mono text-[8px] opacity-20 transition-opacity group-hover:opacity-60">
+                            class="font-mono text-[0.5rem] opacity-20 transition-opacity group-hover:opacity-60">
                             [
                         </span>
                         Terminal
                         <span
-                            class="font-mono text-[8px] opacity-20 transition-opacity group-hover:opacity-60">
+                            class="font-mono text-[0.5rem] opacity-20 transition-opacity group-hover:opacity-60">
                             ]
                         </span>
                     </RouterLink>
@@ -167,7 +167,7 @@ const handleDisconnect = async () => {
                         @click="handleDisconnect"
                         :disabled="pending"
                         :class="[
-                            'mt-4 w-full rounded-xs border px-4 py-2.5 text-[9px] font-bold tracking-[0.25em] uppercase transition-[color,border-color,filter] duration-700 md:mt-0 md:ml-4 md:w-auto md:py-1.5',
+                            'mt-4 w-full rounded-xs border px-4 py-2.5 text-[0.5625rem] font-bold tracking-[0.25em] uppercase transition-[color,border-color,filter] duration-700 md:mt-0 md:ml-4 md:w-auto md:py-1.5',
                             pending
                                 ? 'animate-siren pointer-events-none'
                                 : 'hover:drop-shadow-white-glow border-light/20 text-rose-light/50 hover:border-rose-light/60 hover:text-white',

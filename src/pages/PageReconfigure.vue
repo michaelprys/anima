@@ -22,7 +22,17 @@ const isMatch = computed(() => {
 const handleReconfigure = async () => {
     if (!identity.value.passKey || !isMatch.value) {
         attempted.value = false;
+
         return;
+    }
+    pending.value = true;
+
+    try {
+        await storeAuth.reconfigure(identity.value.passKey);
+    } catch (error) {
+        console.error(error);
+    } finally {
+        pending.value = false;
     }
 };
 </script>
@@ -39,13 +49,13 @@ const handleReconfigure = async () => {
                         !attempted && !identity.passKey ? 'REQUIRED_KEY _' : 'NEW_SECURITY_KEY'
                     "
                     :class="[
-                        'focus:placeholder:text-blue-light/30 w-full border-b bg-transparent py-5 text-[14px] tracking-[0.5em] transition-all duration-700 outline-none',
+                        'focus:placeholder:text-blue-light/30 w-full border-b bg-transparent py-5 text-[0.875rem] tracking-[0.5em] transition-all duration-700 outline-none',
                         !attempted && !identity.passKey
                             ? 'border-rose-danger/40 text-rose-danger placeholder-rose-danger/40'
                             : 'border-blue-system/20 text-blue-pale placeholder-blue-light/30 focus:border-blue-light',
                     ]" />
                 <div
-                    class="absolute bottom-0 left-0 h-[2px] w-0 transition-all duration-700 group-focus-within/input:w-full"
+                    class="absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-700 group-focus-within/input:w-full"
                     :class="[
                         !attempted && !identity.passKey
                             ? 'bg-rose-danger shadow-glow-rose'
@@ -64,13 +74,13 @@ const handleReconfigure = async () => {
                             : 'CONFIRM_NEW_KEY'
                     "
                     :class="[
-                        'focus:placeholder:text-blue-light/30 w-full border-b bg-transparent py-5 text-[14px] tracking-[0.5em] transition-all duration-700 outline-none',
+                        'focus:placeholder:text-blue-light/30 w-full border-b bg-transparent py-5 text-[0.875rem] tracking-[0.5em] transition-all duration-700 outline-none',
                         !attempted && (!identity.confirmPassKey || !isMatch)
                             ? 'border-rose-danger/40 text-rose-danger placeholder-rose-danger/40'
                             : 'border-blue-system/20 text-blue-pale placeholder-blue-light/30 focus:border-blue-light',
                     ]" />
                 <div
-                    class="absolute bottom-0 left-0 h-[2px] w-0 transition-all duration-700 group-focus-within/input:w-full"
+                    class="absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-700 group-focus-within/input:w-full"
                     :class="[
                         !attempted && (!identity.confirmPassKey || !isMatch)
                             ? 'bg-rose-danger shadow-glow-rose'
@@ -89,7 +99,7 @@ const handleReconfigure = async () => {
 
             <RouterLink
                 :to="{ name: 'identify' }"
-                class="border-blue-system/10 bg-base-card/20 text-blue-system/40 hover:border-blue-system/30 hover:bg-blue-system/5 hover:text-blue-light flex items-center justify-center border py-4 text-[10px] font-bold tracking-[0.3em] transition-all duration-500">
+                class="border-blue-system/10 bg-base-card/20 text-blue-system/40 hover:border-blue-system/30 hover:bg-blue-system/5 hover:text-blue-light flex items-center justify-center border py-4 text-[0.625rem] font-bold tracking-[0.3em] transition-all duration-500">
                 BACK TO IDENTIFY
             </RouterLink>
         </div>
@@ -98,7 +108,7 @@ const handleReconfigure = async () => {
 
 <style scoped>
 input:focus {
-    text-shadow: 0 0 10px
+    text-shadow: 0 0 0.625rem
         v-bind('!attempted ? "var(--color-rose-danger)" : "var(--color-blue-light)"');
 }
 </style>
