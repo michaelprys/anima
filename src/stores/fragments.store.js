@@ -19,24 +19,50 @@ export const useStoreFragments = defineStore('storeFragments', () => {
         activeModal.value = false;
     };
 
+    const transformFragment = (raw) => {
+        const dateSettings = { month: 'short', day: 'numeric' };
+        const formattedDate = new Intl.DateTimeFormat(navigator.language, dateSettings).format(
+            new Date(raw.created_at),
+        );
+
+        return {
+            id: raw.id,
+            title: raw.title,
+            thought: raw.thought,
+            date: formattedDate,
+        };
+    };
+
     const addFragment = async (payload) => {
         const storeAuth = useStoreAuth();
         await storeAuth.checkAuth();
 
-        const fragment = {
-            identity_id: storeAuth.currentUser.id,
-            title: payload.title.toUpperCase(),
-            thought: payload.thought.toUpperCase(),
-        };
-
-        const { data, error } = await supabase.from('fragments').insert(fragment).single();
+        const { data, error } = await supabase
+            .from('fragments')
+            .insert({
+                identity_id: storeAuth.currentUser.id,
+                title: payload.title.toUpperCase(),
+                thought: payload.thought.toUpperCase(),
+            })
+            .select('id, title, thought, created_at')
+            .single();
 
         if (error) throw error;
 
-        fragments.value.unshift({
-            title: data.title,
-            thought: data.thought,
-        });
+        fragments.value.unshift(transformFragment(data));
+    };
+
+    const loadFragments = async () => {
+        const storeAuth = useStoreAuth();
+
+        const { data, error } = await supabase
+            .from('fragments')
+            .select('*')
+            .eq('identity_id', storeAuth.currentUser.id);
+
+        if (error) throw error;
+
+        fragments.value = data.map((fragment) => transformFragment(fragment));
     };
 
     const deleteFragment = (fragmentId) => {
@@ -90,6 +116,7 @@ export const useStoreFragments = defineStore('storeFragments', () => {
         openModal,
         closeModal,
         addFragment,
+        loadFragments,
         deleteFragment,
         updateFragment,
         getFragmentById,

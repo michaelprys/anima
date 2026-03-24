@@ -4,8 +4,15 @@ import FragmentForm from '@/components/fragments/FragmentForm.vue';
 import FragmentModalDelete from '@/components/fragments/FragmentModalDelete.vue';
 import FragmentSearch from '@/components/fragments/FragmentSearch.vue';
 import { useStoreFragments } from '@/stores/fragments.store';
+import { onMounted } from 'vue';
 
 const storeFragments = useStoreFragments();
+
+onMounted(async () => {
+    await storeFragments.loadFragments();
+
+    console.log(storeFragments.fragments);
+});
 </script>
 
 <template>
