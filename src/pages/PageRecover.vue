@@ -1,12 +1,18 @@
 <script setup>
 import ButtonAction from '@/components/auth/ButtonAction.vue';
+import { useToast } from '@/composables/useToast.js';
+import { formatSystemError } from '@/utils/formatSystemError.utils.js';
 import { ref } from 'vue';
 import { useStoreAuth } from '@/stores/auth.store';
+import { useRouter } from 'vue-router';
 
 const storeAuth = useStoreAuth(),
     email = ref(''),
     attempted = ref(true),
     pending = ref(false);
+
+const { showToast } = useToast();
+const router = useRouter();
 
 const handleRecover = async () => {
     if (!email.value) {
@@ -18,8 +24,11 @@ const handleRecover = async () => {
 
     try {
         await storeAuth.recover(email.value);
+        showToast('LINK_DISPATCHED', 'success');
+
+        await router.push({ name: 'identify' });
     } catch (error) {
-        console.error(error);
+        showToast(formatSystemError(error), 'error');
     } finally {
         pending.value = false;
     }

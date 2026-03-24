@@ -24,6 +24,10 @@ router.beforeEach(async (to) => {
         await storeAuth.checkAuth();
     }
 
+    if (to.name === 'reconfigure') {
+        return true;
+    }
+
     if (!storeAuth.isLoggedIn && to.meta.requiresAuth) {
         return { name: 'identify', query: { next: to.fullPath }, replace: true };
     }

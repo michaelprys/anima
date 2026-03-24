@@ -20,7 +20,8 @@ const storeFragments = useStoreFragments();
 
             <header class="mb-8 flex items-center">
                 <span class="animate-blink bg-rose-danger shadow-glow-rose mr-3 h-2 w-2"></span>
-                <span class="text-rose-danger/80 text-[0.625rem] font-bold tracking-[0.4em] uppercase">
+                <span
+                    class="text-rose-danger/80 text-[0.625rem] font-bold tracking-[0.4em] uppercase">
                     System_Warning
                 </span>
             </header>

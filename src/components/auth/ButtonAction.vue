@@ -29,6 +29,7 @@ defineProps({
         :disabled="pending"
         :class="[
             'group/btn relative w-full overflow-hidden border py-6 font-bold tracking-[1em] transition-all duration-700 outline-none active:scale-[0.99]',
+            pending ? 'cursor-not-allowed' : 'cursor-default',
             bgColor,
         ]">
         <span

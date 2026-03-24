@@ -1,7 +1,12 @@
 <script setup>
+import { supabase } from '@/api/supabase.js';
 import ButtonAction from '@/components/auth/ButtonAction.vue';
+import BasePasswordVisibility from '@/components/base/BasePasswordVisibility.vue';
+import { useToast } from '@/composables/useToast.js';
+import { formatSystemError } from '@/utils/formatSystemError.utils.js';
 import { ref, computed } from 'vue';
 import { useStoreAuth } from '@/stores/auth.store';
+import { useRouter } from 'vue-router';
 
 const storeAuth = useStoreAuth();
 
@@ -10,6 +15,11 @@ const identity = ref({
     confirmPassKey: '',
 });
 
+const { showToast } = useToast();
+const router = useRouter();
+
+const passwordVisible = ref(false);
+const confirmPasswordVisible = ref(false);
 const attempted = ref(true);
 const pending = ref(false);
 
@@ -22,15 +32,20 @@ const isMatch = computed(() => {
 const handleReconfigure = async () => {
     if (!identity.value.passKey || !isMatch.value) {
         attempted.value = false;
-
         return;
     }
     pending.value = true;
 
     try {
         await storeAuth.reconfigure(identity.value.passKey);
+
+        showToast('IDENTITY_RECONFIGURED', 'success');
+
+        await supabase.auth.signOut();
+
+        await router.push({ name: 'identify' });
     } catch (error) {
-        console.error(error);
+        showToast(formatSystemError(error), 'error');
     } finally {
         pending.value = false;
     }
@@ -43,7 +58,7 @@ const handleReconfigure = async () => {
             <div class="group/input relative">
                 <input
                     v-model="identity.passKey"
-                    type="password"
+                    :type="passwordVisible ? 'text' : 'password'"
                     @input="attempted = true"
                     :placeholder="
                         !attempted && !identity.passKey ? 'REQUIRED_KEY _' : 'NEW_SECURITY_KEY'
@@ -61,12 +76,13 @@ const handleReconfigure = async () => {
                             ? 'bg-rose-danger shadow-glow-rose'
                             : 'bg-blue-light shadow-glow-blue',
                     ]"></div>
+                <BasePasswordVisibility v-model="passwordVisible" />
             </div>
 
             <div class="group/input relative">
                 <input
                     v-model="identity.confirmPassKey"
-                    type="password"
+                    :type="confirmPasswordVisible ? 'text' : 'password'"
                     @input="attempted = true"
                     :placeholder="
                         !attempted && (!identity.confirmPassKey || !isMatch)
@@ -86,6 +102,8 @@ const handleReconfigure = async () => {
                             ? 'bg-rose-danger shadow-glow-rose'
                             : 'bg-blue-light shadow-glow-blue',
                     ]"></div>
+
+                <BasePasswordVisibility v-model="confirmPasswordVisible" />
             </div>
         </div>
 

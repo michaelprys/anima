@@ -62,7 +62,6 @@ export const routes = [
                 component: () => import('@/pages/PageReconfigure.vue'),
                 meta: {
                     title: 'Credential_Update',
-                    guestOnly: true,
                     hasTransition: false,
                     hasNavbar: false,
                 },
@@ -71,7 +70,6 @@ export const routes = [
     },
     {
         path: '/:pathMatch(.*)*',
-        name: 'NotFound',
         component: () => import('@/pages/PageNotFound.vue'),
         meta: { hasTransition: false },
     },

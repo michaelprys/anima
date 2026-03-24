@@ -38,9 +38,10 @@ export const useStoreAuth = defineStore('storeAuth', () => {
 
         try {
             const { email, passKey } = payload;
+            const formattedEmail = email.toLowerCase().trim();
 
             const { data, error } = await supabase.auth.signInWithPassword({
-                email,
+                email: formattedEmail,
                 password: passKey,
             });
 
@@ -75,11 +76,16 @@ export const useStoreAuth = defineStore('storeAuth', () => {
         try {
             const { userIdentifier, email, passKey } = payload;
 
+            const formattedEmail = email.toLowerCase().trim();
+            const formattedUserId = userIdentifier.toUpperCase().trim();
+
             const { error } = await supabase.auth.signUp({
-                email,
+                email: formattedEmail,
                 password: passKey,
                 options: {
-                    data: { userIdentifier },
+                    data: {
+                        userIdentifier: formattedUserId,
+                    },
                     emailRedirectTo: `${redirectTo}/auth/identify?verified=true`,
                 },
             });
@@ -96,7 +102,8 @@ export const useStoreAuth = defineStore('storeAuth', () => {
         isPendingUX.value = true;
 
         try {
-            const { error } = await supabase.auth.resetPasswordForEmail(email, {
+            const formattedEmail = email.toLowerCase().trim();
+            const { error } = await supabase.auth.resetPasswordForEmail(formattedEmail, {
                 redirectTo: `${redirectTo}/auth/reconfigure`,
             });
 

@@ -1,9 +1,14 @@
 <script setup>
 import ButtonAction from '@/components/auth/ButtonAction.vue';
+import BasePasswordVisibility from '@/components/base/BasePasswordVisibility.vue';
+import { useToast } from '@/composables/useToast.js';
+import { delay } from '@/utils/delay.utils.js';
+import { formatSystemError } from '@/utils/formatSystemError.utils.js';
 import { useRouter } from 'vue-router';
 import { ref, computed } from 'vue';
 import { useStoreAuth } from '@/stores/auth.store';
 
+const { showToast } = useToast();
 const storeAuth = useStoreAuth();
 const router = useRouter();
 
@@ -14,6 +19,8 @@ const identity = ref({
     confirmPassKey: '',
 });
 
+const passwordVisible = ref(false);
+const confirmPasswordVisible = ref(false);
 const attempted = ref(true);
 const pending = ref(false);
 
@@ -41,9 +48,11 @@ const handleInitialize = async () => {
             passKey,
         });
 
+        showToast('IDENTITY_INITIALIZED', 'success');
+
         await router.push({ name: 'identify' });
     } catch (error) {
-        console.error(error);
+        showToast(formatSystemError(error), 'error');
     } finally {
         pending.value = false;
     }
@@ -104,8 +113,8 @@ const handleInitialize = async () => {
             <div class="group/input relative">
                 <input
                     v-model="identity.passKey"
-                    type="password"
                     @input="attempted = true"
+                    :type="passwordVisible ? 'text' : 'password'"
                     :placeholder="
                         !attempted && !identity.passKey ? 'REQUIRED_KEY _' : 'SECURITY_KEY'
                     "
@@ -115,6 +124,8 @@ const handleInitialize = async () => {
                             ? 'border-rose-danger/40 text-rose-danger placeholder:text-rose-danger/40'
                             : 'border-blue-system/20 text-blue-pale placeholder:text-blue-light/30 focus:border-blue-light focus:placeholder:text-blue-light/30',
                     ]" />
+                <BasePasswordVisibility v-model="passwordVisible" />
+
                 <div
                     class="absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-700 group-focus-within/input:w-full"
                     :class="[
@@ -127,8 +138,7 @@ const handleInitialize = async () => {
             <div class="group/input relative">
                 <input
                     v-model="identity.confirmPassKey"
-                    type="password"
-                    @input="attempted = true"
+                    :type="confirmPasswordVisible ? 'text' : 'password'"
                     :placeholder="
                         !attempted && (!identity.confirmPassKey || !isPasswordMatch)
                             ? 'ERROR: MISMATCH _'
@@ -140,6 +150,9 @@ const handleInitialize = async () => {
                             ? 'border-rose-danger/40 text-rose-danger placeholder:text-rose-danger/40'
                             : 'border-blue-system/20 text-blue-pale placeholder:text-blue-light/30 focus:border-blue-light focus:placeholder:text-blue-light/30',
                     ]" />
+
+                <BasePasswordVisibility v-model="confirmPasswordVisible" />
+
                 <div
                     class="absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-700 group-focus-within/input:w-full"
                     :class="[

@@ -69,7 +69,9 @@ onMounted(async () => {
 
             <div class="space-y-10 tracking-widest text-slate-300 uppercase">
                 <section class="space-y-4">
-                    <p class="text-[0.625rem] font-bold tracking-[0.25rem] text-slate-500">Memory</p>
+                    <p class="text-[0.625rem] font-bold tracking-[0.25rem] text-slate-500">
+                        Memory
+                    </p>
                     <div class="space-y-2 text-xs">
                         <div class="flex justify-between">
                             <span class="font-medium text-slate-600">Fragments:</span>
@@ -171,7 +173,9 @@ onMounted(async () => {
 
                 <section class="pt-2">
                     <div class="space-y-3 text-[0.625rem]">
-                        <span class="font-bold tracking-[0.1875rem] text-slate-500">Cognitive_Load</span>
+                        <span class="font-bold tracking-[0.1875rem] text-slate-500">
+                            Cognitive_Load
+                        </span>
                         <div
                             class="text-cyan-light text-[0.625rem] leading-none tracking-normal transition-colors duration-700">
                             [||||||||||....................] 20%

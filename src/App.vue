@@ -1,31 +1,14 @@
 <script setup>
+import BaseToast from '@/components/base/BaseToast.vue';
 import AppNavbar from '@/components/layout/AppNavbar.vue';
-import { watch } from 'vue';
-import { useStoreAuth } from '@/stores/auth.store';
-import { useRoute, useRouter } from 'vue-router';
+import { useToast } from '@/composables/useToast.js';
 
-const auth = useStoreAuth(),
-    route = useRoute(),
-    router = useRouter();
-
-watch(
-    () => auth.isLoggedIn,
-    (isLoggedIn) => {
-        if (!isLoggedIn && route.meta.requiresAuth) {
-            router.push({ name: 'identify' });
-        } else {
-            if (route.name === 'identify') {
-                const nextPath = route.query.next || { name: 'fragments' };
-
-                router.push(nextPath);
-            }
-        }
-    },
-);
+const { toastState } = useToast();
 </script>
 
 <template>
     <AppNavbar />
+    <BaseToast :active="toastState.active" :message="toastState.message" :type="toastState.type" />
 
     <router-view v-slot="{ Component, route }">
         <component
