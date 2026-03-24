@@ -8,6 +8,7 @@ export const useStoreFragments = defineStore('storeFragments', () => {
     const activeModal = ref(false);
     const selectedFragmentId = ref(null);
     const sentiment = ref([]);
+    const storeAuth = useStoreAuth();
 
     const openModal = (fragmentId, type) => {
         selectedFragmentId.value = fragmentId;
@@ -34,7 +35,6 @@ export const useStoreFragments = defineStore('storeFragments', () => {
     };
 
     const addFragment = async (payload) => {
-        const storeAuth = useStoreAuth();
         await storeAuth.checkAuth();
 
         const { data, error } = await supabase
@@ -53,8 +53,6 @@ export const useStoreFragments = defineStore('storeFragments', () => {
     };
 
     const loadFragments = async () => {
-        const storeAuth = useStoreAuth();
-
         const { data, error } = await supabase
             .from('fragments')
             .select('*')
@@ -65,8 +63,17 @@ export const useStoreFragments = defineStore('storeFragments', () => {
         fragments.value = data.map((fragment) => transformFragment(fragment));
     };
 
-    const deleteFragment = (fragmentId) => {
-        fragments.value = fragments.value.filter((fragment) => fragment.id !== fragmentId);
+    const deleteFragment = async (fragmentId) => {
+        const { error } = await supabase
+            .from('fragments')
+            .delete()
+            .eq('id', fragmentId)
+            .eq('identity_id', storeAuth.currentUser.id);
+
+        console.log(selectedFragmentId.value);
+        if (error) throw error;
+
+        fragments.value = fragments.value.filter((f) => f.id !== fragmentId);
 
         closeModal();
     };
