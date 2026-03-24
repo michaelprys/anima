@@ -1,7 +1,7 @@
 <script setup>
-import NoteCard from '@/components/fragments/FragmentCard.vue';
-import NoteForm from '@/components/fragments/FragmentForm.vue';
-import NoteModalDelete from '@/components/fragments/FragmentModalDelete.vue';
+import FragmentCard from '@/components/fragments/FragmentCard.vue';
+import FragmentForm from '@/components/fragments/FragmentForm.vue';
+import FragmentModalDelete from '@/components/fragments/FragmentModalDelete.vue';
 import FragmentSearch from '@/components/fragments/FragmentSearch.vue';
 import { useStoreFragments } from '@/stores/fragments.store';
 
@@ -10,7 +10,7 @@ const storeFragments = useStoreFragments();
 
 <template>
     <section class="mx-auto min-h-screen max-w-7xl px-6 py-10 text-slate-300 md:px-12">
-        <NoteForm :fragments="storeFragments.fragments" />
+        <FragmentForm :fragments="storeFragments.fragments" />
 
         <Transition name="fade" mode="out-in">
             <div v-if="storeFragments.fragments.length === 0" key="empty" class="mt-32">
@@ -33,7 +33,7 @@ const storeFragments = useStoreFragments();
                     name="jump"
                     tag="ul"
                     class="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    <NoteCard
+                    <FragmentCard
                         v-for="fragment in storeFragments.fragments"
                         :key="fragment.id"
                         :fragment="fragment" />
@@ -54,7 +54,7 @@ const storeFragments = useStoreFragments();
         </Transition>
 
         <Teleport to="body">
-            <NoteModalDelete />
+            <FragmentModalDelete />
         </Teleport>
     </section>
 </template>

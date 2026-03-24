@@ -1,10 +1,12 @@
 <script setup>
+import { useToast } from '@/composables/useToast.js';
 import { useTemplateRef, reactive, ref } from 'vue';
 import { useStoreFragments } from '@/stores/fragments.store';
 
 const storeFragments = useStoreFragments();
+const { showToast } = useToast();
 
-const newNote = reactive({
+const newFragment = reactive({
     title: '',
     thought: '',
 });
@@ -12,22 +14,26 @@ const newNote = reactive({
 const attempted = ref(true);
 const thoughtRef = useTemplateRef('thoughtRef');
 
-const handleAddNote = () => {
-    if (!newNote.title || !newNote.thought) {
+const handleAddFragment = () => {
+    if (!newFragment.title || !newFragment.thought) {
         attempted.value = false;
 
         return;
     }
 
-    storeFragments.addFragment({ ...newNote });
-    storeFragments.recognizeSentiment(`${newNote.title}. ${newNote.thought}`);
+    try {
+        storeFragments.addFragment({ ...newFragment });
+        // storeFragments.recognizeSentiment(`${newFragment.title}. ${newFragment.thought}`);
 
-    Object.assign(newNote, {
-        title: '',
-        thought: '',
-    });
+        Object.assign(newFragment, {
+            title: '',
+            thought: '',
+        });
 
-    thoughtRef.value.focus();
+        thoughtRef.value.focus();
+    } catch (error) {
+        showToast(error || 'ERROR_CREATING_FRAGMENT_');
+    }
 };
 </script>
 
@@ -38,19 +44,19 @@ const handleAddNote = () => {
                 class="from-cyan-glow/15 to-blue-system/15 absolute -inset-1 bg-linear-to-r opacity-0 blur-2xl transition-opacity duration-1000 group-focus-within:opacity-100"></div>
 
             <form
-                @submit.prevent="handleAddNote"
-                @keydown.ctrl.enter="handleAddNote"
+                @submit.prevent="handleAddFragment"
+                @keydown.ctrl.enter="handleAddFragment"
                 @focusout="attempted = true"
                 class="focus-within:border-cyan-glow/30 bg-base-panel/40 relative rounded-sm border border-white/10 p-6 backdrop-blur-3xl transition-all duration-500 md:p-8">
                 <input
-                    v-model="newNote.title"
+                    v-model="newFragment.title"
                     maxLength="40"
                     type="text"
-                    :placeholder="attempted || newNote.title ? '> TITLE' : 'REQUIRED_TITLE _'"
+                    :placeholder="attempted || newFragment.title ? '> TITLE' : 'REQUIRED_TITLE _'"
                     @input="attempted = true"
                     :class="[
                         'mb-2 w-full border-none bg-transparent font-mono text-lg font-black tracking-[0.5em] uppercase transition-all duration-500 focus:ring-0 focus:outline-none',
-                        attempted || newNote.title
+                        attempted || newFragment.title
                             ? 'text-cyan-glow placeholder-cyan-glow/20'
                             : 'text-rose-danger placeholder-rose-danger/40 animate-[pulse_1.5s_infinite]',
                     ]" />
@@ -58,17 +64,17 @@ const handleAddNote = () => {
                 <div class="mb-6 h-px w-12 bg-white/5"></div>
 
                 <textarea
-                    v-model="newNote.thought"
+                    v-model="newFragment.thought"
                     maxLength="1000"
                     ref="thoughtRef"
                     :placeholder="
-                        attempted || newNote.thought ? 'I_AM_LISTENING...' : 'REQUIRED_CONTENT _'
+                        attempted || newFragment.thought ? 'I_AM_LISTENING...' : 'REQUIRED_INPUT _'
                     "
                     rows="5"
                     @input="attempted = true"
                     :class="[
                         'mb-6 w-full resize-none border-none bg-transparent font-mono text-sm leading-relaxed tracking-[0.3em] uppercase transition-colors focus:ring-0 focus:outline-none',
-                        attempted || newNote.thought
+                        attempted || newFragment.thought
                             ? 'text-slate-300 placeholder-slate-600'
                             : 'text-rose-danger placeholder-rose-danger/40 animate-[pulse_1.5s_infinite]',
                     ]"></textarea>

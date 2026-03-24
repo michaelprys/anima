@@ -43,7 +43,7 @@ const storeFragments = useStoreFragments();
                     [ Cancel ]
                 </button>
                 <button
-                    @click="storeFragments.deleteFragment(storeFragments.selectedNoteId)"
+                    @click="storeFragments.deleteFragment(storeFragments.selectedFragmentId)"
                     class="text-rose-danger hover:text-rose-danger/80 cursor-default! text-[0.625rem] font-black tracking-[0.3em] uppercase transition-all">
                     [ Terminate ]
                 </button>
