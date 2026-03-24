@@ -73,20 +73,33 @@ export const useStoreFragments = defineStore('storeFragments', () => {
         console.log(selectedFragmentId.value);
         if (error) throw error;
 
-        fragments.value = fragments.value.filter((f) => f.id !== fragmentId);
+        fragments.value = fragments.value.filter((fragment) => fragment.id !== fragmentId);
 
         closeModal();
     };
 
-    const updateFragment = (id, payload) => {
-        const index = fragments.value.findIndex((fragment) => fragment.id === id);
+    const updateFragment = async (payload) => {
+        const { fragmentId, title, thought } = payload;
 
-        if (index !== -1) {
-            fragments.value[index] = {
-                ...fragments.value[index],
-                ...payload,
-            };
-        }
+        const { error } = await supabase
+            .from('fragments')
+            .update({ title, thought })
+            .eq('identity_id', storeAuth.currentUser.id)
+            .eq('id', fragmentId);
+
+        if (error) throw error;
+
+        fragments.value = fragments.value.map((fragment) => {
+            if (fragment.id === fragmentId) {
+                return {
+                    ...fragment,
+                    title: title.toUpperCase(),
+                    thought: thought.toUpperCase(),
+                };
+            }
+
+            return fragment;
+        });
     };
 
     const getFragmentById = (id) => {

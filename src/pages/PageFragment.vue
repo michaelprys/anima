@@ -18,11 +18,12 @@ const handleUpdate = () => {
     }
 
     const payload = {
+        fragmentId: fragment.value.id,
         title: fragment.value.title,
         thought: fragment.value.thought,
     };
 
-    storeFragments.updateFragment(fragment.value.id, payload);
+    storeFragments.updateFragment(payload);
     router.push({ name: 'fragments' });
 };
 
