@@ -38,18 +38,18 @@ defineProps({
 
             <h3
                 class="group-hover:text-cyan-light mb-4 line-clamp-1 text-sm font-bold tracking-widest break-all text-slate-100 uppercase transition-colors">
-                {{ fragment.title }}
+                {{ fragment.title.toUpperCase() }}
             </h3>
 
             <p
                 class="line-clamp-2 text-sm leading-relaxed break-all text-slate-400 transition-all duration-700 group-hover:text-slate-200">
-                {{ fragment.thought }}
+                {{ fragment.thought.toUpperCase() }}
             </p>
         </div>
 
         <div class="mt-8 flex items-center justify-between border-t border-white/10 pt-6">
             <span class="text-[0.625rem] font-medium tracking-[0.2em] text-slate-500 uppercase">
-                {{ fragment.date }}
+                {{ fragment.date.toUpperCase() }}
             </span>
 
             <RouterLink
