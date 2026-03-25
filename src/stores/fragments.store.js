@@ -91,10 +91,9 @@ export const useStoreFragments = defineStore('storeFragments', () => {
     };
 
     const loadMoreFragments = async () => {
-        await new Promise((resolve) => setTimeout(resolve, 1200));
         await loadFragments({
             searchText: searchText.value,
-            limit: 3,
+            limit: 20,
             skip: fragments.value.length,
         });
     };

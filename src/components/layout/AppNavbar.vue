@@ -82,7 +82,9 @@ const handleDisconnect = async () => {
                                 </span>
                                 <span
                                     class="text-cyan-light font-['Syncopate'] text-sm font-black tracking-widest whitespace-nowrap uppercase">
-                                    HI_{{ storeAuth.user?.user_metadata?.userIdentifier || 'USER' }}
+                                    HI_{{
+                                        storeAuth.user?.user_metadata?.userIdentifier || 'GUEST'
+                                    }}
                                 </span>
                             </div>
                         </div>

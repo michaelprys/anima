@@ -17,7 +17,7 @@ export const useStoreAuth = defineStore('storeAuth', () => {
     };
 
     const checkAuth = async () => {
-        if (isAuthChecked.value) return;
+        if (isAuthChecked.value || isPendingUX.value) return;
 
         try {
             const { data } = await supabase.auth.getUser();
@@ -32,6 +32,21 @@ export const useStoreAuth = defineStore('storeAuth', () => {
 
         syncUser(session?.user ?? null);
     });
+
+    const identifyAsGuest = async () => {
+        isPendingUX.value = true;
+
+        try {
+            const { data, error } = await supabase.auth.signInAnonymously();
+
+            if (error) throw error;
+
+            await delay(UX_DELAY);
+            syncUser(data.user);
+        } finally {
+            isPendingUX.value = false;
+        }
+    };
 
     const identify = async (payload) => {
         isPendingUX.value = true;
@@ -134,9 +149,11 @@ export const useStoreAuth = defineStore('storeAuth', () => {
     return {
         currentUser,
         isLoggedIn,
+        isAuthChecked,
         syncUser,
         checkAuth,
         identify,
+        identifyAsGuest,
         disconnect,
         initialize,
         recover,

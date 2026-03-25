@@ -4,13 +4,13 @@ import FragmentForm from '@/components/fragments/FragmentForm.vue';
 import FragmentModalDelete from '@/components/fragments/FragmentModalDelete.vue';
 import FragmentSearch from '@/components/fragments/FragmentSearch.vue';
 import { useStoreFragments } from '@/stores/fragments.store';
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useInfiniteScroll } from '@vueuse/core';
 
 const storeFragments = useStoreFragments();
 const pending = ref(false);
 
-const stopInfinite = useInfiniteScroll(
+useInfiniteScroll(
     window,
     async () => {
         if (pending.value || !storeFragments.hasMoreFragments) return;
@@ -25,15 +25,11 @@ const stopInfinite = useInfiniteScroll(
             pending.value = false;
         }
     },
-    { distance: 150 },
+    { distance: 10 },
 );
 
 onMounted(async () => {
     await storeFragments.loadFragments();
-});
-
-onUnmounted(() => {
-    stopInfinite();
 });
 </script>
 

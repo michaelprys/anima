@@ -2,7 +2,6 @@
 import ButtonAction from '@/components/auth/ButtonAction.vue';
 import BasePasswordVisibility from '@/components/base/BasePasswordVisibility.vue';
 import { useToast } from '@/composables/useToast.js';
-import { delay } from '@/utils/delay.utils.js';
 import { formatSystemError } from '@/utils/formatSystemError.utils.js';
 import { useRouter } from 'vue-router';
 import { ref, computed } from 'vue';
