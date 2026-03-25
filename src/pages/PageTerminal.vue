@@ -1,12 +1,12 @@
 <script setup>
 import { useEsc } from '@/composables/useEsc';
 import { computed, onMounted } from 'vue';
-import { useOnlineStatus } from '@/composables/useOnlineStatus';
+import { useOnline } from '@vueuse/core';
 import { useGetLocation } from '@/composables/useGetLocation';
 import { useStoreFragments } from '@/stores/fragments.store';
 
 const storeFragments = useStoreFragments(),
-    { online } = useOnlineStatus(),
+    online = useOnline(),
     { coords, location, pending, getLocation, watchPermissions } = useGetLocation();
 
 const randomizeNumbers = () => Math.random().toString(16).slice(2, 10).toUpperCase();

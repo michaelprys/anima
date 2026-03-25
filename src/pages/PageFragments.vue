@@ -4,20 +4,43 @@ import FragmentForm from '@/components/fragments/FragmentForm.vue';
 import FragmentModalDelete from '@/components/fragments/FragmentModalDelete.vue';
 import FragmentSearch from '@/components/fragments/FragmentSearch.vue';
 import { useStoreFragments } from '@/stores/fragments.store';
-import { onMounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
+import { useInfiniteScroll } from '@vueuse/core';
 
 const storeFragments = useStoreFragments();
+const pending = ref(false);
+
+const stopInfinite = useInfiniteScroll(
+    window,
+    async () => {
+        if (pending.value || !storeFragments.hasMoreFragments) return;
+
+        pending.value = true;
+
+        try {
+            await storeFragments.loadMoreFragments();
+        } catch (error) {
+            console.error(error);
+        } finally {
+            pending.value = false;
+        }
+    },
+    { distance: 150 },
+);
 
 onMounted(async () => {
     await storeFragments.loadFragments();
+});
 
-    console.log(storeFragments.fragments);
+onUnmounted(() => {
+    stopInfinite();
 });
 </script>
 
 <template>
     <section class="mx-auto min-h-screen max-w-7xl px-6 py-10 text-slate-300 md:px-12">
         <FragmentForm :fragments="storeFragments.fragments" />
+        <FragmentSearch />
 
         <Transition name="fade" mode="out-in">
             <div v-if="storeFragments.fragments.length === 0" key="empty" class="mt-32">
@@ -34,8 +57,6 @@ onMounted(async () => {
             </div>
 
             <div v-else key="content">
-                <FragmentSearch />
-
                 <TransitionGroup
                     name="jump"
                     tag="ul"
@@ -46,8 +67,8 @@ onMounted(async () => {
                         :fragment="fragment" />
                 </TransitionGroup>
 
-                <div class="mt-24 mb-16 flex flex-col items-center">
-                    <button
+                <div v-if="pending" class="mt-24 mb-16 flex flex-col items-center">
+                    <div
                         class="group flex flex-col items-center gap-5 py-6 transition-all duration-500">
                         <span
                             class="bg-surface-card group-hover:bg-cyan-glow/40 h-px w-10 transition-all duration-700 group-hover:w-32"></span>
@@ -55,7 +76,7 @@ onMounted(async () => {
                             class="group-hover:text-cyan-light text-[0.625rem] font-bold tracking-[0.6em] text-slate-600 uppercase transition-colors">
                             Next_Data_Block
                         </span>
-                    </button>
+                    </div>
                 </div>
             </div>
         </Transition>
@@ -69,14 +90,18 @@ onMounted(async () => {
 <style scoped>
 .jump-enter-active,
 .jump-leave-active {
-    transition: all 0.4s ease;
+    transition:
+        opacity 0.2s ease,
+        transform 0.4s cubic-bezier(0.2, 0, 0, 1);
 }
+
 .jump-enter-from,
 .jump-leave-to {
     opacity: 0;
     transform: scale(0.95);
 }
+
 .jump-move {
-    transition: transform 0.4s ease;
+    transition: transform 0.4s cubic-bezier(0.2, 0, 0, 1);
 }
 </style>

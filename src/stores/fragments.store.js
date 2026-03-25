@@ -9,6 +9,8 @@ export const useStoreFragments = defineStore('storeFragments', () => {
     const selectedFragmentId = ref(null);
     const sentiment = ref([]);
     const storeAuth = useStoreAuth();
+    const searchText = ref('');
+    const hasMoreFragments = ref(false);
 
     const openModal = (fragmentId, type) => {
         selectedFragmentId.value = fragmentId;
@@ -52,18 +54,54 @@ export const useStoreFragments = defineStore('storeFragments', () => {
         fragments.value.unshift(transformFragment(data));
     };
 
-    const loadFragments = async () => {
-        const { data, error } = await supabase
+    const loadFragments = async (payload = {}) => {
+        await storeAuth.checkAuth();
+
+        const { skip = 0, limit = 9 } = payload;
+
+        const word = searchText.value.trim().split(' ');
+
+        let query = supabase
             .from('fragments')
             .select('*')
-            .eq('identity_id', storeAuth.currentUser.id);
+            .order('created_at', { descending: true })
+            .eq('identity_id', storeAuth.currentUser.id)
+            .range(skip, skip + limit - 1);
+
+        if (searchText.value) {
+            query = query.ilike('title', `%${word}%`);
+        }
+
+        const { data, error } = await query;
 
         if (error) throw error;
 
-        fragments.value = data.map((fragment) => transformFragment(fragment));
+        if (data.length < limit) {
+            hasMoreFragments.value = false;
+        }
+
+        const transformed = data.map(transformFragment);
+
+        if (skip === 0) {
+            hasMoreFragments.value = true;
+            fragments.value = transformed;
+        } else {
+            fragments.value.push(...transformed);
+        }
+    };
+
+    const loadMoreFragments = async () => {
+        await new Promise((resolve) => setTimeout(resolve, 1200));
+        await loadFragments({
+            searchText: searchText.value,
+            limit: 3,
+            skip: fragments.value.length,
+        });
     };
 
     const deleteFragment = async (fragmentId) => {
+        await storeAuth.checkAuth();
+
         const { error } = await supabase
             .from('fragments')
             .delete()
@@ -79,6 +117,8 @@ export const useStoreFragments = defineStore('storeFragments', () => {
     };
 
     const updateFragment = async (payload) => {
+        await storeAuth.checkAuth();
+
         const { fragmentId, title, thought } = payload;
 
         const { error } = await supabase
@@ -133,10 +173,13 @@ export const useStoreFragments = defineStore('storeFragments', () => {
         activeModal,
         selectedFragmentId,
         sentiment,
+        searchText,
+        hasMoreFragments,
         openModal,
         closeModal,
         addFragment,
         loadFragments,
+        loadMoreFragments,
         deleteFragment,
         updateFragment,
         getFragmentById,

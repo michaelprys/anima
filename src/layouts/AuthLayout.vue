@@ -1,9 +1,9 @@
 <script setup>
-import { useOnlineStatus } from '@/composables/useOnlineStatus';
+import { useOnline } from '@vueuse/core';
 import { useRoute } from 'vue-router';
 import { useEsc } from '@/composables/useEsc';
 
-const { online } = useOnlineStatus();
+const online = useOnline();
 const route = useRoute();
 
 useEsc();

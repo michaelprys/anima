@@ -1,9 +1,17 @@
 <script setup>
 import { ref } from 'vue';
 import { useStoreFragments } from '@/stores/fragments.store.js';
+import { useDebounceFn } from '@vueuse/core';
 
 const storeFragments = useStoreFragments();
 const isFilterActive = ref(false);
+
+const searchFragments = useDebounceFn(async () => {
+    await storeFragments.loadFragments({
+        skip: 0,
+        limit: 9,
+    });
+}, 500);
 </script>
 
 <template>
@@ -32,8 +40,10 @@ const isFilterActive = ref(false);
             <div v-if="isFilterActive" class="overflow-hidden">
                 <div class="relative flex items-center py-2">
                     <input
+                        v-model="storeFragments.searchText"
                         type="text"
                         autofocus
+                        @input="searchFragments"
                         placeholder="INPUT_SEARCH_PARAMETERS..."
                         class="text-cyan-glow w-full bg-transparent py-3 text-xs tracking-[0.2em] uppercase outline-none placeholder:text-slate-800" />
                     <div class="bg-cyan-glow absolute right-0 bottom-6 h-1 w-1"></div>

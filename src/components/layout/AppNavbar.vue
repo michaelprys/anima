@@ -2,13 +2,13 @@
 import { useToast } from '@/composables/useToast.js';
 import { delay } from '@/utils/delay.utils';
 import { ref } from 'vue';
-import { useOnlineStatus } from '@/composables/useOnlineStatus.js';
+import { useOnline } from '@vueuse/core';
 import { useStoreAuth } from '@/stores/auth.store';
 const { showToast } = useToast();
 import { useRoute, useRouter } from 'vue-router';
 
 const storeAuth = useStoreAuth();
-const { online } = useOnlineStatus();
+const online = useOnline();
 const route = useRoute();
 const router = useRouter();
 
