@@ -1,11 +1,11 @@
 <script setup>
-import FragmentCard from '@/components/fragments/FragmentCard.vue';
-import FragmentForm from '@/components/fragments/FragmentForm.vue';
 import FragmentModalDelete from '@/components/fragments/FragmentModalDelete.vue';
 import FragmentSearch from '@/components/fragments/FragmentSearch.vue';
+import FragmentCard from '@/components/fragments/FragmentCard.vue';
+import FragmentForm from '@/components/fragments/FragmentForm.vue';
 import { useStoreFragments } from '@/stores/fragments.store';
-import { ref, onMounted } from 'vue';
 import { useInfiniteScroll } from '@vueuse/core';
+import { ref, onMounted } from 'vue';
 
 const storeFragments = useStoreFragments();
 const pending = ref(false);
@@ -19,8 +19,8 @@ useInfiniteScroll(
 
         try {
             await storeFragments.loadMoreFragments();
-        } catch (error) {
-            console.error(error);
+        } catch {
+            // ignore
         } finally {
             pending.value = false;
         }

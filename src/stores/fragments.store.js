@@ -1,7 +1,7 @@
-import { supabase } from '@/api/supabase.js';
 import { defineStore, acceptHMRUpdate } from 'pinia';
-import { ref } from 'vue';
 import { useStoreAuth } from '@/stores/auth.store';
+import { supabase } from '@/api/supabase.js';
+import { ref } from 'vue';
 
 export const useStoreFragments = defineStore('storeFragments', () => {
     const fragments = ref([]);

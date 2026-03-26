@@ -1,7 +1,7 @@
 <script setup>
+import { useEsc } from '@/composables/useEsc';
 import { useOnline } from '@vueuse/core';
 import { useRoute } from 'vue-router';
-import { useEsc } from '@/composables/useEsc';
 
 const online = useOnline();
 const route = useRoute();

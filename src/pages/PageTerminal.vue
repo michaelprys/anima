@@ -1,9 +1,9 @@
 <script setup>
+import { useGetLocation } from '@/composables/useGetLocation';
+import { useStoreFragments } from '@/stores/fragments.store';
 import { useEsc } from '@/composables/useEsc';
 import { computed, onMounted } from 'vue';
 import { useOnline } from '@vueuse/core';
-import { useGetLocation } from '@/composables/useGetLocation';
-import { useStoreFragments } from '@/stores/fragments.store';
 
 const storeFragments = useStoreFragments(),
     online = useOnline(),
@@ -23,6 +23,7 @@ const totalFragmentsCharacters = computed(() => {
                 fragment.date.length)
         );
     }, 0);
+
     return (totalCharacters * 0.0009765625).toFixed(2);
 });
 

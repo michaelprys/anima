@@ -1,5 +1,5 @@
-import { delay } from '@/utils/delay.utils';
 import { defineStore, acceptHMRUpdate } from 'pinia';
+import { delay } from '@/utils/delay.utils';
 import { supabase } from '@/api/supabase';
 import { computed, ref } from 'vue';
 
@@ -22,7 +22,7 @@ export const useStoreAuth = defineStore('storeAuth', () => {
         try {
             const { data } = await supabase.auth.getUser();
             syncUser(data.user ?? null);
-        } catch (error) {
+        } catch {
             syncUser(null);
         }
     };

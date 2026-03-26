@@ -1,6 +1,6 @@
 <script setup>
-import { useRouter } from 'vue-router';
 import { useEsc } from '@/composables/useEsc';
+import { useRouter } from 'vue-router';
 
 const router = useRouter();
 

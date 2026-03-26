@@ -1,10 +1,10 @@
 <script setup>
+import { formatSystemError } from '@/utils/formatSystemError.utils.js';
 import ButtonAction from '@/components/auth/ButtonAction.vue';
 import { useToast } from '@/composables/useToast.js';
-import { formatSystemError } from '@/utils/formatSystemError.utils.js';
-import { ref } from 'vue';
 import { useStoreAuth } from '@/stores/auth.store';
 import { useRouter } from 'vue-router';
+import { ref } from 'vue';
 
 const storeAuth = useStoreAuth(),
     email = ref(''),

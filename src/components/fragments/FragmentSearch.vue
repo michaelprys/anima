@@ -1,7 +1,7 @@
 <script setup>
-import { ref } from 'vue';
 import { useStoreFragments } from '@/stores/fragments.store.js';
 import { useDebounceFn } from '@vueuse/core';
+import { ref } from 'vue';
 
 const storeFragments = useStoreFragments();
 const isFilterActive = ref(false);

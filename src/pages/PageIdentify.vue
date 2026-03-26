@@ -1,11 +1,11 @@
 <script setup>
-import ButtonAction from '@/components/auth/ButtonAction.vue';
 import BasePasswordVisibility from '@/components/base/BasePasswordVisibility.vue';
+import { formatSystemError } from '@/utils/formatSystemError.utils.js';
+import ButtonAction from '@/components/auth/ButtonAction.vue';
 import { useToast } from '@/composables/useToast.js';
 import { useStoreAuth } from '@/stores/auth.store';
-import { formatSystemError } from '@/utils/formatSystemError.utils.js';
-import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { ref } from 'vue';
 
 const storeAuth = useStoreAuth();
 const { showToast } = useToast();
@@ -26,6 +26,7 @@ const nextPath = route.query.next || { name: 'fragments' };
 const handleIdentify = async () => {
     if (!identity.value.email || !identity.value.passKey) {
         attempted.value = false;
+
         return;
     }
     pending.value = true;

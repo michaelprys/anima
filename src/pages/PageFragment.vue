@@ -1,7 +1,7 @@
 <script setup>
-import { useEsc } from '@/composables/useEsc';
 import { useStoreFragments } from '@/stores/fragments.store.js';
 import { useRoute, useRouter } from 'vue-router';
+import { useEsc } from '@/composables/useEsc';
 import { ref, onMounted } from 'vue';
 
 const route = useRoute(),
@@ -14,6 +14,7 @@ const attempted = ref(true);
 const handleUpdate = () => {
     if (!fragment.value.title || !fragment.value.thought) {
         attempted.value = false;
+
         return;
     }
 

@@ -1,7 +1,7 @@
 <script setup>
+import { useStoreFragments } from '@/stores/fragments.store';
 import { useToast } from '@/composables/useToast.js';
 import { useTemplateRef, reactive, ref } from 'vue';
-import { useStoreFragments } from '@/stores/fragments.store';
 
 const storeFragments = useStoreFragments();
 const { showToast } = useToast();

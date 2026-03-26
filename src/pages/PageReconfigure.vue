@@ -1,12 +1,12 @@
 <script setup>
-import { supabase } from '@/api/supabase.js';
-import ButtonAction from '@/components/auth/ButtonAction.vue';
 import BasePasswordVisibility from '@/components/base/BasePasswordVisibility.vue';
-import { useToast } from '@/composables/useToast.js';
 import { formatSystemError } from '@/utils/formatSystemError.utils.js';
-import { ref, computed } from 'vue';
+import ButtonAction from '@/components/auth/ButtonAction.vue';
+import { useToast } from '@/composables/useToast.js';
 import { useStoreAuth } from '@/stores/auth.store';
+import { supabase } from '@/api/supabase.js';
 import { useRouter } from 'vue-router';
+import { ref, computed } from 'vue';
 
 const storeAuth = useStoreAuth();
 
@@ -32,6 +32,7 @@ const isMatch = computed(() => {
 const handleReconfigure = async () => {
     if (!identity.value.passKey || !isMatch.value) {
         attempted.value = false;
+
         return;
     }
     pending.value = true;

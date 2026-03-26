@@ -1,6 +1,6 @@
 <script setup>
-import BaseToast from '@/components/base/BaseToast.vue';
 import AppNavbar from '@/components/layout/AppNavbar.vue';
+import BaseToast from '@/components/base/BaseToast.vue';
 import { useToast } from '@/composables/useToast.js';
 
 const { toastState } = useToast();

@@ -1,11 +1,11 @@
 <script setup>
-import ButtonAction from '@/components/auth/ButtonAction.vue';
 import BasePasswordVisibility from '@/components/base/BasePasswordVisibility.vue';
-import { useToast } from '@/composables/useToast.js';
 import { formatSystemError } from '@/utils/formatSystemError.utils.js';
+import ButtonAction from '@/components/auth/ButtonAction.vue';
+import { useToast } from '@/composables/useToast.js';
+import { useStoreAuth } from '@/stores/auth.store';
 import { useRouter } from 'vue-router';
 import { ref, computed } from 'vue';
-import { useStoreAuth } from '@/stores/auth.store';
 
 const { showToast } = useToast();
 const storeAuth = useStoreAuth();
@@ -36,6 +36,7 @@ const handleInitialize = async () => {
 
     if (!isFilled || !isPasswordMatch.value) {
         attempted.value = false;
+
         return;
     }
     pending.value = true;
