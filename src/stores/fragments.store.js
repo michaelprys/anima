@@ -90,7 +90,11 @@ export const useStoreFragments = defineStore('storeFragments', () => {
                 .order('created_at', { descending: true })
                 .eq('identity_id', storeAuth.currentUser.id)
                 .range(skip, skip + limit - 1);
-            if (searchText.value) query = query.ilike('title', `%${searchText.value.trim()}%`);
+
+            if (searchText.value) {
+                const search = `%${searchText.value.trim()}%`;
+                query = query.or(`title.ilike.${search},thought.ilike.${search}`);
+            }
 
             const [response] = await Promise.all([query, minDelay]);
             const { data, error } = response;
