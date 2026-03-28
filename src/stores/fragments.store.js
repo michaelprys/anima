@@ -12,6 +12,7 @@ export const useStoreFragments = defineStore('storeFragments', () => {
     const selectedFragmentId = ref(null);
     const searchText = ref('');
     const hasMoreFragments = ref(false);
+    const deletedDailyImpact = ref(0);
 
     const storeSentiment = useStoreSentiment();
     const storeAuth = useStoreAuth();
@@ -51,13 +52,17 @@ export const useStoreFragments = defineStore('storeFragments', () => {
     });
 
     const dailyCognitiveLoad = computed(() => {
-        const today = new Date().toLocaleDateString('en-CA');
+        const today = new Date().toLocaleDateString('en-US');
 
-        return fragments.value.reduce((acc, f) => {
-            const fDate = new Date(f.created_at).toLocaleDateString('en-CA');
+        const current = fragments.value.reduce((acc, f) => {
+            const fDate = new Date(f.created_at).toLocaleDateString('en-US');
 
             return fDate === today ? acc + Number(f.cognitive_impact || 0) : acc;
         }, 0);
+
+        const total = current + deletedDailyImpact.value;
+
+        return Math.max(0, total);
     });
 
     const addFragment = async (payload) => {
@@ -153,6 +158,17 @@ export const useStoreFragments = defineStore('storeFragments', () => {
 
     const deleteFragment = async (id) => {
         await storeAuth.checkAuth();
+
+        const note = fragments.value.find((f) => f.id === id);
+        if (note) {
+            const today = new Date().toLocaleDateString('en-US');
+            const noteDate = new Date(note.created_at).toLocaleDateString('en-US');
+
+            if (noteDate === today) {
+                deletedDailyImpact.value += Number(note.cognitive_impact || 0);
+            }
+        }
+
         await supabase.from('fragments').delete().eq('id', id);
         fragments.value = fragments.value.filter((f) => f.id !== id);
         closeModal();

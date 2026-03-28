@@ -39,10 +39,11 @@ export const useStoreSentiment = defineStore('storeSentiment', () => {
             }
         }
         const base = (text.length + title.length) * score;
-        if (label.includes('pos') || label === 'label_2') return base * 0.2;
+
+        if (label.includes('pos') || label === 'label_2') return -(base * 0.2);
         if (label.includes('neg') || label === 'label_0') return base * 1.5;
 
-        return base;
+        return base * 0.3;
     };
 
     return { recognizeSentiment, calculateImpact };
