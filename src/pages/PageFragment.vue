@@ -4,14 +4,14 @@ import { useRoute, useRouter } from 'vue-router';
 import { useEsc } from '@/composables/useEsc';
 import { ref, onMounted } from 'vue';
 
-const route = useRoute(),
-    router = useRouter(),
-    storeFragments = useStoreFragments();
+const route = useRoute();
+const router = useRouter();
+const storeFragments = useStoreFragments();
 
 const fragment = ref({});
 const attempted = ref(true);
 
-const handleUpdate = () => {
+const handleUpdate = async () => {
     if (!fragment.value.title || !fragment.value.thought) {
         attempted.value = false;
 
@@ -24,7 +24,7 @@ const handleUpdate = () => {
         thought: fragment.value.thought,
     };
 
-    storeFragments.updateFragment(payload);
+    await storeFragments.updateFragment(payload);
     router.push({ name: 'fragments' });
 };
 
@@ -107,7 +107,6 @@ onMounted(() => {
                                 : 'animate-[pulse_1.5s_infinite] border-rose-500/40 text-rose-500 placeholder-rose-900',
                         ]" />
                 </div>
-
                 <div class="group">
                     <textarea
                         v-model="fragment.thought"
@@ -134,7 +133,6 @@ onMounted(() => {
                     class="cursor-default! text-[0.625rem] tracking-[0.4em] text-slate-500 transition-colors hover:text-rose-500">
                     ABORT
                 </button>
-
                 <button
                     type="submit"
                     class="group text-cyan-glow flex items-center text-[0.6875rem] font-black tracking-[0.4em] uppercase transition-all">
