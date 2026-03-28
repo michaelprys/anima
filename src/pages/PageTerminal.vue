@@ -1,8 +1,8 @@
 <script setup>
 import { useGetLocation } from '@/composables/useGetLocation';
 import { useStoreFragments } from '@/stores/fragments.store';
+import { computed, onMounted, ref } from 'vue';
 import { useEsc } from '@/composables/useEsc';
-import { computed, onMounted } from 'vue';
 import { useOnline } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
 
@@ -12,6 +12,7 @@ const { coords, location, pending, getLocation, watchPermissions } = useGetLocat
 const { dailyCognitiveLoad, totalFragmentsCharacters, fragments, isSyncing } =
     storeToRefs(storeFragments);
 
+const sessionHash = ref('');
 const randomizeNumbers = () => Math.random().toString(16).slice(2, 10).toUpperCase();
 
 const cognitiveLoadPercent = computed(() => {
@@ -40,6 +41,7 @@ const barStatusClass = computed(() => {
 useEsc();
 
 onMounted(async () => {
+    sessionHash.value = randomizeNumbers();
     await storeFragments.loadFragments();
     getLocation();
     watchPermissions();
@@ -81,9 +83,14 @@ onMounted(async () => {
 
             <div class="space-y-10 tracking-widest text-slate-300 uppercase">
                 <section class="space-y-4">
-                    <p class="text-[0.625rem] font-bold tracking-[0.25rem] text-slate-500">
-                        Memory
-                    </p>
+                    <div class="flex items-end justify-between">
+                        <p class="text-[0.625rem] font-bold tracking-[0.25rem] text-slate-500">
+                            Memory
+                        </p>
+                        <span class="text-cyan-light/40 font-mono text-[9px] tracking-normal">
+                            Hash: {{ sessionHash }}
+                        </span>
+                    </div>
                     <div class="space-y-2 text-xs">
                         <div class="flex justify-between">
                             <span class="font-medium text-slate-700">Fragments:</span>
@@ -128,6 +135,12 @@ onMounted(async () => {
                                     <span
                                         class="text-slate-200 italic drop-shadow-[0_0_5px_rgba(255,255,255,0.1)]">
                                         {{ location }}
+                                    </span>
+                                    <span
+                                        v-if="coords.latitude"
+                                        class="mt-1 font-mono text-[9px] tracking-tight text-slate-600">
+                                        LAT: {{ coords.latitude.toFixed(4) }} / LON:
+                                        {{ coords.longitude.toFixed(4) }}
                                     </span>
                                 </div>
                                 <div v-else class="text-rose-danger/80 text-[0.625rem] italic">

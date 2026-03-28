@@ -5,14 +5,14 @@ import { computed, ref } from 'vue';
 
 export const useStoreAuth = defineStore('storeAuth', () => {
     const redirectTo = import.meta.env.VITE_APP_URL;
-    const currentUser = ref(null);
+    const currentIdentity = ref(null);
     const isAuthChecked = ref(false);
-    const isLoggedIn = computed(() => Boolean(currentUser.value));
+    const isLoggedIn = computed(() => Boolean(currentIdentity.value));
     const UX_DELAY = 1000;
     const isPendingUX = ref(false);
 
     const syncUser = (userData) => {
-        currentUser.value = userData;
+        currentIdentity.value = userData;
         isAuthChecked.value = true;
     };
 
@@ -147,7 +147,7 @@ export const useStoreAuth = defineStore('storeAuth', () => {
     };
 
     return {
-        currentUser,
+        currentIdentity,
         isLoggedIn,
         isAuthChecked,
         syncUser,

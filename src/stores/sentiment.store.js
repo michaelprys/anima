@@ -18,6 +18,8 @@ export const useStoreSentiment = defineStore('storeSentiment', () => {
 
             return await response.json();
         } catch (error) {
+            console.error(error);
+
             return null;
         }
     };

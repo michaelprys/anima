@@ -32,6 +32,7 @@ useEsc();
 
 onMounted(() => {
     const foundFragment = storeFragments.getFragmentById(route.params.id);
+
     if (foundFragment) {
         fragment.value = { ...foundFragment };
     } else {

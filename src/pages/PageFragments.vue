@@ -29,7 +29,9 @@ useInfiniteScroll(
 );
 
 onMounted(async () => {
-    await storeFragments.loadFragments();
+    if (storeFragments.fragments.length === 0) {
+        await storeFragments.loadFragments();
+    }
 });
 </script>
 

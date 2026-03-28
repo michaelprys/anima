@@ -63,7 +63,7 @@ export const useStoreFragments = defineStore('storeFragments', () => {
     const addFragment = async (payload) => {
         await storeAuth.checkAuth();
         const clientSideId = crypto.randomUUID();
-        const optimisticNote = transformFragment({
+        const optimisticFragment = transformFragment({
             id: clientSideId,
             title: payload.title.toUpperCase(),
             thought: payload.thought.toUpperCase(),
@@ -72,7 +72,7 @@ export const useStoreFragments = defineStore('storeFragments', () => {
             syncing: true,
         });
 
-        fragments.value.unshift(optimisticNote);
+        fragments.value.unshift(optimisticFragment);
         isSyncing.value = true;
 
         try {
@@ -80,7 +80,7 @@ export const useStoreFragments = defineStore('storeFragments', () => {
                 .from('fragments')
                 .insert({
                     id: clientSideId,
-                    identity_id: storeAuth.currentUser.id,
+                    identity_id: storeAuth.currentIdentity.id,
                     title: payload.title.toUpperCase(),
                     thought: payload.thought.toUpperCase(),
                     cognitive_impact: 0,
@@ -127,18 +127,25 @@ export const useStoreFragments = defineStore('storeFragments', () => {
         try {
             await storeAuth.checkAuth();
             const { skip = 0, limit = 50 } = payload;
-            let query = supabase
+
+            const { data, error } = await supabase
                 .from('fragments')
                 .select('*')
                 .order('created_at', { descending: true })
-                .eq('identity_id', storeAuth.currentUser.id)
+                .eq('identity_id', storeAuth.currentIdentity.id)
                 .range(skip, skip + limit - 1);
 
-            const { data, error } = await query;
             if (error) throw error;
+
             const transformed = data.map(transformFragment);
-            if (skip === 0) fragments.value = transformed;
-            else fragments.value.push(...transformed);
+
+            if (skip === 0) {
+                fragments.value = transformed;
+            } else {
+                fragments.value.push(...transformed);
+            }
+
+            fragments.value.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
         } finally {
             isLoading.value = false;
         }
@@ -154,9 +161,10 @@ export const useStoreFragments = defineStore('storeFragments', () => {
     const updateFragment = async ({ fragmentId, title, thought }) => {
         await storeAuth.checkAuth();
 
-        const note = fragments.value.find((f) => f.id === fragmentId);
-        if (note) {
-            Object.assign(note, {
+        const foundFragment = fragments.value.find((fragment) => fragment.id === fragmentId);
+
+        if (foundFragment) {
+            Object.assign(foundFragment, {
                 title: title.toUpperCase(),
                 thought: thought.toUpperCase(),
                 cognitive_impact: 0,
@@ -165,7 +173,7 @@ export const useStoreFragments = defineStore('storeFragments', () => {
 
         isSyncing.value = true;
 
-        supabase
+        const { error } = await supabase
             .from('fragments')
             .update({
                 title: title.toUpperCase(),
@@ -173,8 +181,11 @@ export const useStoreFragments = defineStore('storeFragments', () => {
                 cognitive_impact: 0,
             })
             .eq('id', fragmentId)
+            .eq('identity_id', storeAuth.currentIdentity.id)
             .select('*')
             .single();
+
+        if (error) throw error;
 
         processImpactInBackground(fragmentId, { title, thought });
     };
