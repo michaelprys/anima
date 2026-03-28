@@ -4,32 +4,43 @@ import { useStoreFragments } from '@/stores/fragments.store';
 import { useEsc } from '@/composables/useEsc';
 import { computed, onMounted } from 'vue';
 import { useOnline } from '@vueuse/core';
+import { storeToRefs } from 'pinia';
 
-const storeFragments = useStoreFragments(),
-    online = useOnline(),
-    { coords, location, pending, getLocation, watchPermissions } = useGetLocation();
+const storeFragments = useStoreFragments();
+const online = useOnline();
+const { coords, location, pending, getLocation, watchPermissions } = useGetLocation();
+const { dailyCognitiveLoad, totalFragmentsCharacters, fragments } = storeToRefs(storeFragments);
 
 const randomizeNumbers = () => Math.random().toString(16).slice(2, 10).toUpperCase();
 
-const totalFragmentsCharacters = computed(() => {
-    if (!storeFragments.fragments || storeFragments.fragments.length === 0) return '0.00';
+const cognitiveLoadPercent = computed(() => {
+    const val = Number(dailyCognitiveLoad.value) || 0;
+    const maxReference = 300;
+    const percent = Math.round((val / maxReference) * 100);
 
-    const totalCharacters = storeFragments.fragments.reduce((acc, fragment) => {
-        return (
-            acc +
-            (fragment.id.length +
-                fragment.title.length +
-                fragment.thought.length +
-                fragment.date.length)
-        );
-    }, 0);
+    return Math.max(0, Math.min(percent, 100));
+});
 
-    return (totalCharacters * 0.0009765625).toFixed(2);
+const barDisplay = computed(() => {
+    const TOTAL_BARS = 30;
+    const percent = cognitiveLoadPercent.value;
+    const filled = Math.floor((percent / 100) * TOTAL_BARS);
+
+    return `[${'|'.repeat(filled)}${'.'.repeat(TOTAL_BARS - filled)}]`;
+});
+
+const barStatusClass = computed(() => {
+    const val = cognitiveLoadPercent.value;
+    if (val < 40) return 'text-cyan-light drop-shadow-[0_0_5px_rgba(34,211,238,0.3)]';
+    if (val < 80) return 'text-amber-500 drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]';
+
+    return 'text-rose-danger drop-shadow-[0_0_8px_rgba(225,29,72,0.8)] animate-pulse';
 });
 
 useEsc();
 
 onMounted(async () => {
+    await storeFragments.loadFragments();
     await getLocation();
     await watchPermissions();
 });
@@ -76,9 +87,7 @@ onMounted(async () => {
                     <div class="space-y-2 text-xs">
                         <div class="flex justify-between">
                             <span class="font-medium text-slate-600">Fragments:</span>
-                            <span class="text-slate-200">
-                                {{ storeFragments.fragments.length }} Units
-                            </span>
+                            <span class="text-slate-200">{{ fragments.length }} Units</span>
                         </div>
                         <div class="flex justify-between">
                             <span class="font-medium text-slate-600">Data_Size:</span>
@@ -98,7 +107,6 @@ onMounted(async () => {
                                 {{ online ? 'Stable' : 'Lost' }}
                             </span>
                         </div>
-
                         <div class="flex items-start justify-between">
                             <span class="pt-0.5 font-medium text-slate-600">Location:</span>
                             <div class="flex min-h-15 flex-col text-right">
@@ -114,27 +122,12 @@ onMounted(async () => {
                                             class="w-32 truncate text-right text-[0.4375rem] break-all text-cyan-900">
                                             0x{{ randomizeNumbers() }} 0x{{ randomizeNumbers() }}
                                         </span>
-                                        <span class="text-emerald-sync/50 text-[0.5625rem] italic">
-                                            Targeting:
-                                            <span class="inline-block min-w-11.25 text-right">
-                                                {{ (Math.random() * 90).toFixed(4) }}°
-                                            </span>
-                                            /
-                                            <span class="inline-block min-w-11.25 text-right">
-                                                {{ (Math.random() * 180).toFixed(4) }}°
-                                            </span>
-                                        </span>
                                     </div>
                                     <div class="bg-base-panel relative h-0.5 w-24 overflow-hidden">
                                         <div
                                             class="animate-shimmer bg-cyan-glow/50 shadow-glow-cyan absolute inset-0"></div>
                                     </div>
-                                    <span
-                                        class="text-[0.4375rem] font-bold tracking-[0.1875rem] text-slate-700">
-                                        RAW_DATA_STREAM_v.{{ Math.random().toFixed(2) }}
-                                    </span>
                                 </div>
-
                                 <div
                                     v-else-if="location && location !== 'Not Detected'"
                                     class="flex flex-col items-end space-y-1">
@@ -153,7 +146,6 @@ onMounted(async () => {
                                         {{ coords.longitude?.toFixed(4) }}° E
                                     </span>
                                 </div>
-
                                 <div v-else class="flex flex-col items-end space-y-1">
                                     <span
                                         class="text-rose-danger/30 text-right text-[0.4375rem] tracking-[0.25rem] uppercase">
@@ -163,9 +155,6 @@ onMounted(async () => {
                                         class="text-rose-danger/80 text-[0.625rem] tracking-widest uppercase italic">
                                         Not Detected
                                     </span>
-                                    <span class="text-[0.4375rem] text-rose-900 uppercase">
-                                        Error_Code: 0x404_NULL_POS
-                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -173,13 +162,14 @@ onMounted(async () => {
                 </section>
 
                 <section class="pt-2">
-                    <div class="space-y-3 text-[0.625rem]">
+                    <div class="space-y-3 text-xs">
                         <span class="font-bold tracking-[0.1875rem] text-slate-500">
                             Cognitive_Load
                         </span>
                         <div
-                            class="text-cyan-light text-[0.625rem] leading-none tracking-normal transition-colors duration-700">
-                            [||||||||||....................] 20%
+                            :class="barStatusClass"
+                            class="mt-3 text-xs leading-none tracking-normal transition-colors duration-700">
+                            {{ barDisplay }} {{ cognitiveLoadPercent }} %
                         </div>
                     </div>
                 </section>
@@ -198,5 +188,3 @@ onMounted(async () => {
         </div>
     </div>
 </template>
-
-<style scoped></style>

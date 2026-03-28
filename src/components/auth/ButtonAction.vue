@@ -39,6 +39,7 @@ defineProps({
             ]">
             <div v-if="pending" class="flex items-baseline justify-center">
                 <span>{{ skeleton }}</span>
+
                 <div class="ml-1 flex *:animate-[pulse_0.2s_infinite]">
                     <span>.</span>
                     <span>.</span>
