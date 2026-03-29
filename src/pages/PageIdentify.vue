@@ -1,6 +1,8 @@
 <script setup>
 import BasePasswordVisibility from '@/components/base/BasePasswordVisibility.vue';
 import { formatSystemError } from '@/utils/formatSystemError.utils.js';
+import BaseAuthInput from '@/components/base/BaseAuthInput.vue';
+import { useValidation } from '@/composables/useValidation.js';
 import ButtonAction from '@/components/auth/ButtonAction.vue';
 import { useToast } from '@/composables/useToast.js';
 import { useStoreAuth } from '@/stores/auth.store';
@@ -22,15 +24,16 @@ const attempted = ref(true);
 const pending = ref(false);
 const pendingGuest = ref(false);
 const nextPath = route.query.next || { name: 'fragments' };
+const { validationError, validate } = useValidation();
 
 const handleIdentify = async () => {
-    if (!identity.value.email || !identity.value.passKey) {
-        attempted.value = false;
+    attempted.value = false;
+    if (!identity.value.email || !identity.value.passKey) return;
 
-        return;
-    }
+    const isValid = validate({ email: identity.value.email, passKey: identity.value.passKey });
+    if (!isValid) return;
+
     pending.value = true;
-
     try {
         await storeAuth.identify(identity.value);
         showToast('ACCESS_GRANTED', 'success');
@@ -45,7 +48,6 @@ const handleIdentify = async () => {
 const handleGuestEntry = async () => {
     if (pendingGuest.value) return;
     pendingGuest.value = true;
-
     try {
         await storeAuth.identifyAsGuest();
         showToast('TEMPORARY_ACCESS_GRANTED', 'success');
@@ -60,50 +62,22 @@ const handleGuestEntry = async () => {
 
 <template>
     <form @submit.prevent="handleIdentify" class="space-y-10 text-left uppercase">
-        <div class="group/input relative">
-            <input
-                v-model="identity.email"
-                type="text"
-                spellcheck="false"
-                @input="attempted = true"
-                :placeholder="!attempted && !identity.email ? 'REQUIRED_EMAIL _' : 'EMAIL_ADDRESS'"
-                :class="[
-                    'auth-input focus:placeholder:text-blue-light/30 w-full border-b bg-transparent py-4 text-[0.875rem] tracking-[0.5em] uppercase transition-all duration-700 outline-none',
-                    !attempted && !identity.email
-                        ? 'border-rose-danger/40 text-rose-danger placeholder-rose-danger/40'
-                        : 'border-blue-system/20 text-blue-pale placeholder-blue-light/30 focus:border-blue-light',
-                ]" />
-            <div
-                class="absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-700 group-focus-within/input:w-full"
-                :class="[
-                    !attempted && !identity.email
-                        ? 'bg-rose-danger'
-                        : 'bg-blue-light shadow-glow-blue',
-                ]"></div>
-        </div>
+        <BaseAuthInput
+            v-model="identity.email"
+            placeholder="EMAIL_ADDRESS"
+            :error="!identity.email ? 'REQUIRED_EMAIL' : validationError"
+            :show-error="!attempted && (!identity.email || (validationError && !pending))"
+            @input="attempted = true" />
 
-        <div class="group/input relative">
-            <input
-                id="password"
-                v-model="identity.passKey"
-                @input="attempted = true"
-                :type="passwordVisible ? 'text' : 'password'"
-                :placeholder="!attempted && !identity.passKey ? 'REQUIRED_KEY _' : 'SECURITY_KEY'"
-                :class="[
-                    'auth-input focus:placeholder:text-blue-light/30 w-full border-b bg-transparent py-4 pr-17 text-[0.875rem] tracking-[0.5em] transition-all duration-700 outline-none',
-                    !attempted && !identity.passKey
-                        ? 'border-rose-danger/40 text-rose-danger placeholder-rose-danger/40'
-                        : 'border-blue-system/20 text-blue-pale placeholder-blue-light/30 focus:border-blue-light',
-                ]" />
+        <BaseAuthInput
+            v-model="identity.passKey"
+            :type="passwordVisible ? 'text' : 'password'"
+            placeholder="SECURITY_KEY"
+            error="REQUIRED_KEY"
+            :show-error="!attempted && !identity.passKey"
+            @input="attempted = true">
             <BasePasswordVisibility v-model="passwordVisible" />
-            <div
-                class="absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-700 group-focus-within/input:w-full"
-                :class="[
-                    !attempted && !identity.passKey
-                        ? 'bg-rose-danger'
-                        : 'bg-blue-light shadow-glow-blue',
-                ]"></div>
-        </div>
+        </BaseAuthInput>
 
         <button
             type="button"
@@ -115,10 +89,8 @@ const handleGuestEntry = async () => {
                     class="animate-fast-shimmer absolute inset-y-0 w-1/2 skew-x-[-25deg] bg-linear-to-r from-transparent via-emerald-400/25 to-transparent blur-xl"></div>
                 <div class="absolute inset-0 bg-emerald-500/10"></div>
             </div>
-
             <div
                 class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.08)_0%,transparent_70%)]"></div>
-
             <div class="relative flex h-10 w-10 items-center justify-center">
                 <div
                     class="absolute inset-0 animate-pulse rounded-full border border-emerald-500/20"></div>
@@ -133,12 +105,10 @@ const handleGuestEntry = async () => {
                     </div>
                 </div>
             </div>
-
             <span
                 class="relative z-10 text-[0.7rem] font-black tracking-[0.8em] text-emerald-400/80 transition-colors group-hover:text-emerald-300">
                 GUEST_ENTRY
             </span>
-
             <div class="flex gap-1.5">
                 <div
                     v-for="i in 3"
@@ -151,12 +121,10 @@ const handleGuestEntry = async () => {
                     ]"
                     :style="pendingGuest ? { animationDelay: `${(i - 1) * 0.1}s` } : {}"></div>
             </div>
-
             <div
                 class="absolute top-0 left-0 h-px w-0 bg-emerald-400 transition-all duration-700 group-hover:w-full"></div>
             <div
                 class="absolute right-0 bottom-0 h-px w-0 bg-emerald-400 transition-all duration-700 group-hover:w-full"></div>
-
             <div
                 v-if="pendingGuest"
                 class="animate-fill-bar-fast absolute bottom-0 left-0 h-0.5 w-full origin-left bg-linear-to-r from-transparent via-emerald-400 to-transparent shadow-[0_0_20px_rgba(52,211,153,1)]"></div>
@@ -169,7 +137,6 @@ const handleGuestEntry = async () => {
                 :pending="pending"
                 bg-color="border-blue-system/30 bg-blue-system/5 hover:bg-blue-system/10 hover:border-blue-light"
                 text-color="text-blue-light group-hover/btn:text-white" />
-
             <div class="grid grid-cols-2 gap-4">
                 <RouterLink
                     :to="{ name: 'recover' }"
@@ -205,7 +172,6 @@ const handleGuestEntry = async () => {
         transform: translate(1px, 2px);
     }
 }
-
 @keyframes fast-shimmer {
     0% {
         transform: translateX(-150%) skewX(-25deg);
@@ -214,7 +180,6 @@ const handleGuestEntry = async () => {
         transform: translateX(250%) skewX(-25deg);
     }
 }
-
 @keyframes fill-bar-fast {
     0% {
         transform: scaleX(0);
@@ -225,7 +190,6 @@ const handleGuestEntry = async () => {
         opacity: 1;
     }
 }
-
 .animate-eye-move {
     animation: eye-move 4s ease-in-out infinite;
 }

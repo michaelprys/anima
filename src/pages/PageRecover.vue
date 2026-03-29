@@ -1,5 +1,6 @@
 <script setup>
 import { formatSystemError } from '@/utils/formatSystemError.utils.js';
+import BaseAuthInput from '@/components/base/BaseAuthInput.vue';
 import ButtonAction from '@/components/auth/ButtonAction.vue';
 import { useToast } from '@/composables/useToast.js';
 import { useStoreAuth } from '@/stores/auth.store';
@@ -15,17 +16,15 @@ const { showToast } = useToast();
 const router = useRouter();
 
 const handleRecover = async () => {
-    if (!email.value) {
-        attempted.value = false;
+    attempted.value = false;
 
-        return;
-    }
+    if (!email.value) return;
+
     pending.value = true;
 
     try {
         await storeAuth.recover(email.value);
         showToast('LINK_DISPATCHED', 'success');
-
         await router.push({ name: 'identify' });
     } catch (error) {
         showToast(formatSystemError(error), 'error');
@@ -37,27 +36,13 @@ const handleRecover = async () => {
 
 <template>
     <form @submit.prevent="handleRecover" class="space-y-16 text-left uppercase">
-        <div class="group/input relative">
-            <input
-                v-model="email"
-                type="email"
-                spellcheck="false"
-                @input="attempted = true"
-                :placeholder="!attempted && !email ? 'REQUIRED_EMAIL _' : 'REGISTERED_EMAIL'"
-                :class="[
-                    'auth-input focus:placeholder:text-blue-light/30 w-full border-b bg-transparent py-5 text-[0.875rem] tracking-[0.5em] uppercase transition-all duration-700 outline-none',
-                    !attempted && !email
-                        ? 'border-rose-danger/40 text-rose-danger placeholder-rose-danger/40'
-                        : 'border-blue-system/20 text-blue-pale placeholder-blue-light/30 focus:border-blue-light',
-                ]" />
-            <div
-                class="absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-700 group-focus-within/input:w-full"
-                :class="[
-                    !attempted && !email
-                        ? 'bg-rose-danger shadow-glow-rose'
-                        : 'bg-blue-light shadow-glow-blue',
-                ]"></div>
-        </div>
+        <BaseAuthInput
+            v-model="email"
+            type="email"
+            placeholder="REGISTERED_EMAIL"
+            error="REQUIRED_EMAIL"
+            :show-error="!attempted && !email"
+            @input="attempted = true" />
 
         <div class="space-y-10">
             <ButtonAction

@@ -1,6 +1,7 @@
 <script setup>
 import BasePasswordVisibility from '@/components/base/BasePasswordVisibility.vue';
 import { formatSystemError } from '@/utils/formatSystemError.utils.js';
+import BaseAuthInput from '@/components/base/BaseAuthInput.vue';
 import ButtonAction from '@/components/auth/ButtonAction.vue';
 import { useToast } from '@/composables/useToast.js';
 import { useStoreAuth } from '@/stores/auth.store';
@@ -30,15 +31,13 @@ const isPasswordMatch = computed(() => {
 });
 
 const handleInitialize = async () => {
-    const { userIdentifier, email, passKey, confirmPassKey } = identity.value;
+    attempted.value = false;
 
+    const { userIdentifier, email, passKey, confirmPassKey } = identity.value;
     const isFilled = userIdentifier && email && passKey && confirmPassKey;
 
-    if (!isFilled || !isPasswordMatch.value) {
-        attempted.value = false;
+    if (!isFilled || !isPasswordMatch.value) return;
 
-        return;
-    }
     pending.value = true;
 
     try {
@@ -49,7 +48,6 @@ const handleInitialize = async () => {
         });
 
         showToast('IDENTITY_INITIALIZED', 'success');
-
         await router.push({ name: 'identify' });
     } catch (error) {
         showToast(formatSystemError(error), 'error');
@@ -61,106 +59,41 @@ const handleInitialize = async () => {
 
 <template>
     <form @submit.prevent="handleInitialize" class="space-y-10 text-left uppercase">
-        <div class="space-y-4">
-            <div class="group/input relative">
-                <input
-                    v-model="identity.userIdentifier"
-                    type="text"
-                    spellcheck="false"
-                    @input="attempted = true"
-                    :placeholder="
-                        !attempted && !identity.userIdentifier ? 'REQUIRED_ID _' : 'USER_IDENTIFIER'
-                    "
-                    :class="[
-                        'auth-input w-full border-b bg-transparent py-3 text-[0.8125rem] tracking-[0.4em] uppercase transition-all duration-700 outline-none',
-                        !attempted && !identity.userIdentifier
-                            ? 'border-rose-danger/40 text-rose-danger placeholder:text-rose-danger/40'
-                            : 'border-blue-system/20 text-blue-pale placeholder:text-blue-light/30 focus:border-blue-light focus:placeholder:text-blue-light/30',
-                    ]" />
-                <div
-                    class="absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-700 group-focus-within/input:w-full"
-                    :class="[
-                        !attempted && !identity.userIdentifier
-                            ? 'bg-rose-danger shadow-glow-rose'
-                            : 'bg-blue-light shadow-glow-blue',
-                    ]"></div>
-            </div>
+        <div class="space-y-8">
+            <BaseAuthInput
+                v-model="identity.userIdentifier"
+                placeholder="USER_IDENTIFIER"
+                error="REQUIRED_ID"
+                :show-error="!attempted && !identity.userIdentifier"
+                @input="attempted = true" />
 
-            <div class="group/input relative">
-                <input
-                    v-model="identity.email"
-                    type="email"
-                    spellcheck="false"
-                    @input="attempted = true"
-                    :placeholder="
-                        !attempted && !identity.email ? 'REQUIRED_EMAIL _' : 'EMAIL_ADDRESS'
-                    "
-                    :class="[
-                        'auth-input w-full border-b bg-transparent py-3 text-[0.8125rem] tracking-[0.4em] uppercase transition-all duration-700 outline-none',
-                        !attempted && !identity.email
-                            ? 'border-rose-danger/40 text-rose-danger placeholder:text-rose-danger/40'
-                            : 'border-blue-system/20 text-blue-pale placeholder:text-blue-light/30 focus:border-blue-light focus:placeholder:text-blue-light/30',
-                    ]" />
-                <div
-                    class="absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-700 group-focus-within/input:w-full"
-                    :class="[
-                        !attempted && !identity.email
-                            ? 'bg-rose-danger shadow-glow-rose'
-                            : 'bg-blue-light shadow-glow-blue',
-                    ]"></div>
-            </div>
+            <BaseAuthInput
+                v-model="identity.email"
+                type="email"
+                placeholder="EMAIL_ADDRESS"
+                error="REQUIRED_EMAIL"
+                :show-error="!attempted && !identity.email"
+                @input="attempted = true" />
 
-            <div class="group/input relative">
-                <input
-                    v-model="identity.passKey"
-                    @input="attempted = true"
-                    :type="passwordVisible ? 'text' : 'password'"
-                    :placeholder="
-                        !attempted && !identity.passKey ? 'REQUIRED_KEY _' : 'SECURITY_KEY'
-                    "
-                    :class="[
-                        'auth-input w-full border-b bg-transparent py-3 text-[0.8125rem] tracking-[0.4em] transition-all duration-700 outline-none',
-                        !attempted && !identity.passKey
-                            ? 'border-rose-danger/40 text-rose-danger placeholder:text-rose-danger/40'
-                            : 'border-blue-system/20 text-blue-pale placeholder:text-blue-light/30 focus:border-blue-light focus:placeholder:text-blue-light/30',
-                    ]" />
+            <BaseAuthInput
+                v-model="identity.passKey"
+                :type="passwordVisible ? 'text' : 'password'"
+                placeholder="SECURITY_KEY"
+                error="REQUIRED_KEY"
+                :show-error="!attempted && !identity.passKey"
+                @input="attempted = true">
                 <BasePasswordVisibility v-model="passwordVisible" />
+            </BaseAuthInput>
 
-                <div
-                    class="absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-700 group-focus-within/input:w-full"
-                    :class="[
-                        !attempted && !identity.passKey
-                            ? 'bg-rose-danger shadow-glow-rose'
-                            : 'bg-blue-light shadow-glow-blue',
-                    ]"></div>
-            </div>
-
-            <div class="group/input relative">
-                <input
-                    v-model="identity.confirmPassKey"
-                    :type="confirmPasswordVisible ? 'text' : 'password'"
-                    :placeholder="
-                        !attempted && (!identity.confirmPassKey || !isPasswordMatch)
-                            ? 'ERROR: MISMATCH _'
-                            : 'CONFIRM_KEY'
-                    "
-                    :class="[
-                        'auth-input w-full border-b bg-transparent py-3 text-[0.8125rem] tracking-[0.4em] transition-all duration-700 outline-none',
-                        !attempted && (!identity.confirmPassKey || !isPasswordMatch)
-                            ? 'border-rose-danger/40 text-rose-danger placeholder:text-rose-danger/40'
-                            : 'border-blue-system/20 text-blue-pale placeholder:text-blue-light/30 focus:border-blue-light focus:placeholder:text-blue-light/30',
-                    ]" />
-
+            <BaseAuthInput
+                v-model="identity.confirmPassKey"
+                :type="confirmPasswordVisible ? 'text' : 'password'"
+                placeholder="CONFIRM_KEY"
+                :error="!identity.confirmPassKey ? 'CONFIRM_KEY' : 'KEY_MISMATCH'"
+                :show-error="!attempted && (!identity.confirmPassKey || !isPasswordMatch)"
+                @input="attempted = true">
                 <BasePasswordVisibility v-model="confirmPasswordVisible" />
-
-                <div
-                    class="absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-700 group-focus-within/input:w-full"
-                    :class="[
-                        !attempted && (!identity.confirmPassKey || !isPasswordMatch)
-                            ? 'bg-rose-danger shadow-glow-rose'
-                            : 'bg-blue-light shadow-glow-blue',
-                    ]"></div>
-            </div>
+            </BaseAuthInput>
         </div>
 
         <div class="space-y-8 pt-2">

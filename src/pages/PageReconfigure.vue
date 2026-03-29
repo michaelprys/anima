@@ -1,6 +1,7 @@
 <script setup>
 import BasePasswordVisibility from '@/components/base/BasePasswordVisibility.vue';
 import { formatSystemError } from '@/utils/formatSystemError.utils.js';
+import BaseAuthInput from '@/components/base/BaseAuthInput.vue';
 import ButtonAction from '@/components/auth/ButtonAction.vue';
 import { useToast } from '@/composables/useToast.js';
 import { useStoreAuth } from '@/stores/auth.store';
@@ -30,20 +31,18 @@ const isMatch = computed(() => {
 });
 
 const handleReconfigure = async () => {
-    if (!identity.value.passKey || !isMatch.value) {
-        attempted.value = false;
+    attempted.value = false;
 
+    if (!identity.value.passKey || !identity.value.confirmPassKey || !isMatch.value) {
         return;
     }
+
     pending.value = true;
 
     try {
         await storeAuth.reconfigure(identity.value.passKey);
-
         showToast('IDENTITY_RECONFIGURED', 'success');
-
         await supabase.auth.signOut();
-
         await router.push({ name: 'identify' });
     } catch (error) {
         showToast(formatSystemError(error), 'error');
@@ -55,57 +54,26 @@ const handleReconfigure = async () => {
 
 <template>
     <form @submit.prevent="handleReconfigure" class="space-y-16 text-left uppercase">
-        <div class="space-y-8">
-            <div class="group/input relative">
-                <input
-                    v-model="identity.passKey"
-                    :type="passwordVisible ? 'text' : 'password'"
-                    @input="attempted = true"
-                    :placeholder="
-                        !attempted && !identity.passKey ? 'REQUIRED_KEY _' : 'NEW_SECURITY_KEY'
-                    "
-                    :class="[
-                        'auth-input focus:placeholder:text-blue-light/30 w-full border-b bg-transparent py-5 text-[0.875rem] tracking-[0.5em] transition-all duration-700 outline-none',
-                        !attempted && !identity.passKey
-                            ? 'border-rose-danger/40 text-rose-danger placeholder-rose-danger/40'
-                            : 'border-blue-system/20 text-blue-pale placeholder-blue-light/30 focus:border-blue-light',
-                    ]" />
-                <div
-                    class="absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-700 group-focus-within/input:w-full"
-                    :class="[
-                        !attempted && !identity.passKey
-                            ? 'bg-rose-danger shadow-glow-rose'
-                            : 'bg-blue-light shadow-glow-blue',
-                    ]"></div>
+        <div class="space-y-12">
+            <BaseAuthInput
+                v-model="identity.passKey"
+                :type="passwordVisible ? 'text' : 'password'"
+                placeholder="NEW_SECURITY_KEY"
+                error="REQUIRED_KEY"
+                :show-error="!attempted && !identity.passKey"
+                @input="attempted = true">
                 <BasePasswordVisibility v-model="passwordVisible" />
-            </div>
+            </BaseAuthInput>
 
-            <div class="group/input relative">
-                <input
-                    v-model="identity.confirmPassKey"
-                    :type="confirmPasswordVisible ? 'text' : 'password'"
-                    @input="attempted = true"
-                    :placeholder="
-                        !attempted && (!identity.confirmPassKey || !isMatch)
-                            ? 'ERROR: MISMATCH _'
-                            : 'CONFIRM_NEW_KEY'
-                    "
-                    :class="[
-                        'auth-input focus:placeholder:text-blue-light/30 w-full border-b bg-transparent py-5 text-[0.875rem] tracking-[0.5em] transition-all duration-700 outline-none',
-                        !attempted && (!identity.confirmPassKey || !isMatch)
-                            ? 'border-rose-danger/40 text-rose-danger placeholder-rose-danger/40'
-                            : 'border-blue-system/20 text-blue-pale placeholder-blue-light/30 focus:border-blue-light',
-                    ]" />
-                <div
-                    class="absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-700 group-focus-within/input:w-full"
-                    :class="[
-                        !attempted && (!identity.confirmPassKey || !isMatch)
-                            ? 'bg-rose-danger shadow-glow-rose'
-                            : 'bg-blue-light shadow-glow-blue',
-                    ]"></div>
-
+            <BaseAuthInput
+                v-model="identity.confirmPassKey"
+                :type="confirmPasswordVisible ? 'text' : 'password'"
+                placeholder="CONFIRM_NEW_KEY"
+                :error="!identity.confirmPassKey ? 'CONFIRMATION_REQUIRED' : 'KEY_MISMATCH'"
+                :show-error="!attempted && (!identity.confirmPassKey || !isMatch)"
+                @input="attempted = true">
                 <BasePasswordVisibility v-model="confirmPasswordVisible" />
-            </div>
+            </BaseAuthInput>
         </div>
 
         <div class="space-y-10">
