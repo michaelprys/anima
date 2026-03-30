@@ -133,12 +133,19 @@ export const useStoreFragments = defineStore('storeFragments', () => {
             await storeAuth.checkAuth();
             const { skip = 0, limit = 50 } = payload;
 
-            const { data, error } = await supabase
+            let query = supabase
                 .from('fragments')
                 .select('*')
                 .order('created_at', { descending: true })
-                .eq('identity_id', storeAuth.currentIdentity.id)
-                .range(skip, skip + limit - 1);
+                .eq('identity_id', storeAuth.currentIdentity.id);
+
+            if (searchText.value) {
+                query = query.or(
+                    `title.ilike.%${searchText.value}%,thought.ilike.%${searchText.value}%`,
+                );
+            }
+
+            const { data, error } = await query.range(skip, skip + limit - 1);
 
             if (error) throw error;
 

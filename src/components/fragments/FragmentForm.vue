@@ -2,7 +2,6 @@
 import { useStoreFragments } from '@/stores/fragments.store';
 import { useToast } from '@/composables/useToast.js';
 import { useTemplateRef, reactive, ref } from 'vue';
-import { delay } from '@/utils/delay.utils.js';
 
 const storeFragments = useStoreFragments();
 const { showToast } = useToast();
@@ -22,12 +21,14 @@ const handleAddFragment = async () => {
 
         return;
     }
+
+    const payload = { ...newFragment };
+    Object.assign(newFragment, { title: '', thought: '' });
+    thoughtRef.value?.focus();
+
     pending.value = true;
     try {
-        await storeFragments.addFragment({ ...newFragment });
-        Object.assign(newFragment, { title: '', thought: '' });
-        thoughtRef.value.focus();
-        await delay(1200);
+        await storeFragments.addFragment(payload);
     } catch (error) {
         showToast(error || 'ERROR_CREATING_FRAGMENT_');
     } finally {
@@ -96,15 +97,21 @@ const handleAddFragment = async () => {
                         :disabled="pending"
                         class="group/btn border-cyan-glow/40 text-cyan-glow relative h-10 w-full overflow-hidden rounded-xs border px-10 text-[0.625rem] font-black tracking-[0.4em] uppercase transition-all duration-300 disabled:cursor-default sm:w-44">
                         <div class="relative z-20 flex h-full items-center justify-center">
-                            <span :class="{ 'opacity-40': pending }">COMMIT</span>
+                            <span
+                                class="transition-opacity duration-500"
+                                :class="{ 'opacity-20': pending }">
+                                COMMIT
+                            </span>
                         </div>
 
-                        <div v-if="pending" class="pointer-events-none absolute inset-0 z-10">
-                            <div class="bg-cyan-glow/5 absolute inset-0"></div>
-                            <div class="infinite-flow absolute inset-0"></div>
-                            <div
-                                class="bg-cyan-glow/30 absolute bottom-0 left-0 h-[1px] w-full animate-pulse"></div>
-                        </div>
+                        <Transition name="fade-loader">
+                            <div v-if="pending" class="pointer-events-none absolute inset-0 z-10">
+                                <div class="bg-cyan-glow/5 absolute inset-0"></div>
+                                <div class="infinite-flow absolute inset-0"></div>
+                                <div
+                                    class="bg-cyan-glow/30 absolute bottom-0 left-0 h-[1px] w-full animate-pulse"></div>
+                            </div>
+                        </Transition>
 
                         <div
                             class="bg-cyan-glow absolute inset-0 translate-y-full opacity-5 transition-transform duration-500 group-hover/btn:translate-y-0"></div>
@@ -136,6 +143,14 @@ const handleAddFragment = async () => {
     100% {
         background-position: -200% 0;
     }
+}
+
+.fade-loader-leave-active {
+    transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.fade-loader-leave-to {
+    opacity: 0;
 }
 
 button:active:not(:disabled) {
