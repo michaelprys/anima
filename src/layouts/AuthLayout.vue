@@ -11,13 +11,13 @@ useEsc();
 
 <template>
     <div
-        class="bg-canvas selection:bg-blue-system/30 fixed inset-0 z-1000 flex items-center justify-center overflow-y-auto px-6 py-10 text-left font-mono uppercase">
+        class="bg-canvas selection:bg-blue-system/30 fixed inset-0 z-1000 flex items-center justify-center overflow-y-auto px-6 py-4 text-left font-mono uppercase">
         <div
             class="from-blue-system/10 via-canvas/5 pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,var(--tw-gradient-stops))] to-transparent"></div>
 
         <Transition name="terminal-in" appear>
             <div
-                class="group border-blue-system/30 bg-base-card/95 relative my-auto w-full max-w-130 border p-8 shadow-[0_0_7.5rem_rgba(2,6,23,1)] backdrop-blur-2xl md:p-22">
+                class="group border-blue-system/30 bg-base-card/95 relative my-auto w-full max-w-130 border p-8 shadow-[0_0_7.5rem_rgba(2,6,23,1)] backdrop-blur-2xl md:px-14 md:py-10">
                 <div
                     class="bg-blue-system shadow-glow-blue absolute -top-px -left-px h-0.5 w-16"></div>
                 <div
@@ -26,7 +26,7 @@ useEsc();
                 <div class="bg-blue-system/20 absolute -right-px -bottom-px h-px w-16"></div>
                 <div class="bg-blue-system/20 absolute -right-px -bottom-px h-16 w-px"></div>
 
-                <header class="relative mb-10 md:mb-20">
+                <header class="relative mb-6 md:mb-8">
                     <div class="flex items-center gap-6">
                         <div class="relative flex h-3 w-3 items-center justify-center">
                             <div
@@ -36,14 +36,14 @@ useEsc();
                         </div>
                         <span
                             class="text-[0.8125rem] font-bold tracking-[0.8em] text-white uppercase drop-shadow-[0_0_0.5rem_rgba(59,130,246,0.5)]">
-                            {{ route.meta.title || 'System_Access' }}
+                            {{ route.meta.title || 'BYPASS_AUTH' }}
                         </span>
                     </div>
                     <div
-                        class="from-blue-system/50 via-blue-system/10 mt-8 h-px w-full bg-linear-to-r to-transparent"></div>
+                        class="from-blue-system/50 via-blue-system/10 mt-6 h-px w-full bg-linear-to-r to-transparent"></div>
                 </header>
 
-                <div class="flex min-h-40 flex-col justify-center md:min-h-50">
+                <div class="flex min-h-24 flex-col justify-center md:min-h-32">
                     <RouterView v-slot="{ Component }">
                         <Transition name="fade" mode="out-in">
                             <component :is="Component" />
@@ -52,7 +52,7 @@ useEsc();
                 </div>
 
                 <div
-                    class="mt-10 flex items-center justify-between px-2 text-[0.5625rem] tracking-[0.4em] md:mt-20">
+                    class="mt-8 flex items-center justify-between px-2 text-[0.5625rem] tracking-[0.4em] md:mt-10">
                     <div class="flex items-center gap-4">
                         <span class="text-blue-system/30">Auth_Gateway</span>
                     </div>

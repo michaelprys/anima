@@ -1,11 +1,27 @@
 <script setup>
 defineProps({
-    modelValue: String,
-    type: { type: String, default: 'text' },
-    placeholder: String,
-    error: String,
-    showError: Boolean,
+    modelValue: {
+        type: String,
+        default: '',
+    },
+    type: {
+        type: String,
+        default: 'text',
+    },
+    placeholder: {
+        type: String,
+        default: '',
+    },
+    error: {
+        type: String,
+        default: '',
+    },
+    showError: {
+        type: Boolean,
+        default: false,
+    },
 });
+
 defineEmits(['update:modelValue', 'input']);
 </script>
 

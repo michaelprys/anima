@@ -83,7 +83,7 @@ const handleGuestEntry = async () => {
             type="button"
             @click="handleGuestEntry"
             :disabled="pendingGuest"
-            class="group/guest relative flex w-full items-center justify-between overflow-hidden border border-emerald-500/20 bg-emerald-950/40 px-6 py-6 transition-all duration-700 hover:border-emerald-400/60 active:scale-[0.98]">
+            class="group/guest relative flex w-full items-center justify-between overflow-hidden border border-emerald-500/20 bg-emerald-950/40 px-6 py-3.5 transition-all duration-700 hover:border-emerald-400/60 active:scale-[0.98]">
             <div class="absolute inset-0 z-0">
                 <div
                     class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.15)_0%,transparent_60%)] opacity-0 transition-opacity duration-700 group-hover/guest:opacity-100"></div>
