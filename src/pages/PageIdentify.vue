@@ -83,51 +83,100 @@ const handleGuestEntry = async () => {
             type="button"
             @click="handleGuestEntry"
             :disabled="pendingGuest"
-            class="group/guest relative flex w-full items-center justify-between overflow-hidden border border-emerald-500/20 bg-emerald-500/5 px-6 py-4 transition-all duration-500 hover:border-emerald-400/50 hover:bg-emerald-500/10 active:scale-[0.99]">
-            <div v-if="pendingGuest" class="absolute inset-0 z-0">
+            class="group/guest relative flex w-full items-center justify-between overflow-hidden border border-emerald-500/20 bg-emerald-950/40 px-6 py-6 transition-all duration-700 hover:border-emerald-400/60 active:scale-[0.98]">
+            <div class="absolute inset-0 z-0">
                 <div
-                    class="animate-fast-shimmer absolute inset-y-0 w-1/2 skew-x-[-25deg] bg-linear-to-r from-transparent via-emerald-400/25 to-transparent blur-xl"></div>
-                <div class="absolute inset-0 bg-emerald-500/10"></div>
+                    class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.15)_0%,transparent_60%)] opacity-0 transition-opacity duration-700 group-hover/guest:opacity-100"></div>
+                <div class="grid-bg absolute inset-0 opacity-[0.03]"></div>
+                <div class="scanline absolute inset-0 opacity-10"></div>
             </div>
-            <div
-                class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.08)_0%,transparent_70%)]"></div>
-            <div class="relative flex h-10 w-10 items-center justify-center">
-                <div
-                    class="absolute inset-0 animate-pulse rounded-full border border-emerald-500/20"></div>
-                <div
-                    class="relative flex h-7 w-7 items-center justify-center rounded-full border border-emerald-500/30 bg-black/40">
+
+            <div class="relative flex flex-1 items-center gap-6">
+                <div class="relative flex h-12 w-12 shrink-0 items-center justify-center">
                     <div
-                        class="animate-eye-move relative flex h-3 w-3 items-center justify-center rounded-full border border-emerald-400/20 bg-emerald-950/40">
+                        class="absolute inset-0 rounded-full border border-emerald-500/10 bg-emerald-500/5 transition-colors group-hover/guest:bg-emerald-500/10"></div>
+                    <div
+                        class="animate-spin-slow absolute inset-[-4px] rounded-full border border-dashed border-emerald-500/20"></div>
+
+                    <div
+                        class="relative flex h-9 w-9 items-center justify-center rounded-full border border-emerald-500/40 bg-black shadow-[0_0_20px_rgba(16,185,129,0.3)] group-hover/guest:shadow-[0_0_30px_rgba(16,185,129,0.6)]">
                         <div
-                            class="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_10px_2px_rgba(52,211,153,0.8)]"></div>
+                            class="animate-portal-eye relative flex h-4 w-4 items-center justify-center rounded-full bg-emerald-400 shadow-[0_0_15px_rgba(52,211,153,1)] transition-transform duration-300 group-hover/guest:scale-125 group-hover/guest:!animate-none">
+                            <div
+                                class="h-1.5 w-1.5 rounded-full bg-white shadow-[0_0_8px_rgba(255,255,255,1)]"></div>
+                        </div>
                         <div
-                            class="absolute -top-0.5 -right-0.5 h-1 w-1 rounded-full bg-white/20 blur-[1px]"></div>
+                            class="absolute inset-0 scale-75 animate-ping rounded-full border border-emerald-400/40"
+                            :class="
+                                pendingGuest
+                                    ? 'animate-ping-intense'
+                                    : 'group-hover/guest:animate-ping-fast'
+                            "></div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-start gap-1 overflow-hidden">
+                    <span
+                        class="group-hover/guest:animate-glitch relative block text-[0.75rem] font-black tracking-[0.6em] text-emerald-400 drop-shadow-[0_0_8px_rgba(52,211,153,0.5)] transition-all group-hover/guest:text-emerald-200">
+                        GUEST_ENTRY
+                    </span>
+
+                    <div class="relative h-3 w-full overflow-hidden">
+                        <span
+                            class="absolute inset-0 text-[0.4rem] tracking-[0.3em] text-emerald-500/40 transition-transform duration-300 group-hover/guest:-translate-y-full">
+                            APERTURE_LINK_v2.0
+                        </span>
+                        <span
+                            class="group-hover/guest:animate-glitch absolute inset-0 translate-y-full text-[0.45rem] font-bold tracking-[0.4em] text-emerald-300 transition-transform duration-300 group-hover/guest:translate-y-0">
+                            GUEST_DETECTED_
+                        </span>
                     </div>
                 </div>
             </div>
-            <span
-                class="relative z-10 text-[0.7rem] font-black tracking-[0.8em] text-emerald-400/80 transition-colors group-hover:text-emerald-300">
-                GUEST_ENTRY
-            </span>
-            <div class="flex gap-1.5">
+
+            <div class="relative ml-4 flex shrink-0 flex-col items-end gap-1.5">
+                <div class="flex gap-1.5">
+                    <div
+                        v-for="i in 4"
+                        :key="i"
+                        :class="[
+                            'h-3 w-1.5 transition-all duration-300',
+                            pendingGuest
+                                ? 'animate-step-fill bg-emerald-400 shadow-[0_0_10px_#10b981]'
+                                : 'bg-emerald-500/10 group-hover/guest:h-4 group-hover/guest:bg-emerald-400/30',
+                        ]"
+                        :style="pendingGuest ? { animationDelay: `${(i - 1) * 0.15}s` } : {}"></div>
+                </div>
                 <div
-                    v-for="i in 3"
-                    :key="i"
-                    :class="[
-                        'h-1 w-1 rounded-full transition-all duration-300',
-                        pendingGuest
-                            ? 'animate-ping bg-emerald-400'
-                            : 'bg-emerald-500/20 group-hover:bg-emerald-400',
-                    ]"
-                    :style="pendingGuest ? { animationDelay: `${(i - 1) * 0.1}s` } : {}"></div>
+                    class="h-1 w-10 overflow-hidden rounded-full border border-emerald-500/10 bg-emerald-950/60">
+                    <div
+                        class="h-full bg-emerald-500/40 transition-all duration-1000"
+                        :class="
+                            pendingGuest
+                                ? 'w-full animate-pulse bg-emerald-400'
+                                : 'w-1/3 group-hover/guest:w-full group-hover/guest:bg-emerald-400/60'
+                        "></div>
+                </div>
             </div>
+
             <div
-                class="absolute top-0 left-0 h-px w-0 bg-emerald-400 transition-all duration-700 group-hover:w-full"></div>
+                class="absolute top-0 left-0 h-1 w-4 border-t-2 border-l-2 border-emerald-400/50"></div>
             <div
-                class="absolute right-0 bottom-0 h-px w-0 bg-emerald-400 transition-all duration-700 group-hover:w-full"></div>
+                class="absolute top-0 right-0 h-1 w-4 border-t-2 border-r-2 border-emerald-400/50"></div>
             <div
-                v-if="pendingGuest"
-                class="animate-fill-bar-fast absolute bottom-0 left-0 h-0.5 w-full origin-left bg-linear-to-r from-transparent via-emerald-400 to-transparent shadow-[0_0_20px_rgba(52,211,153,1)]"></div>
+                class="absolute bottom-0 left-0 h-1 w-4 border-b-2 border-l-2 border-emerald-400/50"></div>
+            <div
+                class="absolute right-0 bottom-0 h-1 w-4 border-r-2 border-b-2 border-emerald-400/50"></div>
+
+            <div
+                class="absolute top-0 left-0 h-px w-0 bg-emerald-400 transition-all duration-1000 group-hover/guest:w-full"></div>
+            <div
+                class="absolute right-0 bottom-0 h-px w-0 bg-emerald-400 transition-all duration-1000 group-hover/guest:w-full"></div>
+
+            <div v-if="pendingGuest" class="absolute bottom-0 left-0 h-1 w-full bg-emerald-950/50">
+                <div
+                    class="animate-loader-run h-full w-full bg-emerald-400 shadow-[0_0_20px_rgba(52,211,153,1)]"></div>
+            </div>
         </button>
 
         <div class="space-y-8">
@@ -154,49 +203,155 @@ const handleGuestEntry = async () => {
 </template>
 
 <style scoped>
-@keyframes eye-move {
+@keyframes portal-eye {
     0%,
     100% {
         transform: translate(0, 0);
     }
-    20% {
-        transform: translate(-2px, 1px);
+    25% {
+        transform: translate(-2px, 1.5px);
     }
-    40% {
+    50% {
         transform: translate(2px, -1px);
     }
-    60% {
-        transform: translate(-1px, -2px);
-    }
-    80% {
-        transform: translate(1px, 2px);
+    75% {
+        transform: translate(-1.5px, -2px);
     }
 }
-@keyframes fast-shimmer {
+
+@keyframes glitch {
     0% {
-        transform: translateX(-150%) skewX(-25deg);
+        transform: translate(0);
+        text-shadow:
+            -2px 0 #10b981,
+            2px 0 #34d399;
+    }
+    25% {
+        transform: translate(-2px, 1.5px);
+    }
+    50% {
+        transform: translate(2px, -1px);
+    }
+    75% {
+        transform: translate(-1.5px, 2px);
+        text-shadow:
+            2px 0 #10b981,
+            -2px 0 #34d399;
     }
     100% {
-        transform: translateX(250%) skewX(-25deg);
+        transform: translate(0);
     }
 }
-@keyframes fill-bar-fast {
-    0% {
-        transform: scaleX(0);
-        opacity: 0.5;
+
+@keyframes step-fill {
+    0%,
+    20% {
+        opacity: 0.1;
+        filter: brightness(0.5);
     }
+    40%,
     100% {
-        transform: scaleX(1);
+        opacity: 1;
+        filter: brightness(1.5);
+    }
+}
+
+@keyframes ping-fast {
+    0% {
+        transform: scale(0.7);
         opacity: 1;
     }
+    100% {
+        transform: scale(1.4);
+        opacity: 0;
+    }
 }
-.animate-eye-move {
-    animation: eye-move 4s ease-in-out infinite;
+
+@keyframes ping-intense {
+    0% {
+        transform: scale(0.6);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(2.5);
+        opacity: 0;
+    }
 }
-.animate-fast-shimmer {
-    animation: fast-shimmer 0.8s linear infinite;
+
+@keyframes spin-slow {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
-.animate-fill-bar-fast {
-    animation: fill-bar-fast 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+
+@keyframes loader-run {
+    0% {
+        transform: scaleX(0);
+        transform-origin: left;
+    }
+    50% {
+        transform: scaleX(1);
+        transform-origin: left;
+    }
+    51% {
+        transform: scaleX(1);
+        transform-origin: right;
+    }
+    100% {
+        transform: scaleX(0);
+        transform-origin: right;
+    }
+}
+
+.grid-bg {
+    background-image:
+        linear-gradient(rgba(16, 185, 129, 0.2) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(16, 185, 129, 0.2) 1px, transparent 1px);
+    background-size: 10px 10px;
+}
+
+.scanline {
+    background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(16, 185, 129, 0.1) 50%,
+        transparent 100%
+    );
+    background-size: 100% 8px;
+    animation: scan 4s linear infinite;
+}
+
+@keyframes scan {
+    from {
+        background-position: 0 0;
+    }
+    to {
+        background-position: 0 100%;
+    }
+}
+
+.animate-portal-eye {
+    animation: portal-eye 4s ease-in-out infinite;
+}
+.animate-glitch {
+    animation: glitch 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
+}
+.animate-ping-fast {
+    animation: ping-fast 0.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+.animate-ping-intense {
+    animation: ping-intense 0.15s ease-out infinite;
+}
+.animate-spin-slow {
+    animation: spin-slow 8s linear infinite;
+}
+.animate-loader-run {
+    animation: loader-run 1.5s infinite cubic-bezier(0.4, 0, 0.2, 1);
+}
+.animate-step-fill {
+    animation: step-fill 0.6s steps(2) infinite;
 }
 </style>

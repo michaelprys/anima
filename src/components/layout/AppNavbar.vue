@@ -17,12 +17,9 @@ const pending = ref(false);
 
 const handleDisconnect = async () => {
     pending.value = true;
-
     try {
         await delay(100);
-
         showToast('TERMINATING_SESSION', 'error');
-
         await storeAuth.disconnect();
         await router.push({ name: 'identify' });
     } catch (error) {
@@ -155,17 +152,25 @@ const handleDisconnect = async () => {
                     <RouterLink
                         @click="isOpen = false"
                         :to="{ name: 'terminal' }"
-                        class="group text-emerald-sync/80 drop-shadow-emerald-sm hover:text-emerald-light hover:drop-shadow-emerald-md my-4 flex items-center justify-center gap-1.5 text-[0.625rem] font-bold tracking-[0.3em] uppercase transition-[color,filter] duration-500 md:mx-6 md:my-0"
-                        active-class="text-emerald-light !drop-shadow-emerald-lg">
-                        <span
-                            class="font-mono text-[0.5rem] opacity-20 transition-opacity group-hover:opacity-60">
-                            [
-                        </span>
-                        Terminal
-                        <span
-                            class="font-mono text-[0.5rem] opacity-20 transition-opacity group-hover:opacity-60">
-                            ]
-                        </span>
+                        class="group relative my-4 flex items-center justify-center border border-emerald-500/30 bg-emerald-500/5 px-8 py-2 transition-all duration-300 hover:border-emerald-400/80 md:mx-6 md:my-0"
+                        active-class="border-emerald-400 bg-emerald-500/15 shadow-[0_0_25px_rgba(16,185,129,0.2)] active-terminal">
+                        <div
+                            class="absolute inset-0 bg-emerald-500/5 opacity-0 transition-opacity group-hover:opacity-100"></div>
+                        <div class="scanline absolute inset-0 opacity-[0.2]"></div>
+
+                        <div class="relative z-10 flex items-center gap-3">
+                            <div
+                                class="h-1 w-1 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]"></div>
+                            <span
+                                class="text-emerald-light group-hover:animate-terminal-fx relative inline-block text-[0.7rem] font-black tracking-[0.5em] uppercase transition-all duration-300 group-hover:text-emerald-400 group-hover:drop-shadow-[0_0_10px_#10b981]">
+                                Terminal
+                            </span>
+                        </div>
+
+                        <div
+                            class="absolute -top-px -left-px h-1.5 w-1.5 border-t-2 border-l-2 border-emerald-400 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+                        <div
+                            class="absolute -right-px -bottom-px h-1.5 w-1.5 border-r-2 border-b-2 border-emerald-400 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
                     </RouterLink>
 
                     <div class="mx-2 hidden h-3 w-px bg-white/10 md:block"></div>
@@ -186,3 +191,87 @@ const handleDisconnect = async () => {
         </div>
     </nav>
 </template>
+
+<style scoped>
+@keyframes terminal-flicker {
+    0%,
+    100% {
+        opacity: 1;
+        filter: brightness(1);
+    }
+    50% {
+        opacity: 0.8;
+        filter: brightness(1.3);
+    }
+}
+
+@keyframes aggresive-glitch {
+    0%,
+    90%,
+    100% {
+        transform: translate(0);
+        text-shadow: 0 0 10px #10b981;
+    }
+    91% {
+        transform: translate(-3px, 1px);
+        text-shadow:
+            3px 0 #ef4444,
+            -3px 0 #064e3b;
+    }
+    93% {
+        transform: translate(3px, -1px);
+        text-shadow:
+            -3px 0 #3b82f6,
+            3px 0 #064e3b;
+    }
+    95% {
+        transform: translate(-2px, 2px);
+        filter: hue-rotate(90deg);
+    }
+    97% {
+        transform: translate(0);
+    }
+}
+
+@keyframes siren {
+    0%,
+    100% {
+        opacity: 1;
+        background-color: transparent;
+    }
+    50% {
+        opacity: 0.5;
+        background-color: rgba(244, 63, 94, 0.1);
+    }
+}
+
+.scanline {
+    background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(16, 185, 129, 0.4) 50%,
+        transparent 100%
+    );
+    background-size: 100% 4px;
+    animation: scan-slow 6s linear infinite;
+}
+
+@keyframes scan-slow {
+    from {
+        background-position: 0 0;
+    }
+    to {
+        background-position: 0 100%;
+    }
+}
+
+.group:hover .animate-terminal-fx {
+    animation:
+        terminal-flicker 0.1s infinite,
+        aggresive-glitch 4s infinite;
+}
+
+.animate-siren {
+    animation: siren 0.5s infinite;
+}
+</style>
