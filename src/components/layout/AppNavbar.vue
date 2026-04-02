@@ -179,10 +179,10 @@ const handleDisconnect = async () => {
                         @click="handleDisconnect"
                         :disabled="pending"
                         :class="[
-                            'mt-4 w-full rounded-xs border px-4 py-2.5 text-[0.5625rem] font-bold tracking-[0.25em] uppercase transition-[color,border-color,filter] duration-700 md:mt-0 md:ml-4 md:w-auto md:py-1.5',
+                            'mt-4 w-full rounded-xs border px-4 py-2.5 text-[0.5625rem] font-bold tracking-[0.25em] uppercase transition-all duration-700 md:mt-0 md:ml-4 md:w-auto md:py-1.5',
                             pending
-                                ? 'animate-siren pointer-events-none'
-                                : 'hover:drop-shadow-white-glow border-light/20 text-rose-light/50 hover:border-rose-light/60 hover:text-white',
+                                ? 'animate-siren border-rose-danger pointer-events-none'
+                                : 'hover:drop-shadow-white-glow text-rose-light/50 hover:border-rose-light/60 border-white/20 hover:text-white',
                         ]">
                         Disconnect
                     </button>
@@ -213,35 +213,23 @@ const handleDisconnect = async () => {
         text-shadow: 0 0 10px #10b981;
     }
     91% {
-        transform: translate(-3px, 1px);
+        transform: translate(-0.1875rem, 0.0625rem);
         text-shadow:
-            3px 0 #ef4444,
-            -3px 0 #064e3b;
+            0.1875rem 0 #ef4444,
+            -0.1875rem 0 #064e3b;
     }
     93% {
-        transform: translate(3px, -1px);
+        transform: translate(0.1875rem, -0.0625rem);
         text-shadow:
-            -3px 0 #3b82f6,
-            3px 0 #064e3b;
+            -0.1875rem 0 #3b82f6,
+            0.1875rem 0 #064e3b;
     }
     95% {
-        transform: translate(-2px, 2px);
+        transform: translate(-0.125rem, 0.125rem);
         filter: hue-rotate(90deg);
     }
     97% {
         transform: translate(0);
-    }
-}
-
-@keyframes siren {
-    0%,
-    100% {
-        opacity: 1;
-        background-color: transparent;
-    }
-    50% {
-        opacity: 0.5;
-        background-color: rgba(244, 63, 94, 0.1);
     }
 }
 
@@ -252,7 +240,7 @@ const handleDisconnect = async () => {
         rgba(16, 185, 129, 0.4) 50%,
         transparent 100%
     );
-    background-size: 100% 4px;
+    background-size: 100% 0.25rem;
     animation: scan-slow 6s linear infinite;
 }
 
@@ -269,9 +257,5 @@ const handleDisconnect = async () => {
     animation:
         terminal-flicker 0.1s infinite,
         aggresive-glitch 4s infinite;
-}
-
-.animate-siren {
-    animation: siren 0.5s infinite;
 }
 </style>
